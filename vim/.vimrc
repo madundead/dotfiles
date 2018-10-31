@@ -34,12 +34,6 @@ syntax on
 " -> Plugins
 " ========================================================
 
-if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
-  silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
-      https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  autocmd VimEnter * PlugInstall
-endif
-
 call plug#begin('~/.vim/plugged')
 
 " ======== Languages / Textobjects =======================
@@ -102,8 +96,7 @@ Plug 'tpope/vim-vinegar'
 " ========= Some of my stuff  ===========================
 " Bunch of helper functions extracted in their own plugin
 
-" Plug 'madundead/vim-madundead'
-Plug '~/Development/vim-madundead'
+Plug 'madundead/vim-madundead'
 
 " ======== Experimental =================================
 
