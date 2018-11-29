@@ -9,6 +9,7 @@ brew "curl"
 brew "diff-so-fancy"
 brew "fd"
 brew "fzf"
+brew "git"
 brew "htop"
 brew "httpie"
 brew "mysql", restart_service: true

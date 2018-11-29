@@ -24,12 +24,19 @@ export HOMEBREW_GITHUB_API_TOKEN="2a4fad8fb1b5ff1de5fdf043aeea7d6cf0c5b101"
 alias ls='ls -G'
 alias ll='ls -l'
 alias vi='vim'
-alias cat='bat --style changes'
+alias cat='bat --style plain --theme=solarized'
 alias grep='rg'
 alias be='bundle exec'
 alias vim='nvim'
 alias ..='cd ..'
 alias ...='cd ../..'
+
+alias gco='git checkout'
+alias gd='git diff'
+alias gdc='git diff --cached'
+alias gc='git commit'
+alias gs='git status -sb'
+alias ga='git add'
 
 # Homebrew stuff
 if [ -x /usr/local/bin/brew ]; then
