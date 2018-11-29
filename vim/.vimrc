@@ -58,7 +58,7 @@ Plug 'scrooloose/nerdtree',     { 'on': 'NERDTreeToggle' }
 Plug 'gregsexton/gitv',         { 'on': 'Gitv' }
 Plug 'junegunn/vim-easy-align', { 'on': ['<Plug>(EasyAlign)', 'EasyAlign'] }
 Plug 'gregsexton/MatchTag',     { 'for': 'html' }
-Plug 'ctrlpvim/ctrlp.vim'
+" Plug 'ctrlpvim/ctrlp.vim'
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'mattn/gist-vim' | Plug 'mattn/webapi-vim'
 Plug 'Raimondi/delimitMate'
@@ -103,6 +103,7 @@ Plug 'madundead/vim-madundead'
 Plug 'vim-utils/vim-interruptless' " prevents [O]K, [L]oad interuption
 Plug 'ngmy/vim-rubocop'
 Plug 'junegunn/goyo.vim'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'neomake/neomake'
 Plug 'slashmili/alchemist.vim'
@@ -140,23 +141,23 @@ let NERDTreeHijackNetrw      = 1
 
 " --- CtrlP
 
-let g:ctrlp_max_height      = 10
-let g:ctrlp_show_hidden     = 0
-let g:ctrlp_follow_symlinks = 1
-let g:ctrlp_max_files       = 20000
-let g:ctrlp_reuse_window    = 'startify'
-let g:ctrlp_extensions      = ['funky']
-let g:ctrlp_user_command    = 'rg --files  %s'
-let g:ctrlp_status_func     =
-  \ {
-  \   'main': 'madundead#ctrlp_main_status',
-  \   'prog': 'madundead#ctrlp_prog_status',
-  \ }
-let g:ctrlp_custom_ignore =
-  \ {
-  \   'dir': '\v[\/]\.(git|hg|svn|idea)$',
-  \   'file': '\v\.DS_Store$'
-  \ }
+" let g:ctrlp_max_height      = 10
+" let g:ctrlp_show_hidden     = 0
+" let g:ctrlp_follow_symlinks = 1
+" let g:ctrlp_max_files       = 20000
+" let g:ctrlp_reuse_window    = 'startify'
+" let g:ctrlp_extensions      = ['funky']
+" let g:ctrlp_user_command    = 'rg --files  %s'
+" let g:ctrlp_status_func     =
+"   \ {
+"   \   'main': 'madundead#ctrlp_main_status',
+"   \   'prog': 'madundead#ctrlp_prog_status',
+"   \ }
+" let g:ctrlp_custom_ignore =
+"   \ {
+"   \   'dir': '\v[\/]\.(git|hg|svn|idea)$',
+"   \   'file': '\v\.DS_Store$'
+"   \ }
 
 " --- Ultisnips
 
@@ -451,6 +452,11 @@ if has("autocmd")
   au BufNewFile,BufRead *.phtml         setl ft=html
   au BufNewFile,BufRead *.md,*.markdown setl ft=ghmarkdown
 
+  " Hide statusline
+  autocmd! FileType fzf
+  autocmd  FileType fzf set laststatus=0 noshowmode noruler
+         \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
+
   " Only show cursorline in the current window and in normal mode.
   augroup cline
       au!
@@ -634,3 +640,5 @@ map <Space> <Plug>Sneak_;
 map <leader><Space> <Plug>Sneak_,
 
 au FileType markdown vmap <Leader><Bslash> :EasyAlign*<Bar><Enter>
+
+nnoremap <C-p> :Files<Cr>

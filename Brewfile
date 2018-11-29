@@ -30,6 +30,7 @@ brew "urlview"
 brew "wget"
 brew "zsh"
 brew "heroku/brew/heroku"
+brew "mpv"
 
 cask "alfred"
 cask "dash"

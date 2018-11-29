@@ -1,6 +1,7 @@
 [ -f /etc/bashrc ] && . /etc/bashrc
 [ -f ~/.z.sh ] && . ~/.z.sh
 [ -f /etc/bash_completion ] && . /etc/bash_completion
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
 # Don't put duplicate lines in the history. See bash(1) for more options
 export HISTCONTROL=$HISTCONTROL${HISTCONTROL+,}ignoredups
@@ -21,13 +22,16 @@ export LC_ALL=en_US.UTF-8
 # Creds
 export HOMEBREW_GITHUB_API_TOKEN="2a4fad8fb1b5ff1de5fdf043aeea7d6cf0c5b101"
 
+alias ~='cd ~'
+alias l='ls'
 alias ls='ls -G'
 alias ll='ls -l'
+alias v='vim'
 alias vi='vim'
+alias vim='nvim'
 alias cat='bat --style plain --theme=solarized'
 alias grep='rg'
 alias be='bundle exec'
-alias vim='nvim'
 alias ..='cd ..'
 alias ...='cd ../..'
 
@@ -37,6 +41,10 @@ alias gdc='git diff --cached'
 alias gc='git commit'
 alias gs='git status -sb'
 alias ga='git add'
+
+yta() {
+  streamlink $1 audio_mp4
+}
 
 # Homebrew stuff
 if [ -x /usr/local/bin/brew ]; then
@@ -55,14 +63,6 @@ if [ -e ~/.git-prompt.sh ]; then
 fi
 PS1='\[\e[34m\]\u\[\e[1;32m\]@\[\e[0;33m\]\h\[\e[35m\]:\[\e[m\]\w\[\e[1;34m\]$(__git_ps1)\[\e[1;31m\]> \[\e[0m\]'
 
-# fzf experiments
+# fzf
 export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
-export FZF_ALT_C_COMMAND='fd --type d --hidden --follow --exclude .git'
-export FZF_CTRL_T_COMMAND='fd --type f --type d --hidden --follow --exclude .git'
-[ -n "$NVIM_LISTEN_ADDRESS" ] && export FZF_DEFAULT_OPTS='--no-height'
-
-if [ -x ~/.vim/plugged/fzf.vim/bin/preview.rb ]; then
-  export FZF_CTRL_T_OPTS="--preview '~/.vim/plugged/fzf.vim/bin/preview.rb {} | head -200'"
-fi
-
-export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:3:hidden:wrap --bind '?:toggle-preview' --bind 'ctrl-y:execute-silent(echo -n {2..} | pbcopy)+abort' --header 'Press CTRL-Y to copy command into clipboard' --border"
+export FZF_DEFAULT_OPTS='--layout=reverse --inline-info'
