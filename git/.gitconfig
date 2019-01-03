@@ -101,7 +101,7 @@
 [core]
 
   # Use custom .gitignore and .gitattributes
-  excludesfile = ~/.gitignore
+  excludesfile = ~/.gitignore_global
   attributesfile = ~/.gitattributes
 
   # Treat spaces before tabs and all kinds of trailing whitespace as an error
@@ -170,10 +170,8 @@
 
 [push]
 
- # https://git-scm.com/docs/git-config#git-config-pushdefault
-  default = simple
- # Make git push push relevant annotated tags when pushing branches out.
- # followTags = true
+  # https://git-scm.com/docs/git-config#git-config-pushdefault
+  default = current
 
 [url "git@github.com:"]
 
