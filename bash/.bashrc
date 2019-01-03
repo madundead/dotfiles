@@ -1,5 +1,5 @@
 [ -f /etc/bashrc ] && . /etc/bashrc
-[ -f ~/.z.sh ] && . ~/.z.sh
+. /usr/local/etc/profile.d/z.sh
 [ -f /etc/bash_completion ] && . /etc/bash_completion
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
@@ -41,6 +41,19 @@ alias gdc='git diff --cached'
 alias gc='git commit'
 alias gs='git status -sb'
 alias ga='git add'
+alias gup='git up'
+alias gp='git push'
+alias gb='git branch'
+alias gl='git lg'
+
+alias rdc='be rake db:create'
+alias rdd='be rake db:drop'
+alias rdm='be rake db:migrate'
+alias rdr='be rake db:rollback'
+alias rds='be rake db:seed'
+
+alias rc='bin/rails c'
+alias rs='bin/rails s -p3001'
 
 yta() {
   streamlink $1 audio_mp4
