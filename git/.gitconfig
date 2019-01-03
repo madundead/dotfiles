@@ -2,6 +2,9 @@
   email = madundead@gmail.com
   name = Konstantin Bukley
 
+[includeIf "gitdir:~/work/"]
+    path = ~/Development/work/.gitconfig
+
 [alias]
 
   # View abbreviated SHA, description, and history graph of the latest 20 commits
