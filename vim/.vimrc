@@ -65,7 +65,6 @@ Plug 'dyng/ctrlsf.vim'
 Plug 'terryma/vim-expand-region'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'bogado/file-line'
-Plug 'ngmy/vim-rubocop'
 Plug 'neomake/neomake'
 Plug 'vim-utils/vim-interruptless'
 
@@ -92,14 +91,215 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-git'
 Plug 'tpope/vim-vinegar'
 
-" ========= Some of my stuff  ===========================
-" Bunch of helper functions extracted in their own plugin
-
-Plug 'madundead/vim-madundead'
-
 " ======== Experimental =================================
 
 call plug#end()
+
+
+
+" ========================================================
+" -> Functions
+" ========================================================
+
+function! LightlineModified()
+  return &ft =~ 'help' ? '' : &modified ? '+' : &modifiable ? '' : '-'
+endfunction
+
+function! LightlineReadonly()
+  return &ft !~? 'help' && &readonly ? 'RO' : ''
+endfunction
+
+function! LightlineFileName()
+  let fname = expand('%:t')
+  return fname == 'ControlP' ? g:lightline.ctrlp_item :
+        \ fname == '__Tagbar__' ? g:lightline.fname :
+        \ fname == '__CtrlSF__' ? 'Results' :
+        \ fname =~ '__Gundo\|NERD_tree' ? '' :
+        \ &ft == 'vimfiler' ? vimfiler#get_status_string() :
+        \ &ft == 'unite' ? unite#get_status_string() :
+        \ &ft == 'vimshell' ? vimshell#get_status_string() :
+        \ ('' != LightlineReadonly() ? LightlineReadonly() . ' ' : '') .
+        \ ('' != fname ? fname : 'nothing') .
+        \ ('' != LightlineModified() ? ' ' . LightlineModified() : '')
+endfunction
+
+function! LightlineFugitive()
+  try
+    if expand('%:t') !~? 'Tagbar\|Gundo\|NERD' && &ft !~? 'vimfiler' && exists('*fugitive#head')
+      let mark = ' '  " edit here for cool mark
+      let _ = fugitive#head()
+      return strlen(_) ? mark._ : ''
+    endif
+  catch
+  endtry
+  return ''
+endfunction
+
+function! LightlineFileFormat()
+  return winwidth(0) > 70 ? &fileformat : ''
+endfunction
+
+function! LightlineFileType()
+  return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype : 'no ft') : ''
+endfunction
+
+function! LightlineFileEncoding()
+  return winwidth(0) > 70 ? (strlen(&fenc) ? &fenc : &enc) : ''
+endfunction
+
+function! LightlineMode()
+  let fname = expand('%:t')
+  return fname == '__Tagbar__' ? 'Tagbar' :
+        \ fname == 'ControlP' ? 'CtrlP' :
+        \ fname == '__Gundo__' ? 'Gundo' :
+        \ fname == '__Gundo_Preview__' ? 'Gundo Preview' :
+        \ fname =~ 'NERD_tree' ? "N" :
+        \ &ft == 'unite' ? 'Unite' :
+        \ &ft == 'vimfiler' ? 'VimFiler' :
+        \ &ft == 'vimshell' ? 'VimShell' :
+        \ winwidth(0) > 60 ? lightline#mode() : ''
+endfunction
+
+function! LightlineCtrlP()
+  if expand('%:t') =~ 'ControlP'
+    call lightline#link('iR'[g:lightline.ctrlp_regex])
+    return lightline#concatenate([g:lightline.ctrlp_prev, g:lightline.ctrlp_item
+          \ , g:lightline.ctrlp_next], 0)
+  else
+    return ''
+  endif
+endfunction
+
+function! StripTrailingWhitespace()
+    let _s=@/
+    let l = line(".")
+    let c = col(".")
+    %s/\s\+$//e
+    let @/=_s
+    silent! call cursor(l, c)
+endfunction
+
+function! Tabline()
+  let s = ''
+  for i in range(tabpagenr('$'))
+    let tab         = i + 1
+    let winnr       = tabpagewinnr(tab)
+    let buflist     = tabpagebuflist(tab)
+    let bufnr       = buflist[winnr - 1]
+    let bufname     = bufname(bufnr)
+    let bufmodified = getbufvar(bufnr, "&mod")
+
+    let s .= (tab == tabpagenr() ? '%#TabLineSel#' : '%#TabLine#')
+
+    if bufname == ''
+      let s .= '  empty'
+    elseif bufname =~ 'NERD_tree'
+      let s .= '  tree'
+    elseif bufname =~ 'ControlP'
+      let s .= '  ctrlp'
+    elseif bufname =~ 'FZF'
+      let s .= '  fzf'
+    elseif bufname =~ '__CtrlSF__'
+      let s .= '  ctrlsf'
+    else
+      let s .= '  ' . fnamemodify(bufname, ':t')
+    endif
+
+    if bufmodified
+      let s .= '(+)'
+    endif
+  endfor
+
+  let s .= '%#TabLineFill#'
+  return s
+endfunction
+
+function! CloseNERDTree()
+  if exists("t:NERDTreeBufName")
+    if bufwinnr(t:NERDTreeBufName) != -1
+      if winnr("$") == 1
+        q
+      endif
+    endif
+  endif
+endfunction
+
+function! TweakSolarized()
+  " Some adjustments stolen from YADR project
+  hi! link txtBold                      Identifier
+  hi! link zshVariableDef               Identifier
+  hi! link zshFunction                  Function
+  hi! link rubyControl                  Statement
+  hi! link rspecGroupMethods            rubyControl
+  hi! link rspecMocks                   Identifier
+  hi! link rspecKeywords                Identifier
+  hi! link rubyLocalVariableOrMethod    Normal
+  hi! link rubyStringDelimiter          Constant
+  hi! link rubyString                   Constant
+  hi! link rubyAccess                   Todo
+  hi! link rubySymbol                   Identifier
+  hi! link rubyPseudoVariable           Type
+  hi! link rubyRailsARAssociationMethod Title
+  hi! link rubyRailsARValidationMethod  Title
+  hi! link rubyRailsMethod              Title
+  hi! link rubyDoBlock                  Normal
+  hi! link MatchParen                   DiffText
+  hi! link CTagsModule                  Type
+  hi! link CTagsClass                   Type
+  hi! link CTagsMethod                  Identifier
+  hi! link CTagsSingleton               Identifier
+  hi! link javascriptFuncName           Type
+  hi! link javascriptFunction           Statement
+  hi! link javascriptThis               Statement
+  hi! link javascriptParens             Normal
+  hi! link jOperators                   javascriptStringD
+  hi! link jId                          Title
+  hi! link jClass                       Title
+  hi! link NERDTreeFile                 Constant
+  hi! link NERDTreeDir                  Identifier
+  hi! link sassMixinName                Function
+  hi! link sassDefinition               Function
+  hi! link sassProperty                 Type
+  hi! link htmlTagName                  Type
+  hi! link Visual                       DiffChange
+  hi! link Search                       DiffAdd
+  hi! link Delimiter                    Identifier
+  hi! link rDollar                      Identifier
+  hi! link vimMapModKey                 Operator
+  hi! link vimNotation                  Label
+  hi! link htmlLink                     Include
+
+  " Line numbers
+  hi LineNR       ctermfg=23 ctermbg=8
+  hi CursorLineNR ctermfg=23 ctermbg=8
+
+  " Hide ~ at the bottom
+  hi NonText cterm=NONE ctermfg=8
+
+  " Status Line
+  hi StatusLine   cterm=NONE ctermbg=0 ctermfg=23
+  hi StatusLineNC cterm=NONE ctermbg=0 ctermfg=0
+
+  " Misc adjustments
+  hi WildMenu     cterm=NONE ctermbg=0    ctermfg=7
+  hi Pmenu        cterm=NONE ctermbg=0    ctermfg=25
+  hi PmenuSel     cterm=NONE ctermbg=0    ctermfg=7
+  hi PmenuSbar    cterm=NONE ctermbg=0    ctermfg=7
+  hi PmenuThumb   cterm=NONE ctermbg=0    ctermfg=7
+  hi SpecialKey   cterm=NONE ctermbg=8    ctermfg=1
+  hi CtrlPLinePre cterm=NONE ctermbg=8    ctermfg=8
+  hi Folded       cterm=NONE ctermbg=0    ctermfg=4
+  hi TabLine      cterm=NONE ctermbg=0    ctermfg=244
+  hi TabLineFill  cterm=NONE ctermbg=0    ctermfg=4
+  hi TabLineSel   cterm=NONE ctermbg=0    ctermfg=166
+  hi VertSplit    cterm=NONE ctermbg=NONE ctermfg=0
+
+  " GitGutter sign column adjustments
+  hi GitGutterAdd          ctermbg=8 ctermfg=2
+  hi GitGutterChange       ctermbg=8 ctermfg=3
+  hi GitGutterDelete       ctermbg=8 ctermfg=1
+  hi GitGutterChangeDelete ctermbg=8 ctermfg=3
+endfunction
 
 
 
@@ -126,7 +326,7 @@ let NERDTreeAutoDeleteBuffer = 1
 let NERDTreeHijackNetrw      = 1
 
 " --- highlightedyank
-"
+
 let g:highlightedyank_highlight_duration = 400
 
 " --- Ultisnips
@@ -134,6 +334,23 @@ let g:highlightedyank_highlight_duration = 400
 let g:UltiSnipsExpandTrigger       = '<tab>'
 let g:UltiSnipsJumpForwardTrigger  = '<tab>'
 let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'
+
+" --- fzf
+
+let g:fzf_colors =
+\ { 'fg':      ['fg', 'Normal'],
+  \ 'bg':      ['bg', 'Normal'],
+  \ 'hl':      ['fg', 'Normal'],
+  \ 'fg+':     ['fg', 'Normal'],
+  \ 'bg+':     ['bg', 'Normal'],
+  \ 'hl+':     ['fg', 'Normal'],
+  \ 'info':    ['fg', 'PreProc'],
+  \ 'border':  ['fg', 'Ignore'],
+  \ 'prompt':  ['fg', 'Conditional'],
+  \ 'pointer': ['fg', 'Identifier'],
+  \ 'marker':  ['fg', 'Keyword'],
+  \ 'spinner': ['fg', 'Label'],
+  \ 'header':  ['fg', 'Comment'] }
 
 " --- CtrlSF
 
@@ -207,13 +424,13 @@ let g:lightline =
   \   'right': [],
   \ },
   \ 'component_function': {
-  \     'fugitive':     'madundead#lightline_fugitive',
-  \     'filename':     'madundead#lightline_file_name',
-  \     'fileformat':   'madundead#lightline_file_format',
-  \     'filetype':     'madundead#lightline_file_type',
-  \     'fileencoding': 'madundead#lightline_file_encoding',
-  \     'mode':         'madundead#lightline_mode',
-  \     'ctrlpmark':    'madundead#lightline_ctrlp',
+  \     'fugitive':     'LightlineFugitive',
+  \     'filename':     'LightlineFileName',
+  \     'fileformat':   'LightlineFileFormat',
+  \     'filetype':     'LightlineFileType',
+  \     'fileencoding': 'LightlineFileEncoding',
+  \     'mode':         'LightlineMode',
+  \     'ctrlpmark':    'LightlineCtrlP',
   \   },
   \ }
 let g:lightline.mode_map =
@@ -230,6 +447,50 @@ let g:lightline.mode_map =
   \ "\<C-s>": 'S',
   \ '?': '      '
   \ }
+
+
+" --- neomake
+
+call neomake#configure#automake('rw')
+
+
+
+" ========================================================
+" -> Autocommands
+" ========================================================
+
+if has("autocmd")
+  au filetype help nnoremap <buffer><CR> <c-]>
+  au filetype help nnoremap <buffer><BS> <c-T>
+  au filetype help set nonumber
+
+  au BufNewFile,BufRead Capfile,Gemfile,Vagrantfile setl ft=ruby
+  au BufNewFile,BufRead *.rabl,*.jbuilder           setl ft=ruby
+
+  au BufNewFile,BufRead *.phtml         setl ft=html
+  au BufNewFile,BufRead *.md,*.markdown setl ft=ghmarkdown
+
+  " Hide statusline
+  autocmd! FileType fzf
+  autocmd  FileType fzf set laststatus=0 noshowmode noruler
+         \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
+
+  " Only show cursorline in the current window and in normal mode.
+  augroup cline
+      au!
+      au WinLeave,InsertEnter * set nocursorline
+      au WinEnter,InsertLeave * set cursorline
+  augroup END
+
+  " Close tab if only NERDTree left
+  au WinEnter * call CloseNERDTree()
+
+  " Apply solarized tweak
+  au ColorScheme solarized call TweakSolarized()
+
+  " Prevent CtrlP or NERDTree from opening a split in Startify
+  au User Startified setl buftype=
+endif
 
 
 
@@ -277,7 +538,7 @@ set autoread
 " do not redraw while running macros
 set lazyredraw
 " tab label - requires vim-madundead
-set tabline=%!madundead#tabline()
+set tabline=%!Tabline()
 " show status even for single buffer displayed
 set laststatus=2
 " highlight current line
@@ -409,48 +670,6 @@ set expandtab
 
 
 " ========================================================
-" -> Filetype Dependent Settings
-" ========================================================
-
-if has("autocmd")
-  au filetype help nnoremap <buffer><CR> <c-]>
-  au filetype help nnoremap <buffer><BS> <c-T>
-  au filetype help set nonumber
-
-  au BufNewFile,BufRead Capfile,Gemfile,Vagrantfile setl ft=ruby
-  au BufNewFile,BufRead *.rabl,*.jbuilder           setl ft=ruby
-
-  au BufNewFile,BufRead *.phtml         setl ft=html
-  au BufNewFile,BufRead *.md,*.markdown setl ft=ghmarkdown
-
-  " Hide statusline
-  autocmd! FileType fzf
-  autocmd  FileType fzf set laststatus=0 noshowmode noruler
-         \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
-
-  " Only show cursorline in the current window and in normal mode.
-  augroup cline
-      au!
-      au WinLeave,InsertEnter * set nocursorline
-      au WinEnter,InsertLeave * set cursorline
-  augroup END
-
-  " Close tab if only NERDTree left
-  au WinEnter * call madundead#nerdtree_close_hack()
-
-  " Apply solarized tweak
-  au VimEnter * call madundead#tweak_solarized()
-
-  " Neomake
-  au BufWritePost * Neomake
-
-  " Prevent CtrlP or NERDTree from opening a split in Startify
-  au User Startified setl buftype=
-endif
-
-
-
-" ========================================================
 " -> Hotkeys & Bindings
 " ========================================================
 " Remap ; to :
@@ -480,7 +699,7 @@ nmap <silent><leader><space> :nohlsearch<cr>
 " ,, -> toggle between last open buffers
 nmap <leader><leader> <c-^>
 " ,w -> strip trailing whitespace
-nmap <silent><leader>w :call madundead#strip_trailing_whitespace()<CR>
+nmap <silent><leader>w :call StripTrailingWhitespace()<CR>
 " ,n -> NERDTree
 nmap <silent><leader>n :NERDTreeToggle<CR>
 " ,c -> next conflict marker
@@ -499,7 +718,6 @@ nmap <leader>d orequire 'pry'; binding.pry<ESC>
 nmap <leader>p :echo @%<CR>
 " ,s -> reload vimrc
 nmap <silent><leader>s :so ~/.vimrc<CR>
-      \ :call madundead#tweak_solarized()<CR>
 " ,rh -> hashrocket to :
 nmap <leader>rh :%s/\v:(\w+) \=\>/\1:/g<cr>
 
@@ -591,3 +809,6 @@ nnoremap <C-p> :Files<Cr>
 " gx        -- opens url in browser
 " ctrl + e  -- emmet
 " ctrl + n  -- vim-multiple-cursor
+
+" EXPERIMENTAL:
+map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<' . synIDattr(synID(line("."),col("."),0),"name") . "> lo<" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
