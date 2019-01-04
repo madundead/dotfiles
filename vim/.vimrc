@@ -39,6 +39,7 @@ call plug#begin('~/.vim/plugged')
 " ======== Languages / Textobjects =======================
 
 Plug 'sheerun/vim-polyglot'
+Plug 'jtratner/vim-flavored-markdown'
 Plug 'kana/vim-textobj-user'
 Plug 'nelstrom/vim-textobj-rubyblock'
 Plug 'austintaylor/vim-indentobject'
@@ -92,6 +93,9 @@ Plug 'tpope/vim-git'
 Plug 'tpope/vim-vinegar'
 
 " ======== Experimental =================================
+
+Plug 'junegunn/goyo.vim'
+Plug 'junegunn/limelight.vim'
 
 call plug#end()
 
@@ -643,6 +647,11 @@ if v:version > 703 || v:version == 703 && has("patch541")
   set formatoptions+=j
 endif
 
+" Use ripgrep if possible
+if executable('rg')
+  set grepprg=rg\ -i\ --vimgrep
+endif
+
 
 
 " ========================================================
@@ -766,6 +775,11 @@ vnoremap . :normal .<CR>
 
 nnoremap H ^
 nnoremap L $
+
+" Avoid entering Ex mode by pressing gQ (Q is remapped below)
+nnoremap gQ <nop>
+
+" I don't use it
 nnoremap K <nop>
 
 " Move visual block
@@ -812,3 +826,35 @@ nnoremap <C-p> :Files<Cr>
 
 " EXPERIMENTAL:
 map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<' . synIDattr(synID(line("."),col("."),0),"name") . "> lo<" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
+
+" Color name (:help cterm-colors) or ANSI code
+let g:limelight_conceal_ctermfg = 240
+
+" Default: 0.5
+let g:limelight_default_coefficient = 0.7
+
+" Highlighting priority (default: 10)
+"   Set it to -1 not to overrule hlsearch
+let g:limelight_priority = -1
+
+" Goyo {{
+  " Toggle distraction-free mode
+  nnoremap <silent> <leader>g :Goyo<cr>
+
+  fun! s:goyoEnter()
+    set scrolloff=999 " Keep the edited line vertically centered
+    set wrap
+    set noshowcmd
+    Limelight
+  endf
+
+  fun! s:goyoLeave()
+    set showcmd
+    set nowrap
+    set scrolloff=5
+    Limelight!
+  endf
+
+  autocmd! User GoyoEnter nested call <sid>goyoEnter()
+  autocmd! User GoyoLeave nested call <sid>goyoLeave()
+" }}
