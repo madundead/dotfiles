@@ -39,12 +39,7 @@ call plug#begin('~/.vim/plugged')
 " ======== Languages / Textobjects =======================
 
 Plug 'sheerun/vim-polyglot'
-Plug 'mxw/vim-jsx'
-Plug 'jtratner/vim-flavored-markdown', { 'for': 'markdown' }
 Plug 'kana/vim-textobj-user'
-Plug 'kana/vim-textobj-datetime'
-Plug 'kana/vim-textobj-entire'
-Plug 'kana/vim-textobj-function'
 Plug 'nelstrom/vim-textobj-rubyblock'
 Plug 'austintaylor/vim-indentobject'
 Plug 'lucapette/vim-textobj-underscore'
@@ -58,7 +53,8 @@ Plug 'scrooloose/nerdtree',     { 'on': 'NERDTreeToggle' }
 Plug 'gregsexton/gitv',         { 'on': 'Gitv' }
 Plug 'junegunn/vim-easy-align', { 'on': ['<Plug>(EasyAlign)', 'EasyAlign'] }
 Plug 'gregsexton/MatchTag',     { 'for': 'html' }
-" Plug 'ctrlpvim/ctrlp.vim'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'mattn/gist-vim' | Plug 'mattn/webapi-vim'
 Plug 'Raimondi/delimitMate'
@@ -69,6 +65,9 @@ Plug 'dyng/ctrlsf.vim'
 Plug 'terryma/vim-expand-region'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'bogado/file-line'
+Plug 'ngmy/vim-rubocop'
+Plug 'neomake/neomake'
+Plug 'vim-utils/vim-interruptless'
 
 " ======== Snippets & Autocomplete ======================
 
@@ -80,6 +79,7 @@ Plug 'altercation/vim-colors-solarized'
 Plug 'itchyny/lightline.vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'mhinz/vim-startify'
+Plug 'machakann/vim-highlightedyank'
 
 " ======== tpope <3  ====================================
 
@@ -90,7 +90,6 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-git'
-Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-vinegar'
 
 " ========= Some of my stuff  ===========================
@@ -99,19 +98,6 @@ Plug 'tpope/vim-vinegar'
 Plug 'madundead/vim-madundead'
 
 " ======== Experimental =================================
-
-Plug 'vim-utils/vim-interruptless' " prevents [O]K, [L]oad interuption
-Plug 'ngmy/vim-rubocop'
-Plug 'junegunn/goyo.vim'
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
-Plug 'neomake/neomake'
-Plug 'slashmili/alchemist.vim'
-Plug 'dylanaraps/crayon'
-Plug 'machakann/vim-highlightedyank'
-Plug 'rhysd/clever-f.vim'
-Plug 'majutsushi/tagbar'
-Plug 'darfink/vim-plist'
 
 call plug#end()
 
@@ -139,25 +125,9 @@ let NERDTreeDirArrows        = 1
 let NERDTreeAutoDeleteBuffer = 1
 let NERDTreeHijackNetrw      = 1
 
-" --- CtrlP
-
-" let g:ctrlp_max_height      = 10
-" let g:ctrlp_show_hidden     = 0
-" let g:ctrlp_follow_symlinks = 1
-" let g:ctrlp_max_files       = 20000
-" let g:ctrlp_reuse_window    = 'startify'
-" let g:ctrlp_extensions      = ['funky']
-" let g:ctrlp_user_command    = 'rg --files  %s'
-" let g:ctrlp_status_func     =
-"   \ {
-"   \   'main': 'madundead#ctrlp_main_status',
-"   \   'prog': 'madundead#ctrlp_prog_status',
-"   \ }
-" let g:ctrlp_custom_ignore =
-"   \ {
-"   \   'dir': '\v[\/]\.(git|hg|svn|idea)$',
-"   \   'file': '\v\.DS_Store$'
-"   \ }
+" --- highlightedyank
+"
+let g:highlightedyank_highlight_duration = 400
 
 " --- Ultisnips
 
@@ -336,10 +306,6 @@ set mat=2
 set gcr=a:blinkon0
 " hide the mouse pointer while typing
 set mousehide
-" vim requires a POSIX-compliant shell. fish isn't
-if $SHELL =~ 'bin/fish'
-  set shell=/bin/sh
-endif
 
 
 
@@ -366,7 +332,7 @@ set langmap=ФИСВУАПРШОЛДЬТЩЗЙКЫЕГМЦЧНЯЖ;ABCDEFGHIJKLM
 " W invokes sudo
 command! W w !sudo tee % > /dev/null
 
-" Use the OS clipboard by default (on versions compiled with `+clipboard`)
+" Use the OS clipboard by default (requires `+clipboard`)
 set clipboard=unnamed
 
 " Dunno
@@ -389,7 +355,7 @@ set noswapfile
 " Doesn't select lines number in vim
 set mouse=a
 
-" Facny whitespace characters
+" Fancy whitespace characters
 set list listchars=tab:→\ ,trail:·
 
 " Abbrev. of messages (avoids 'hit enter')
@@ -410,6 +376,11 @@ set diffopt+=vertical
 
 " Reduce delay between modes
 set timeoutlen=1000 ttimeoutlen=0
+
+" Delete comment character when joining commented lines
+if v:version > 703 || v:version == 703 && has("patch541")
+  set formatoptions+=j
+endif
 
 
 
@@ -586,6 +557,23 @@ vnoremap K :m '<-2<CR>gv=gv
 " Keep the cursor in place while joining lines
 nnoremap J mzJ`z
 
+" Keep old vim-commentary hotkeys
+xmap \\  <Plug>Commentary
+nmap \\  <Plug>Commentary
+nmap \\\ <Plug>CommentaryLine
+nmap \\u <Plug>CommentaryUndo
+
+" git
+noremap <Leader>ga :Gwrite<CR>
+noremap <Leader>gc :Gcommit<CR>
+noremap <Leader>gp :Gpush<CR>
+noremap <Leader>gup :Gpull<CR>
+noremap <Leader>gs :Gstatus<CR>
+noremap <Leader>gd :Gvdiff<CR>
+
+" CtrlP -> fzf
+nnoremap <C-p> :Files<Cr>
+
 " TODO: Space should be used for something more useful
 " Folding on <Space>
 
@@ -603,42 +591,3 @@ nnoremap J mzJ`z
 " gx        -- opens url in browser
 " ctrl + e  -- emmet
 " ctrl + n  -- vim-multiple-cursor
-
-" EXPERIMENTAL:
-
-" Toggle wrap
-nnoremap <leader>W :set wrap!<cr>
-
-" Keep old vim-commentary hotkeys
-xmap \\  <Plug>Commentary
-nmap \\  <Plug>Commentary
-nmap \\\ <Plug>CommentaryLine
-nmap \\u <Plug>CommentaryUndo
-
-" git
-noremap <Leader>ga :Gwrite<CR>
-noremap <Leader>gc :Gcommit<CR>
-noremap <Leader>gsh :Gpush<CR>
-noremap <Leader>gll :Gpull<CR>
-noremap <Leader>gs :Gstatus<CR>
-noremap <Leader>gb :Gblame<CR>
-noremap <Leader>gd :Gvdiff<CR>
-noremap <Leader>gr :Gremove<CR>
-
-map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<' . synIDattr(synID(line("."),col("."),0),"name") . "> lo<" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
-
-map y <Plug>(highlightedyank)
-
-let g:highlightedyank_highlight_duration = 400
-
-" Delete comment character when joining commented lines
-if v:version > 703 || v:version == 703 && has("patch541")
-  set formatoptions+=j
-endif
-
-map <Space> <Plug>Sneak_;
-map <leader><Space> <Plug>Sneak_,
-
-au FileType markdown vmap <Leader><Bslash> :EasyAlign*<Bar><Enter>
-
-nnoremap <C-p> :Files<Cr>
