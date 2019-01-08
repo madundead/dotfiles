@@ -15,8 +15,8 @@ set nocompatible
 set encoding=utf-8
 set fileencoding=utf-8
 
-" Quantity of comand line entries vim have to remember
-set history=500
+" History length
+set history=1000
 
 " Remap the <leader> to ,
 let mapleader=","
@@ -437,6 +437,7 @@ let g:lightline =
   \     'ctrlpmark':    'LightlineCtrlP',
   \   },
   \ }
+
 let g:lightline.mode_map =
   \ {
   \ 'n' : ' N ',
@@ -502,17 +503,17 @@ endif
 " -> Colors & Fonts
 " ========================================================
 
-" solarized is love solarized is life
+" Solarized is love solarized is life
 colorscheme solarized
 set background=dark
 
-" set guifont=Source\ Code\ Pro:h16
+set guifont=Source\ Code\ Pro:h16
 if has('gui_running')
   set guifont=Menlo:h14
-  set guioptions-=T                         " remove toolbar
-  set guioptions-=m                         " remove menubar
-  set guioptions+=LlRrb                     " remove
-  set guioptions-=LlRrb                     " scrollbars
+  set guioptions-=T                         " Remove toolbar
+  set guioptions-=m                         " Remove menubar
+  set guioptions+=LlRrb                     " Remove
+  set guioptions-=LlRrb                     " Scrollbars
   set t_Co=256
 else
   " Disable Background Color Erase (BCE) so that color schemes
@@ -673,9 +674,6 @@ set shiftwidth=2
 " Spaces
 set expandtab
 
-" Don't write end of file
-" set noeol
-
 
 
 " ========================================================
@@ -759,7 +757,7 @@ nnoremap Y y$
 
 " vv/ss for splits
 nnoremap <silent>vv <c-w>v
-" nnoremap <silent>ss <c-w>s
+nnoremap <silent>ss <c-w>s
 
 " Highlight VCS conflict markers
 match ErrorMsg '^\(<\|=\|>\)\{7\}\([^=].\+\)\?$'
@@ -773,10 +771,11 @@ imap <C-e> <C-y>, <CR>
 " Allow the . to execute once for each line of a visual selection
 vnoremap . :normal .<CR>
 
+" Makes more sense
 nnoremap H ^
 nnoremap L $
 
-" Avoid entering Ex mode by pressing gQ (Q is remapped below)
+" Avoid entering Ex mode by pressing gQ
 nnoremap gQ <nop>
 
 " I don't use it
@@ -796,12 +795,12 @@ nmap \\\ <Plug>CommentaryLine
 nmap \\u <Plug>CommentaryUndo
 
 " git
-noremap <Leader>ga :Gwrite<CR>
-noremap <Leader>gc :Gcommit<CR>
-noremap <Leader>gp :Gpush<CR>
-noremap <Leader>gup :Gpull<CR>
-noremap <Leader>gs :Gstatus<CR>
-noremap <Leader>gd :Gvdiff<CR>
+noremap <leader>ga :Gwrite<CR>
+noremap <leader>gc :Gcommit<CR>
+noremap <leader>gp :Gpush<CR>
+noremap <leader>gup :Gpull<CR>
+noremap <leader>gs :Gstatus<CR>
+noremap <leader>gd :Gvdiff<CR>
 
 " CtrlP -> fzf
 nnoremap <C-p> :Files<Cr>
@@ -820,11 +819,10 @@ nnoremap <C-p> :Files<Cr>
 " REMINDERS:
 " m         -- ruby method motion (e.g. cim)
 " i         -- indentation motion (e.g. dai)
-" gx        -- opens url in browser
-" ctrl + e  -- emmet
-" ctrl + n  -- vim-multiple-cursor
 
 " EXPERIMENTAL:
+
+" Color under cursor
 map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<' . synIDattr(synID(line("."),col("."),0),"name") . "> lo<" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
 
 " Color name (:help cterm-colors) or ANSI code
@@ -837,24 +835,23 @@ let g:limelight_default_coefficient = 0.7
 "   Set it to -1 not to overrule hlsearch
 let g:limelight_priority = -1
 
-" Goyo {{
-  " Toggle distraction-free mode
-  nnoremap <silent> <leader>g :Goyo<cr>
+" Goyo
+" Toggle distraction-free mode
+nnoremap <silent> <leader>g :Goyo<cr>
 
-  fun! s:goyoEnter()
-    set scrolloff=999 " Keep the edited line vertically centered
-    set wrap
-    set noshowcmd
-    Limelight
-  endf
+fun! s:goyoEnter()
+  set scrolloff=999 " Keep the edited line vertically centered
+  set wrap
+  set noshowcmd
+  Limelight
+endf
 
-  fun! s:goyoLeave()
-    set showcmd
-    set nowrap
-    set scrolloff=5
-    Limelight!
-  endf
+fun! s:goyoLeave()
+  set showcmd
+  set nowrap
+  set scrolloff=5
+  Limelight!
+endf
 
-  autocmd! User GoyoEnter nested call <sid>goyoEnter()
-  autocmd! User GoyoLeave nested call <sid>goyoLeave()
-" }}
+autocmd! User GoyoEnter nested call <sid>goyoEnter()
+autocmd! User GoyoLeave nested call <sid>goyoLeave()
