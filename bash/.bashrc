@@ -24,6 +24,10 @@ export LC_ALL=en_US.UTF-8
 # Creds
 export HOMEBREW_GITHUB_API_TOKEN="2a4fad8fb1b5ff1de5fdf043aeea7d6cf0c5b101"
 
+# fzf
+export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
+export FZF_DEFAULT_OPTS='--layout=reverse --inline-info'
+
 alias ~='cd ~'
 alias l='ls'
 alias ls='ls -G'
@@ -47,6 +51,7 @@ alias gs='git status -sb'
 alias ga='git add'
 alias gup='git up'
 alias gp='git push'
+alias gpf='git push -f'
 alias gb='git branch'
 alias gl='git lg'
 alias gr='git reset'
@@ -79,8 +84,4 @@ __git_ps1() { :;}
 if [ -e ~/.git-prompt.sh ]; then
   source ~/.git-prompt.sh
 fi
-PS1='\[\e[34m\]\u\[\e[1;32m\]@\[\e[0;33m\]\h\[\e[35m\]:\[\e[m\]\w\[\e[1;34m\]$(__git_ps1)\[\e[1;31m\]> \[\e[0m\]'
-
-# fzf
-export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
-export FZF_DEFAULT_OPTS='--layout=reverse --inline-info'
+PS1='\W$(__git_ps1 ":%s") '
