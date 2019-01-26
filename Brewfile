@@ -22,6 +22,7 @@ brew "redis", restart_service: true
 brew "ripgrep"
 brew "speedtest-cli"
 brew "stow"
+brew "tree"
 brew "streamlink"
 brew "tig"
 brew "tldr"
