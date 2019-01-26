@@ -66,7 +66,6 @@ Plug 'dyng/ctrlsf.vim'
 Plug 'terryma/vim-expand-region'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'bogado/file-line'
-Plug 'neomake/neomake'
 Plug 'vim-utils/vim-interruptless'
 
 " ======== Snippets & Autocomplete ======================
@@ -94,8 +93,9 @@ Plug 'tpope/vim-vinegar'
 
 " ======== Experimental =================================
 
-Plug 'junegunn/goyo.vim'
-Plug 'junegunn/limelight.vim'
+Plug 'w0rp/ale'
+" Plug 'junegunn/goyo.vim'
+" Plug 'junegunn/limelight.vim'
 
 call plug#end()
 
@@ -339,6 +339,20 @@ let g:UltiSnipsExpandTrigger       = '<tab>'
 let g:UltiSnipsJumpForwardTrigger  = '<tab>'
 let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'
 
+" --- gitgutter
+
+let g:gitgutter_sign_added = '│'
+let g:gitgutter_sign_modified = '│'
+let g:gitgutter_sign_removed = '│'
+let g:gitgutter_sign_modified_removed = '│'
+let g:gitgutter_sign_removed_first_line = '│'
+
+" --- ale
+
+let g:ale_sign_error = 'x'
+let g:ale_sign_warning = '│'
+let g:ale_echo_msg_format = '[%severity%] %s'
+
 " --- fzf
 
 let g:fzf_colors =
@@ -452,11 +466,6 @@ let g:lightline.mode_map =
   \ "\<C-s>": 'S',
   \ '?': '      '
   \ }
-
-
-" --- neomake
-
-call neomake#configure#automake('rw')
 
 
 
@@ -685,13 +694,7 @@ nnoremap ; :
 " Close buffer by Q
 nnoremap <silent> Q :q!<CR>
 
-" Move between splits (not very nice)
-nmap <silent> <Up> :wincmd k<CR>
-nmap <silent> <Down> :wincmd j<CR>
-nmap <silent> <Left> :wincmd h<CR>
-nmap <silent> <Right> :wincmd l<CR>
-
-" Move between splits (better backup option)
+" Move between splits
 nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
@@ -700,6 +703,9 @@ nnoremap <C-l> <C-w>l
 " Bash like keys for the vim command line
 cnoremap <C-A> <Home>
 cnoremap <C-E> <End>
+
+" CtrlP -> fzf :Files
+nnoremap <silent> <expr> <space> (expand('%') =~ 'NERD_tree' ? "\<c-w>\<c-w>" : '').":Files\<cr>"
 
 " ,<space> -> clears search highlight
 nmap <silent><leader><space> :nohlsearch<cr>
@@ -735,13 +741,6 @@ nmap <silent><S-Tab> :tabprevious<CR>
 " n/N centers screen on the entry
 nmap N Nzz
 nmap n nzz
-
-" Move faster
-nnoremap <C-j> <C-d>
-nnoremap <C-k> <C-u>
-" Even in VISUAL mode
-vnoremap <C-j> <C-d>
-vnoremap <C-k> <C-u>
 
 " Move properly when line wrapping is on
 nnoremap j gj
@@ -802,56 +801,5 @@ noremap <leader>gup :Gpull<CR>
 noremap <leader>gs :Gstatus<CR>
 noremap <leader>gd :Gvdiff<CR>
 
-" CtrlP -> fzf
-nnoremap <C-p> :Files<Cr>
-
-" TODO: Space should be used for something more useful
-" Folding on <Space>
-
-" NOTE: Keep this for future reference
-" My attempt at git 2-way merging
-" map <silent> <space>l :diffget //2<CR>:diffupdate<CR>
-" map <silent> <space>h :diffget //3<CR>:diffupdate<CR>
-" nnoremap <space>j ]cw
-" nnoremap <space>k [cw
-" map <silent> <space><w> :only<CR>:w<CR>
-
-" REMINDERS:
-" m         -- ruby method motion (e.g. cim)
-" i         -- indentation motion (e.g. dai)
-
-" EXPERIMENTAL:
-
 " Color under cursor
 map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<' . synIDattr(synID(line("."),col("."),0),"name") . "> lo<" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
-
-" Color name (:help cterm-colors) or ANSI code
-let g:limelight_conceal_ctermfg = 240
-
-" Default: 0.5
-let g:limelight_default_coefficient = 0.7
-
-" Highlighting priority (default: 10)
-"   Set it to -1 not to overrule hlsearch
-let g:limelight_priority = -1
-
-" Goyo
-" Toggle distraction-free mode
-nnoremap <silent> <leader>g :Goyo<cr>
-
-fun! s:goyoEnter()
-  set scrolloff=999 " Keep the edited line vertically centered
-  set wrap
-  set noshowcmd
-  Limelight
-endf
-
-fun! s:goyoLeave()
-  set showcmd
-  set nowrap
-  set scrolloff=5
-  Limelight!
-endf
-
-autocmd! User GoyoEnter nested call <sid>goyoEnter()
-autocmd! User GoyoLeave nested call <sid>goyoLeave()
