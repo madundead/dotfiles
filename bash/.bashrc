@@ -1,3 +1,5 @@
+[ -z "$TMUX"  ] && tmux a
+
 [ -f /etc/bashrc ] && . /etc/bashrc
 . /usr/local/etc/profile.d/z.sh
 [ -f /etc/bash_completion ] && . /etc/bash_completion
