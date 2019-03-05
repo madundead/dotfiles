@@ -55,6 +55,7 @@ alias gpf='git push -f'
 alias gb='git branch'
 alias gl='git lg'
 alias gr='git reset'
+alias gh='git lg -1'
 
 alias rdc='be rake db:create'
 alias rdd='be rake db:drop'

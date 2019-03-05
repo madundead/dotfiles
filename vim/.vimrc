@@ -39,7 +39,6 @@ call plug#begin('~/.vim/plugged')
 " ======== Languages / Textobjects =======================
 
 Plug 'sheerun/vim-polyglot'
-Plug 'jtratner/vim-flavored-markdown'
 Plug 'kana/vim-textobj-user'
 Plug 'nelstrom/vim-textobj-rubyblock'
 Plug 'austintaylor/vim-indentobject'
@@ -94,8 +93,6 @@ Plug 'tpope/vim-vinegar'
 " ======== Experimental =================================
 
 Plug 'w0rp/ale'
-" Plug 'junegunn/goyo.vim'
-" Plug 'junegunn/limelight.vim'
 
 call plug#end()
 
@@ -482,7 +479,7 @@ if has("autocmd")
   au BufNewFile,BufRead *.rabl,*.jbuilder           setl ft=ruby
 
   au BufNewFile,BufRead *.phtml         setl ft=html
-  au BufNewFile,BufRead *.md,*.markdown setl ft=ghmarkdown
+  " au BufNewFile,BufRead *.md,*.markdown setl ft=ghmarkdown
 
   " Hide statusline
   autocmd! FileType fzf
@@ -498,6 +495,9 @@ if has("autocmd")
 
   " Close tab if only NERDTree left
   au WinEnter * call CloseNERDTree()
+
+  " Equalize window sizes when Vim is resized
+  au VimResized * tabdo wincmd =
 
   " Apply solarized tweak
   au ColorScheme solarized call TweakSolarized()
@@ -581,6 +581,8 @@ set mat=2
 set gcr=a:blinkon0
 " hide the mouse pointer while typing
 set mousehide
+" conceal mostly for markdown
+set conceallevel=2
 
 
 
@@ -756,7 +758,7 @@ nnoremap Y y$
 
 " vv/ss for splits
 nnoremap <silent>vv <c-w>v
-nnoremap <silent>ss <c-w>s
+" nnoremap <silent>ss <c-w>s
 
 " Highlight VCS conflict markers
 match ErrorMsg '^\(<\|=\|>\)\{7\}\([^=].\+\)\?$'
@@ -776,6 +778,9 @@ nnoremap L $
 
 " Avoid entering Ex mode by pressing gQ
 nnoremap gQ <nop>
+
+" Scratchpad
+nnoremap <BS> :tabnew ~/iCloud/scratchpad.md<CR>
 
 " I don't use it
 nnoremap K <nop>
