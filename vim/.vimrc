@@ -48,9 +48,7 @@ Plug 'bootleq/vim-textobj-rubysymbol'
 " ======== Utility  ======================================
 
 Plug 'mattn/emmet-vim',
-Plug 'mileszs/ack.vim'
 Plug 'scrooloose/nerdtree',     { 'on': 'NERDTreeToggle' }
-Plug 'gregsexton/gitv',         { 'on': 'Gitv' }
 Plug 'junegunn/vim-easy-align', { 'on': ['<Plug>(EasyAlign)', 'EasyAlign'] }
 Plug 'gregsexton/MatchTag',     { 'for': 'html' }
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
@@ -74,7 +72,6 @@ Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 " ======== Appearence ===================================
 
 Plug 'altercation/vim-colors-solarized'
-Plug 'itchyny/lightline.vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'mhinz/vim-startify'
 Plug 'machakann/vim-highlightedyank'
@@ -102,73 +99,13 @@ call plug#end()
 " -> Functions
 " ========================================================
 
-function! LightlineModified()
-  return &ft =~ 'help' ? '' : &modified ? '+' : &modifiable ? '' : '-'
+function! GitBranch()
+  return system("git rev-parse --abbrev-ref HEAD 2>/dev/null | tr -d '\n'")
 endfunction
 
-function! LightlineReadonly()
-  return &ft !~? 'help' && &readonly ? 'RO' : ''
-endfunction
-
-function! LightlineFileName()
-  let fname = expand('%:t')
-  return fname == 'ControlP' ? g:lightline.ctrlp_item :
-        \ fname == '__Tagbar__' ? g:lightline.fname :
-        \ fname == '__CtrlSF__' ? 'Results' :
-        \ fname =~ '__Gundo\|NERD_tree' ? '' :
-        \ &ft == 'vimfiler' ? vimfiler#get_status_string() :
-        \ &ft == 'unite' ? unite#get_status_string() :
-        \ &ft == 'vimshell' ? vimshell#get_status_string() :
-        \ ('' != LightlineReadonly() ? LightlineReadonly() . ' ' : '') .
-        \ ('' != fname ? fname : 'nothing') .
-        \ ('' != LightlineModified() ? ' ' . LightlineModified() : '')
-endfunction
-
-function! LightlineFugitive()
-  try
-    if expand('%:t') !~? 'Tagbar\|Gundo\|NERD' && &ft !~? 'vimfiler' && exists('*fugitive#head')
-      let mark = ' '  " edit here for cool mark
-      let _ = fugitive#head()
-      return strlen(_) ? mark._ : ''
-    endif
-  catch
-  endtry
-  return ''
-endfunction
-
-function! LightlineFileFormat()
-  return winwidth(0) > 70 ? &fileformat : ''
-endfunction
-
-function! LightlineFileType()
-  return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype : 'no ft') : ''
-endfunction
-
-function! LightlineFileEncoding()
-  return winwidth(0) > 70 ? (strlen(&fenc) ? &fenc : &enc) : ''
-endfunction
-
-function! LightlineMode()
-  let fname = expand('%:t')
-  return fname == '__Tagbar__' ? 'Tagbar' :
-        \ fname == 'ControlP' ? 'CtrlP' :
-        \ fname == '__Gundo__' ? 'Gundo' :
-        \ fname == '__Gundo_Preview__' ? 'Gundo Preview' :
-        \ fname =~ 'NERD_tree' ? "N" :
-        \ &ft == 'unite' ? 'Unite' :
-        \ &ft == 'vimfiler' ? 'VimFiler' :
-        \ &ft == 'vimshell' ? 'VimShell' :
-        \ winwidth(0) > 60 ? lightline#mode() : ''
-endfunction
-
-function! LightlineCtrlP()
-  if expand('%:t') =~ 'ControlP'
-    call lightline#link('iR'[g:lightline.ctrlp_regex])
-    return lightline#concatenate([g:lightline.ctrlp_prev, g:lightline.ctrlp_item
-          \ , g:lightline.ctrlp_next], 0)
-  else
-    return ''
-  endif
+function! StatuslineGit()
+  let l:branchname = GitBranch()
+  return strlen(l:branchname) > 0?'  '.l:branchname.' ':''
 endfunction
 
 function! StripTrailingWhitespace()
@@ -422,48 +359,6 @@ let g:startify_bookmarks      = [ '~/', '~/Development', '~/.vimrc', '~/.zshrc' 
 let g:startify_custom_footer  = [ '', '   All work and no play makes Jack a dull boy', '' ]
 let g:startify_custom_header  = []
 
-" --- lightline
-"
-"  NOTE:  Proper status line marks require madundead/vim-madundead
-"
-
-let g:lightline =
-  \ {
-  \ 'enable': { 'tabline': 0 },
-  \ 'colorscheme': 'solarized',
-  \ 'active': {
-  \   'left': [ [ 'mode', 'paste' ], [ 'fugitive', 'filename' ], ['ctrlpmark'] ],
-  \   'right': [],
-  \ },
-  \ 'inactive': {
-  \   'right': [],
-  \ },
-  \ 'component_function': {
-  \     'fugitive':     'LightlineFugitive',
-  \     'filename':     'LightlineFileName',
-  \     'fileformat':   'LightlineFileFormat',
-  \     'filetype':     'LightlineFileType',
-  \     'fileencoding': 'LightlineFileEncoding',
-  \     'mode':         'LightlineMode',
-  \     'ctrlpmark':    'LightlineCtrlP',
-  \   },
-  \ }
-
-let g:lightline.mode_map =
-  \ {
-  \ 'n' : ' N ',
-  \ 'i' : ' I ',
-  \ 'R' : ' R ',
-  \ 'v' : ' V ',
-  \ 'V' : ' V ',
-  \ 'c' : ' N ',
-  \ "\<C-v>": ' V ',
-  \ 's' : 'S',
-  \ 'S' : 'S',
-  \ "\<C-s>": 'S',
-  \ '?': '      '
-  \ }
-
 
 
 " ========================================================
@@ -584,6 +479,12 @@ set mousehide
 " conceal mostly for markdown
 set conceallevel=2
 
+set statusline=
+set statusline+=%#PmenuSel#
+set statusline+=%{StatuslineGit()}
+set statusline+=%#LineNr#
+set statusline+=\ %t
+set statusline+=%m
 
 
 " ========================================================
@@ -780,7 +681,7 @@ nnoremap L $
 nnoremap gQ <nop>
 
 " Scratchpad
-nnoremap <BS> :tabnew ~/iCloud/scratchpad.md<CR>
+nnoremap <BS> :tabnew ~/iCloud/Wiki/index.md<CR>
 
 " I don't use it
 nnoremap K <nop>
