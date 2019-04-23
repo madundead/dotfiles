@@ -19,8 +19,9 @@ set fileencoding=utf-8
 set history=1000
 
 " Remap the <leader> to ,
-let mapleader=","
-let g:mapleader=","
+nnoremap <Space> <Nop>
+let mapleader="\<Space>"
+let maplocalleader = "\<Space>"
 
 " Includes ftplugin.vim which is responsible for filetype detection
 filetype plugin indent on
@@ -607,13 +608,12 @@ nnoremap <C-l> <C-w>l
 cnoremap <C-A> <Home>
 cnoremap <C-E> <End>
 
-" CtrlP -> fzf :Files
-nnoremap <silent> <expr> <space> (expand('%') =~ 'NERD_tree' ? "\<c-w>\<c-w>" : '').":Files\<cr>"
-
 " ,<space> -> clears search highlight
 nmap <silent><leader><space> :nohlsearch<cr>
 " ,, -> toggle between last open buffers
-nmap <leader><leader> <c-^>
+nmap <,><,> <c-^>
+" CtrlP -> fzf :Files
+nnoremap <silent> <expr> <leader><space> (expand('%') =~ 'NERD_tree' ? "\<c-w>\<c-w>" : '').":Files\<cr>"
 " ,w -> strip trailing whitespace
 nmap <silent><leader>w :call StripTrailingWhitespace()<CR>
 " ,n -> NERDTree
