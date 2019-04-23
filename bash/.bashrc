@@ -22,7 +22,7 @@ export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 
 # Creds
-export HOMEBREW_GITHUB_API_TOKEN="2a4fad8fb1b5ff1de5fdf043aeea7d6cf0c5b101"
+export HOMEBREW_GITHUB_API_TOKEN="ea82cdedd1d5d45d4a5dfc6ec62137ca83bec6ee"
 
 # fzf
 export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
@@ -69,6 +69,17 @@ alias rs='bin/rails s -p3001'
 yta() {
   streamlink $1 audio_mp4
 }
+
+fzf_kill() {
+    local pids=$(
+      ps -f -u $USER | sed 1d | fzf --multi | tr -s [:blank:] | cut -d' ' -f3
+      )
+    if [[ -n $pids ]]; then
+        echo "$pids" | xargs kill -9 "$@"
+    fi
+}
+
+alias fkill='fzf_kill'
 
 # Homebrew stuff
 if [ -x /usr/local/bin/brew ]; then
