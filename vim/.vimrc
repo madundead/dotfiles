@@ -19,9 +19,9 @@ set fileencoding=utf-8
 set history=1000
 
 " Remap the <leader> to ,
-nnoremap <Space> <Nop>
-let mapleader="\<Space>"
-let maplocalleader = "\<Space>"
+" nnoremap <Space> <Nop>
+let mapleader=","
+let maplocalleader = ","
 
 " Includes ftplugin.vim which is responsible for filetype detection
 filetype plugin indent on
@@ -59,7 +59,7 @@ Plug 'mattn/gist-vim' | Plug 'mattn/webapi-vim'
 Plug 'Raimondi/delimitMate'
 Plug 'nelstrom/vim-visual-star-search'
 Plug 'benmills/vimux'
-Plug 'skalnik/vim-vroom'
+Plug 'janko-m/vim-test'
 Plug 'dyng/ctrlsf.vim'
 Plug 'terryma/vim-expand-region'
 Plug 'terryma/vim-multiple-cursors'
@@ -256,6 +256,10 @@ let g:netrw_banner    = 0
 let g:netrw_list_hide = '^\.$'
 let g:netrw_liststyle = 4
 
+" --- test
+
+let test#strategy = "vimux"
+
 " --- NERDTree
 
 let NERDTreeWinPos           = "right"
@@ -287,6 +291,10 @@ let g:gitgutter_sign_removed_first_line = '│'
 let g:ale_sign_error = 'x'
 let g:ale_sign_warning = '│'
 let g:ale_echo_msg_format = '[%severity%] %s'
+
+let g:ale_fixers = {
+\   'ruby': ['rubocop'],
+\}
 
 " --- fzf
 
@@ -391,9 +399,6 @@ if has("autocmd")
 
   " Close tab if only NERDTree left
   au WinEnter * call CloseNERDTree()
-
-  " Equalize window sizes when Vim is resized
-  au VimResized * tabdo wincmd =
 
   " Apply solarized tweak
   au ColorScheme solarized call TweakSolarized()
@@ -611,11 +616,13 @@ cnoremap <C-E> <End>
 " ,<space> -> clears search highlight
 nmap <silent><leader><space> :nohlsearch<cr>
 " ,, -> toggle between last open buffers
-nmap <,><,> <c-^>
+nmap <leader><leader> <c-^>
 " CtrlP -> fzf :Files
-nnoremap <silent> <expr> <leader><space> (expand('%') =~ 'NERD_tree' ? "\<c-w>\<c-w>" : '').":Files\<cr>"
+nnoremap <silent> <expr> <space> (expand('%') =~ 'NERD_tree' ? "\<c-w>\<c-w>" : '').":Files\<cr>"
 " ,w -> strip trailing whitespace
 nmap <silent><leader>w :call StripTrailingWhitespace()<CR>
+" ,x rubocop --auto-correct
+nmap <silent><leader>x :ALEFix<CR>
 " ,n -> NERDTree
 nmap <silent><leader>n :NERDTreeToggle<CR>
 " ,c -> next conflict marker
@@ -630,12 +637,17 @@ nmap <leader>f :CtrlSF
 nmap <leader>g :Gitv <CR>
 " ,d -> binding fucking pry
 nmap <leader>d orequire 'pry'; binding.pry<ESC>
+nmap <leader>D Orequire 'pry'; binding.pry<ESC>
 " ,p -> current buffer file path
 nmap <leader>p :echo @%<CR>
 " ,s -> reload vimrc
 nmap <silent><leader>s :so ~/.vimrc<CR>
 " ,rh -> hashrocket to :
 nmap <leader>rh :%s/\v:(\w+) \=\>/\1:/g<cr>
+" ,r ->
+nmap <leader>r :TestFile<CR>
+" ,j ->
+nmap <leader>j :%!python -m json.tool<CR>
 
 " Switching between tabs
 nmap <silent><Tab> :tabnext<CR>
@@ -685,6 +697,8 @@ nnoremap <BS> :tabnew ~/iCloud/Wiki/index.md<CR>
 
 " I don't use it
 nnoremap K <nop>
+" K reverse of J
+" nnoremap K f<space>r<CR>
 
 " Move visual block
 vnoremap J :m '>+1<CR>gv=gv
@@ -709,3 +723,21 @@ noremap <leader>gd :Gvdiff<CR>
 
 " Color under cursor
 map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<' . synIDattr(synID(line("."),col("."),0),"name") . "> lo<" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
+
+" EXPERIMENTAL:
+noremap <leader>w :w<CR>
+
+nmap <silent> <leader>r :TestFile<CR>
+nmap <silent> t<C-n> :TestNearest<CR>
+nmap <silent> t<C-n> :TestNearest<CR>
+nmap <silent> t<C-f> :TestFile<CR>
+nmap <silent> t<C-s> :TestSuite<CR>
+nmap <silent> t<C-l> :TestLast<CR>
+nmap <silent> t<C-g> :TestVisit<CR>
+
+inoremap <C-e> <END>
+vnoremap <C-e> <END>
+cnoremap <C-e> <END>
+inoremap <C-a> <HOME>
+vnoremap <C-a> <HOME>
+cnoremap <C-a> <HOME>

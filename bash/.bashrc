@@ -57,14 +57,17 @@ alias gl='git lg'
 alias gr='git reset'
 alias gh='git lg -1'
 
-alias rdc='be rake db:create'
-alias rdd='be rake db:drop'
-alias rdm='be rake db:migrate'
-alias rdr='be rake db:rollback'
-alias rds='be rake db:seed'
+alias rdc='bin/rails db:create'
+alias rdd='bin/rails db:drop'
+alias rdm='bin/rails db:migrate'
+alias rdr='bin/rails db:rollback'
+alias rds='bin/rails db:seed'
 
+alias br='bin/rails'
 alias rc='bin/rails c'
 alias rs='bin/rails s -p3001'
+
+alias mux='tmuxinator start'
 
 yta() {
   streamlink $1 audio_mp4
