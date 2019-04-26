@@ -19,9 +19,10 @@ set fileencoding=utf-8
 set history=1000
 
 " Remap the <leader> to ,
-" nnoremap <Space> <Nop>
-let mapleader=","
-let maplocalleader = ","
+nnoremap <Space> <Nop>
+" let mapleader=','
+" let maplocalleader = ','
+let mapleader=' '
 
 " Includes ftplugin.vim which is responsible for filetype detection
 filetype plugin indent on
@@ -485,6 +486,9 @@ set mousehide
 " conceal mostly for markdown
 set conceallevel=2
 
+" Highlight VCS conflict markers
+match ErrorMsg '^\(<\|=\|>\)\{7\}\([^=].\+\)\?$'
+
 set statusline=
 set statusline+=%#PmenuSel#
 set statusline+=%{StatuslineGit()}
@@ -579,16 +583,12 @@ endif
 
 " Automatically inserts one extra level of indentation in some cases
 set smartindent
-
 " Affects how <TAB> key presses are interpreted depending on where the cursor is
 set smarttab
-
 " Tab counts as 2 columns
 set tabstop=2
-
 " Numbers of spaces to (auto)indent
 set shiftwidth=2
-
 " Spaces
 set expandtab
 
@@ -597,143 +597,77 @@ set expandtab
 " ========================================================
 " -> Hotkeys & Bindings
 " ========================================================
-" Remap ; to :
+
 nnoremap ; :
 
-" Close buffer by Q
 nnoremap <silent> Q :q!<CR>
 
-" Move between splits
 nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 
-" Bash like keys for the vim command line
 cnoremap <C-A> <Home>
 cnoremap <C-E> <End>
 
-" ,<space> -> clears search highlight
-nmap <silent><leader><space> :nohlsearch<cr>
-" ,, -> toggle between last open buffers
-nmap <leader><leader> <c-^>
-" CtrlP -> fzf :Files
-nnoremap <silent> <expr> <space> (expand('%') =~ 'NERD_tree' ? "\<c-w>\<c-w>" : '').":Files\<cr>"
-" ,w -> strip trailing whitespace
-nmap <silent><leader>w :call StripTrailingWhitespace()<CR>
-" ,x rubocop --auto-correct
-nmap <silent><leader>x :ALEFix<CR>
-" ,n -> NERDTree
-nmap <silent><leader>n :NERDTreeToggle<CR>
-" ,c -> next conflict marker
-nmap <silent><leader>c <ESC>/\v^[<=>]{7}( .*\|$)<CR>
-" ,b -> Gblame
-nmap <leader>b :Gblame<CR>
-" ,t -> opens new tab
-nmap <leader>t :tabnew<CR>
-" ,f -> prompts for search
-nmap <leader>f :CtrlSF 
-" ,g -> Gitv
-nmap <leader>g :Gitv <CR>
-" ,d -> binding fucking pry
-nmap <leader>d orequire 'pry'; binding.pry<ESC>
-nmap <leader>D Orequire 'pry'; binding.pry<ESC>
-" ,p -> current buffer file path
-nmap <leader>p :echo @%<CR>
-" ,s -> reload vimrc
-nmap <silent><leader>s :so ~/.vimrc<CR>
-" ,rh -> hashrocket to :
-nmap <leader>rh :%s/\v:(\w+) \=\>/\1:/g<cr>
-" ,r ->
-nmap <leader>r :TestFile<CR>
-" ,j ->
-nmap <leader>j :%!python -m json.tool<CR>
+nnoremap ,, <C-^>
 
-" Switching between tabs
-nmap <silent><Tab> :tabnext<CR>
-nmap <silent><S-Tab> :tabprevious<CR>
+nnoremap <silent> <expr> <leader>f (expand('%') =~ 'NERD_tree' ? "\<C-w>\<C-w>" : '').":Files\<CR>"
+nnoremap <silent> <expr> <leader>b (expand('%') =~ 'NERD_tree' ? "\<C-w>\<C-w>" : '').":Buffers\<CR>"
+nnoremap <silent> <expr> <leader>s (expand('%') =~ 'NERD_tree' ? "\<C-w>\<C-w>" : '').":Snippets\<CR>"
 
-" n/N centers screen on the entry
-nmap N Nzz
-nmap n nzz
+nnoremap <silent> <leader>x :ALEFix<CR>
+nnoremap <silent> <leader>n :NERDTreeToggle<CR>
+nnoremap <silent> <leader>c <ESC>/\v^[<=>]{7}( .*\|$)<CR>
+nnoremap <silent> <leader>t :tabnew<CR>
+nnoremap <silent> <leader>d orequire 'pry'; binding.pry<ESC>
+nnoremap <silent> <leader>D Orequire 'pry'; binding.pry<ESC>
+nnoremap <silent> <leader>r :TestFile<CR>
+nnoremap <silent> <leader>j :%!python -m json.tool<CR>
+nnoremap <silent> <leader>w :w<CR>
+nnoremap <silent> <leader><space> :nohlsearch<CR>
 
-" Move properly when line wrapping is on
+nnoremap <silent> <leader>ga :Gwrite<CR>
+nnoremap <silent> <leader>gc :Gcommit<CR>
+nnoremap <silent> <leader>gp :Gpush<CR>
+nnoremap <silent> <leader>gup :Gpull<CR>
+nnoremap <silent> <leader>gs :Gstatus<CR>
+nnoremap <silent> <leader>gd :Gvdiff<CR>
+nnoremap <silent> <expr> <leader>gl (expand('%') =~ 'NERD_tree' ? "\<C-w>\<C-w>" : '').":Commits\<CR>"
+
+nnoremap <leader>p :echo @%<CR>
+
+nnoremap <silent><Tab> :tabnext<CR>
+nnoremap <silent><S-Tab> :tabprevious<CR>
+
+nnoremap yy Y
+nnoremap Y y$
+nnoremap N Nzz
+nnoremap n nzz
 nnoremap j gj
 nnoremap k gk
+nnoremap H ^
+nnoremap L $
+nnoremap J mzJ`z
+nnoremap gQ <Nop>
 
-" Visual mode indentations
+vnoremap . :normal .<CR>
+vnoremap J :m '>+1<CR>gv=gv
+vnoremap K :m '<-2<CR>gv=gv
 vnoremap < <gv
 vnoremap > >gv
 
-" Make Y/yy consistent with D/dd and C/cc
-nnoremap yy Y
-nnoremap Y y$
+xmap \  <Plug>Commentary
+nmap \  <Plug>Commentary
+nmap \\ <Plug>CommentaryLine
 
-" vv/ss for splits
-nnoremap <silent>vv <c-w>v
-" nnoremap <silent>ss <c-w>s
-
-" Highlight VCS conflict markers
-match ErrorMsg '^\(<\|=\|>\)\{7\}\([^=].\+\)\?$'
-
-" Start interactive EasyAlign in visual mode
-vmap <Enter> <Plug>(EasyAlign)
-
-" Ctrl + e for emmet
-imap <C-e> <C-y>, <CR>
-
-" Allow the . to execute once for each line of a visual selection
-vnoremap . :normal .<CR>
-
-" Makes more sense
-nnoremap H ^
-nnoremap L $
-
-" Avoid entering Ex mode by pressing gQ
-nnoremap gQ <nop>
-
-" Scratchpad
 nnoremap <BS> :tabnew ~/iCloud/Wiki/index.md<CR>
 
-" I don't use it
-nnoremap K <nop>
-" K reverse of J
-" nnoremap K f<space>r<CR>
+nnoremap <silent>vv <c-w>v
+" nnoremap <silent>ss <c-w>s TODO:
 
-" Move visual block
-vnoremap J :m '>+1<CR>gv=gv
-vnoremap K :m '<-2<CR>gv=gv
-
-" Keep the cursor in place while joining lines
-nnoremap J mzJ`z
-
-" Keep old vim-commentary hotkeys
-xmap \\  <Plug>Commentary
-nmap \\  <Plug>Commentary
-nmap \\\ <Plug>CommentaryLine
-nmap \\u <Plug>CommentaryUndo
-
-" git
-noremap <leader>ga :Gwrite<CR>
-noremap <leader>gc :Gcommit<CR>
-noremap <leader>gp :Gpush<CR>
-noremap <leader>gup :Gpull<CR>
-noremap <leader>gs :Gstatus<CR>
-noremap <leader>gd :Gvdiff<CR>
-
-" Color under cursor
-map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<' . synIDattr(synID(line("."),col("."),0),"name") . "> lo<" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
-
-" EXPERIMENTAL:
-noremap <leader>w :w<CR>
-
-nmap <silent> <leader>r :TestFile<CR>
-nmap <silent> t<C-n> :TestNearest<CR>
-nmap <silent> t<C-n> :TestNearest<CR>
-nmap <silent> t<C-f> :TestFile<CR>
-nmap <silent> t<C-s> :TestSuite<CR>
-nmap <silent> t<C-l> :TestLast<CR>
-nmap <silent> t<C-g> :TestVisit<CR>
+nmap <C-f> <Plug>CtrlSFPrompt 
+nnoremap <silent><C-w> :call StripTrailingWhitespace()<CR>
 
 inoremap <C-e> <END>
 vnoremap <C-e> <END>
@@ -741,3 +675,32 @@ cnoremap <C-e> <END>
 inoremap <C-a> <HOME>
 vnoremap <C-a> <HOME>
 cnoremap <C-a> <HOME>
+
+" =====================================
+" TODO: DEAL WITH THIS
+
+" TODO: this requires double C-b for some reason
+nnoremap <silent><C-b> :Gblame<CR>
+
+" ,rh -> hashrocket to : TODO: think about it
+" nnoremap <leader>rh :%s/\v:(\w+) \=\>/\1:/g<CR>
+
+" ,s -> reload vimrc TODO: do something useful instead
+" nnoremap <silent><leader>s :so ~/.vimrc<CR>
+"
+" nnoremap <silent><C-g> :Gitv<CR> TODO: No longer have gitv
+
+" Start interactive EasyAlign in visual mode
+vmap <Enter> <Plug>(EasyAlign)
+" Start interactive EasyAlign in visual mode (e.g. vipga)
+xmap ga      <Plug>(EasyAlign)
+" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+nmap ga      <Plug>(EasyAlign)
+
+" Ctrl + e for emmet
+imap <C-e> <C-y>, <CR>
+
+" I don't use it
+nnoremap K <nop>
+" K reverse of J
+" nnoremap K f<space>r<CR>
