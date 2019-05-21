@@ -1,9 +1,10 @@
 [ -z "$TMUX"  ] && tmux a
 
-[ -f /etc/bashrc ] && . /etc/bashrc
-. /usr/local/etc/profile.d/z.sh
-[ -f /etc/bash_completion ] && . /etc/bash_completion
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+[ -f ~/iCloud/secrets.sh ]           && . ~/iCloud/secrets.sh
+[ -f /etc/bashrc ]                   && . /etc/bashrc
+[ -f /usr/local/etc/profile.d/z.sh ] && . /usr/local/etc/profile.d/z.sh
+[ -f /etc/bash_completion ]          && . /etc/bash_completion
+[ -f ~/.fzf.bash ]                   && . ~/.fzf.bash
 
 # Don't put duplicate lines in the history. See bash(1) for more options
 export HISTCONTROL=$HISTCONTROL${HISTCONTROL+,}ignoredups
@@ -21,9 +22,6 @@ export EDITOR=nvim
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 
-# Creds
-export HOMEBREW_GITHUB_API_TOKEN="ea82cdedd1d5d45d4a5dfc6ec62137ca83bec6ee"
-
 # fzf
 export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
 export FZF_DEFAULT_OPTS='--layout=reverse --inline-info'
@@ -35,7 +33,7 @@ alias ll='ls -l'
 alias v='vim'
 alias vi='vim'
 alias vim='nvim'
-alias cat='bat --style plain --theme=solarized'
+alias cat='bat --style plain'
 alias grep='rg'
 alias be='bundle exec'
 alias ..='cd ..'

@@ -101,15 +101,6 @@ call plug#end()
 " -> Functions
 " ========================================================
 
-function! GitBranch()
-  return system("git rev-parse --abbrev-ref HEAD 2>/dev/null | tr -d '\n'")
-endfunction
-
-function! StatuslineGit()
-  let l:branchname = GitBranch()
-  return strlen(l:branchname) > 0?'  '.l:branchname.' ':''
-endfunction
-
 function! StripTrailingWhitespace()
     let _s=@/
     let l = line(".")
@@ -165,10 +156,7 @@ function! CloseNERDTree()
 endfunction
 
 function! TweakSolarized()
-  " Some adjustments stolen from YADR project
   hi! link txtBold                      Identifier
-  hi! link zshVariableDef               Identifier
-  hi! link zshFunction                  Function
   hi! link rubyControl                  Statement
   hi! link rspecGroupMethods            rubyControl
   hi! link rspecMocks                   Identifier
@@ -184,23 +172,12 @@ function! TweakSolarized()
   hi! link rubyRailsMethod              Title
   hi! link rubyDoBlock                  Normal
   hi! link MatchParen                   DiffText
-  hi! link CTagsModule                  Type
-  hi! link CTagsClass                   Type
-  hi! link CTagsMethod                  Identifier
-  hi! link CTagsSingleton               Identifier
   hi! link javascriptFuncName           Type
   hi! link javascriptFunction           Statement
   hi! link javascriptThis               Statement
   hi! link javascriptParens             Normal
-  hi! link jOperators                   javascriptStringD
-  hi! link jId                          Title
-  hi! link jClass                       Title
   hi! link NERDTreeFile                 Constant
   hi! link NERDTreeDir                  Identifier
-  hi! link sassMixinName                Function
-  hi! link sassDefinition               Function
-  hi! link sassProperty                 Type
-  hi! link htmlTagName                  Type
   hi! link Visual                       DiffChange
   hi! link Search                       DiffAdd
   hi! link Delimiter                    Identifier
@@ -221,18 +198,18 @@ function! TweakSolarized()
   hi StatusLineNC cterm=NONE ctermbg=0 ctermfg=0
 
   " Misc adjustments
-  hi WildMenu     cterm=NONE ctermbg=0    ctermfg=7
-  hi Pmenu        cterm=NONE ctermbg=0    ctermfg=25
-  hi PmenuSel     cterm=NONE ctermbg=0    ctermfg=7
-  hi PmenuSbar    cterm=NONE ctermbg=0    ctermfg=7
-  hi PmenuThumb   cterm=NONE ctermbg=0    ctermfg=7
-  hi SpecialKey   cterm=NONE ctermbg=8    ctermfg=1
-  hi CtrlPLinePre cterm=NONE ctermbg=8    ctermfg=8
-  hi Folded       cterm=NONE ctermbg=0    ctermfg=4
-  hi TabLine      cterm=NONE ctermbg=0    ctermfg=244
-  hi TabLineFill  cterm=NONE ctermbg=0    ctermfg=4
-  hi TabLineSel   cterm=NONE ctermbg=0    ctermfg=166
-  hi VertSplit    cterm=NONE ctermbg=NONE ctermfg=0
+  hi WildMenu     cterm=NONE ctermbg=0 ctermfg=7
+  hi Pmenu        cterm=NONE ctermbg=0 ctermfg=25
+  hi PmenuSel     cterm=NONE ctermbg=0 ctermfg=7
+  hi PmenuSbar    cterm=NONE ctermbg=0 ctermfg=7
+  hi PmenuThumb   cterm=NONE ctermbg=0 ctermfg=7
+  hi SpecialKey   cterm=NONE ctermbg=8 ctermfg=1
+  hi CtrlPLinePre cterm=NONE ctermbg=8 ctermfg=8
+  hi Folded       cterm=NONE ctermbg=0 ctermfg=4
+  hi TabLine      cterm=NONE ctermbg=0 ctermfg=244
+  hi TabLineFill  cterm=NONE ctermbg=0 ctermfg=4
+  hi TabLineSel   cterm=NONE ctermbg=0 ctermfg=166
+  hi VertSplit    cterm=NONE ctermbg=0 ctermfg=0
 
   " GitGutter sign column adjustments
   hi GitGutterAdd          ctermbg=8 ctermfg=2
@@ -292,6 +269,9 @@ let g:gitgutter_sign_removed_first_line = '│'
 let g:ale_sign_error = 'x'
 let g:ale_sign_warning = '│'
 let g:ale_echo_msg_format = '[%severity%] %s'
+let g:ale_lint_on_text_changed = 'normal'
+let g:ale_lint_on_insert_leave = 1
+let g:ale_lint_delay = 0
 
 let g:ale_fixers = {
 \   'ruby': ['rubocop'],
@@ -489,12 +469,7 @@ set conceallevel=2
 " Highlight VCS conflict markers
 match ErrorMsg '^\(<\|=\|>\)\{7\}\([^=].\+\)\?$'
 
-set statusline=
-set statusline+=%#PmenuSel#
-set statusline+=%{StatuslineGit()}
-set statusline+=%#LineNr#
-set statusline+=\ %t
-set statusline+=%m
+set statusline=%<%f\ (%{&ft})\ %-4(%m%)%=%-19(%3l,%02c%03V%)
 
 
 " ========================================================
@@ -661,12 +636,12 @@ xmap \  <Plug>Commentary
 nmap \  <Plug>Commentary
 nmap \\ <Plug>CommentaryLine
 
-nnoremap <BS> :tabnew ~/iCloud/Wiki/index.md<CR>
+nnoremap <BS> :tabnew ~/iCloud/Notebook/index.md<CR>
 
 nnoremap <silent>vv <c-w>v
 " nnoremap <silent>ss <c-w>s TODO:
 
-nmap <C-f> <Plug>CtrlSFPrompt 
+nmap <C-f> <Plug>CtrlSFPrompt
 nnoremap <silent><C-w> :call StripTrailingWhitespace()<CR>
 
 inoremap <C-e> <END>
