@@ -20,8 +20,6 @@ set history=1000
 
 " Remap the <leader> to ,
 nnoremap <Space> <Nop>
-" let mapleader=','
-" let maplocalleader = ','
 let mapleader=' '
 
 " Includes ftplugin.vim which is responsible for filetype detection
@@ -92,6 +90,8 @@ Plug 'tpope/vim-vinegar'
 " ======== Experimental =================================
 
 Plug 'w0rp/ale'
+Plug 'iamcco/markdown-preview.nvim',
+      \ { 'do': ':call mkdp#util#install()', 'for': 'markdown', 'on': 'MarkdownPreview' }
 
 call plug#end()
 
@@ -359,6 +359,8 @@ if has("autocmd")
   au filetype help nnoremap <buffer><CR> <c-]>
   au filetype help nnoremap <buffer><BS> <c-T>
   au filetype help set nonumber
+
+  au filetype markdown nnoremap <silent> <leader><leader> :MarkdownPreview<CR>
 
   au BufNewFile,BufRead Capfile,Gemfile,Vagrantfile setl ft=ruby
   au BufNewFile,BufRead *.rabl,*.jbuilder           setl ft=ruby
@@ -636,7 +638,7 @@ xmap \  <Plug>Commentary
 nmap \  <Plug>Commentary
 nmap \\ <Plug>CommentaryLine
 
-nnoremap <BS> :tabnew ~/iCloud/Notebook/index.md<CR>
+nnoremap <silent> <BS> :tabnew ~/iCloud/Notebook/index.md<CR>
 
 nnoremap <silent>vv <c-w>v
 " nnoremap <silent>ss <c-w>s TODO:
