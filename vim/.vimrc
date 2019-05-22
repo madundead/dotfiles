@@ -194,7 +194,7 @@ function! TweakSolarized()
   hi NonText cterm=NONE ctermfg=8
 
   " Status Line
-  hi StatusLine   cterm=NONE ctermbg=0 ctermfg=23
+  hi StatusLine   cterm=NONE ctermbg=0 ctermfg=166
   hi StatusLineNC cterm=NONE ctermbg=0 ctermfg=0
 
   " Misc adjustments
@@ -473,7 +473,6 @@ match ErrorMsg '^\(<\|=\|>\)\{7\}\([^=].\+\)\?$'
 
 set statusline=%<%f\ (%{&ft})\ %-4(%m%)%=%-19(%3l,%02c%03V%)
 
-
 " ========================================================
 " -> Behavior & Different Tricks
 " ========================================================
@@ -602,6 +601,8 @@ nnoremap <silent> <leader>D Orequire 'pry'; binding.pry<ESC>
 nnoremap <silent> <leader>r :TestFile<CR>
 nnoremap <silent> <leader>j :%!python -m json.tool<CR>
 nnoremap <silent> <leader>w :w<CR>
+nnoremap <silent> <leader>e :e!<CR>
+nnoremap <silent> <leader>= <C-w>=
 nnoremap <silent> <leader><space> :nohlsearch<CR>
 
 nnoremap <silent> <leader>ga :Gwrite<CR>
@@ -655,6 +656,9 @@ cnoremap <C-a> <HOME>
 
 " =====================================
 " TODO: DEAL WITH THIS
+"
+" this is taken already
+" nnoremap <leader>= gg=G<C-o><C-o>
 
 " TODO: this requires double C-b for some reason
 nnoremap <silent><C-b> :Gblame<CR>
@@ -681,3 +685,11 @@ imap <C-e> <C-y>, <CR>
 nnoremap K <nop>
 " K reverse of J
 " nnoremap K f<space>r<CR>
+
+if exists('$TMUX')
+  let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
+  let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
+else
+  let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+  let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+endif
