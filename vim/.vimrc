@@ -471,7 +471,7 @@ set conceallevel=2
 " Highlight VCS conflict markers
 match ErrorMsg '^\(<\|=\|>\)\{7\}\([^=].\+\)\?$'
 
-set statusline=%<%f\ (%{&ft})\ %-4(%m%)%=%-19(%3l,%02c%03V%)
+set statusline=%<%f
 
 " ========================================================
 " -> Behavior & Different Tricks
@@ -599,6 +599,7 @@ nnoremap <silent> <leader>t :tabnew<CR>
 nnoremap <silent> <leader>d orequire 'pry'; binding.pry<ESC>
 nnoremap <silent> <leader>D Orequire 'pry'; binding.pry<ESC>
 nnoremap <silent> <leader>r :TestFile<CR>
+nnoremap <silent> <leader>R :TestSuite<CR>
 nnoremap <silent> <leader>j :%!python -m json.tool<CR>
 nnoremap <silent> <leader>w :w<CR>
 nnoremap <silent> <leader>e :e!<CR>
@@ -663,6 +664,8 @@ cnoremap <C-a> <HOME>
 " TODO: this requires double C-b for some reason
 nnoremap <silent><C-b> :Gblame<CR>
 
+nnoremap <C-s> :%s//g<left><left>
+
 " ,rh -> hashrocket to : TODO: think about it
 " nnoremap <leader>rh :%s/\v:(\w+) \=\>/\1:/g<CR>
 
@@ -693,3 +696,6 @@ else
   let &t_SI = "\<Esc>]50;CursorShape=1\x7"
   let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 endif
+
+" replace the word under the cursor
+nnoremap <leader>S :%s/\<<c-r><c-w>\>//g<left><left>

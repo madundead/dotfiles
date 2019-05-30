@@ -55,6 +55,8 @@ alias gl='git lg'
 alias gr='git reset'
 alias gh='git lg -1'
 
+alias ss='spring stop'
+
 alias rdc='bin/rails db:create'
 alias rdd='bin/rails db:drop'
 alias rdm='bin/rails db:migrate'
