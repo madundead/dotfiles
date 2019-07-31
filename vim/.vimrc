@@ -18,7 +18,7 @@ set fileencoding=utf-8
 " History length
 set history=1000
 
-" Remap the <leader> to ,
+" Remap the <leader> to <Space>
 nnoremap <Space> <Nop>
 let mapleader=' '
 
@@ -64,6 +64,7 @@ Plug 'terryma/vim-expand-region'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'bogado/file-line'
 Plug 'vim-utils/vim-interruptless'
+Plug 'w0rp/ale'
 
 " ======== Snippets & Autocomplete ======================
 
@@ -89,9 +90,9 @@ Plug 'tpope/vim-vinegar'
 
 " ======== Experimental =================================
 
-Plug 'w0rp/ale'
 Plug 'iamcco/markdown-preview.nvim',
       \ { 'do': ':call mkdp#util#install()', 'for': 'markdown', 'on': 'MarkdownPreview' }
+Plug 'AndrewRadev/switch.vim'
 
 call plug#end()
 
@@ -256,6 +257,12 @@ let g:UltiSnipsExpandTrigger       = '<tab>'
 let g:UltiSnipsJumpForwardTrigger  = '<tab>'
 let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'
 
+" --- scratch
+
+" let g:scratch_persistence_file = '~/iCloud/Notebook/index.md'
+" let g:scratch_no_mappings = 1
+
+
 " --- gitgutter
 
 let g:gitgutter_sign_added = '│'
@@ -360,7 +367,7 @@ if has("autocmd")
   au filetype help nnoremap <buffer><BS> <c-T>
   au filetype help set nonumber
 
-  au filetype markdown nnoremap <silent> <leader><leader> :MarkdownPreview<CR>
+  " au filetype markdown nnoremap <silent> <leader><leader> :MarkdownPreview<CR>
 
   au BufNewFile,BufRead Capfile,Gemfile,Vagrantfile setl ft=ruby
   au BufNewFile,BufRead *.rabl,*.jbuilder           setl ft=ruby
@@ -590,17 +597,18 @@ nnoremap ,, <C-^>
 
 nnoremap <silent> <expr> <leader>f (expand('%') =~ 'NERD_tree' ? "\<C-w>\<C-w>" : '').":Files\<CR>"
 nnoremap <silent> <expr> <leader>b (expand('%') =~ 'NERD_tree' ? "\<C-w>\<C-w>" : '').":Buffers\<CR>"
-nnoremap <silent> <expr> <leader>s (expand('%') =~ 'NERD_tree' ? "\<C-w>\<C-w>" : '').":Snippets\<CR>"
 
+nnoremap <silent> <leader>s :Switch<CR>
 nnoremap <silent> <leader>x :ALEFix<CR>
 nnoremap <silent> <leader>n :NERDTreeToggle<CR>
+nnoremap <silent> <leader>N :NERDTreeFind<CR>
 nnoremap <silent> <leader>c <ESC>/\v^[<=>]{7}( .*\|$)<CR>
 nnoremap <silent> <leader>t :tabnew<CR>
 nnoremap <silent> <leader>d orequire 'pry'; binding.pry<ESC>
-nnoremap <silent> <leader>D Orequire 'pry'; binding.pry<ESC>
+nnoremap <silent> <leader>D oit { require 'pry'; binding.pry }<ESC>
 nnoremap <silent> <leader>r :TestFile<CR>
 nnoremap <silent> <leader>R :TestSuite<CR>
-nnoremap <silent> <leader>j :%!python -m json.tool<CR>
+nnoremap <silent> <leader>J :%!python -m json.tool<CR>
 nnoremap <silent> <leader>w :w<CR>
 nnoremap <silent> <leader>e :e!<CR>
 nnoremap <silent> <leader>= <C-w>=
@@ -688,14 +696,6 @@ imap <C-e> <C-y>, <CR>
 nnoremap K <nop>
 " K reverse of J
 " nnoremap K f<space>r<CR>
-
-if exists('$TMUX')
-  let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
-  let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
-else
-  let &t_SI = "\<Esc>]50;CursorShape=1\x7"
-  let &t_EI = "\<Esc>]50;CursorShape=0\x7"
-endif
 
 " replace the word under the cursor
 nnoremap <leader>S :%s/\<<c-r><c-w>\>//g<left><left>
