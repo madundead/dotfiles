@@ -48,7 +48,7 @@ Plug 'bootleq/vim-textobj-rubysymbol'
 " ======== Utility  ======================================
 
 Plug 'mattn/emmet-vim',
-Plug 'scrooloose/nerdtree',     { 'on': 'NERDTreeToggle' }
+Plug 'scrooloose/nerdtree',     { 'on': ['NERDTreeToggle', 'NERDTreeFind'] }
 Plug 'junegunn/vim-easy-align', { 'on': ['<Plug>(EasyAlign)', 'EasyAlign'] }
 Plug 'gregsexton/MatchTag',     { 'for': 'html' }
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
@@ -68,7 +68,7 @@ Plug 'w0rp/ale'
 
 " ======== Snippets & Autocomplete ======================
 
-Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
+" Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 
 " ======== Appearence ===================================
 
@@ -92,7 +92,9 @@ Plug 'tpope/vim-vinegar'
 
 Plug 'iamcco/markdown-preview.nvim',
       \ { 'do': ':call mkdp#util#install()', 'for': 'markdown', 'on': 'MarkdownPreview' }
-Plug 'AndrewRadev/switch.vim'
+" Plug 'AndrewRadev/switch.vim'
+" Plug 'zxqfl/tabnine-vim'
+" Plug 'pechorin/any-jump.vim'
 
 call plug#end()
 
@@ -280,12 +282,28 @@ let g:ale_lint_on_text_changed = 'never'
 let g:ale_lint_on_insert_leave = 0
 let g:ale_lint_delay = 0
 
+let g:ale_linters = {
+\   'typescriptreact': ['tslint'],
+\   'javascript': ['tslint'],
+\   'typescript': ['tslint'],
+\}
+
 let g:ale_fixers = {
 \   'ruby': ['rubocop'],
 \}
 
 " --- fzf
 
+if has('nvim') || has('gui_running')
+  let $FZF_DEFAULT_OPTS .= ' --inline-info'
+endif
+
+command! -nargs=? -complete=dir AF
+  \ call fzf#run(fzf#wrap(fzf#vim#with_preview({
+  \   'source': 'fd --type f --hidden --follow --exclude .git --no-ignore . '.expand(<q-args>)
+  \ })))
+
+let g:fzf_layout = { 'window': { 'width': 0.3, 'height': 0.6, 'border': 'sharp' } }
 let g:fzf_colors =
 \ { 'fg':      ['fg', 'Normal'],
   \ 'bg':      ['bg', 'Normal'],
@@ -598,6 +616,7 @@ nnoremap ,, <C-^>
 nnoremap <silent> <expr> <leader>f (expand('%') =~ 'NERD_tree' ? "\<C-w>\<C-w>" : '').":Files\<CR>"
 nnoremap <silent> <expr> <leader>b (expand('%') =~ 'NERD_tree' ? "\<C-w>\<C-w>" : '').":Buffers\<CR>"
 
+nnoremap <silent> <leader>a :A<CR>
 nnoremap <silent> <leader>s :Switch<CR>
 nnoremap <silent> <leader>x :ALEFix<CR>
 nnoremap <silent> <leader>n :NERDTreeToggle<CR>
@@ -610,6 +629,7 @@ nnoremap <silent> <leader>r :TestFile<CR>
 nnoremap <silent> <leader>R :TestSuite<CR>
 nnoremap <silent> <leader>J :%!python -m json.tool<CR>
 nnoremap <silent> <leader>w :w<CR>
+nnoremap <silent> <leader>q :q!<CR>
 nnoremap <silent> <leader>e :e!<CR>
 nnoremap <silent> <leader>= <C-w>=
 nnoremap <silent> <leader><space> :nohlsearch<CR>

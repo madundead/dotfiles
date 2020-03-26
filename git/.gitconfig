@@ -2,11 +2,10 @@
   email = madundead@gmail.com
   name = Konstantin Bukley
 
-[includeIf "gitdir:~/work/"]
-    path = ~/Development/work/.gitconfig
+[includeIf "gitdir:~/Development/work/"]
+  path = ~/Development/work/.gitconfig
 
 [alias]
-
   # View abbreviated SHA, description, and history graph of the latest 20 commits
   lg = log --pretty=oneline -n 20 --graph --abbrev-commit
 
@@ -24,12 +23,6 @@
 
   # Show the diff of staging area
   dc = !"git diff --cached"
-
-  # git di $number shows the diff between the state $number revisions ago and the current state
-  di = !"d() { git diff --patch-with-stat HEAD~$1; }; git diff-index --quiet HEAD -- || clear; d"
-
-  # Pull in remote changes for the current repository and all its submodules
-  p = !"git pull; git submodule foreach git pull origin master"
 
   # Clone a repository including all submodules
   c = clone --recursive
@@ -79,30 +72,13 @@
   # List contributors with number of commits
   contributors = shortlog --summary --numbered
 
-  # Merge GitHub pull request on top of the current branch or,
-  # if a branch name is specified, on top of the specified branch
-  mpr = "!f() { \
-    declare currentBranch=\"$(git symbolic-ref --short HEAD)\"; \
-    declare branch=\"${2:-$currentBranch}\"; \
-    if [ $(printf \"%s\" \"$1\" | grep '^[0-9]\\+$' > /dev/null; printf $?) -eq 0 ]; then \
-    git fetch origin refs/pull/$1/head:pr/$1 && \
-    git checkout -B $branch && \
-    git rebase $branch pr/$1 && \
-    git checkout -B $branch && \
-    git merge pr/$1 && \
-    git branch -D pr/$1 && \
-    git commit --amend -m \"$(git log -1 --pretty=%B)\n\nCloses #$1.\"; \
-    fi \
-    }; f"
   up = pull --rebase --autostash
 
 [apply]
-
   # Detect whitespace errors when applying a patch
   whitespace = fix
 
 [core]
-
   # Use custom .gitignore and .gitattributes
   excludesfile = ~/.gitignore_global
   attributesfile = ~/.gitattributes
@@ -126,55 +102,53 @@
   pager = diff-so-fancy | less --tabs=4 -RFX
 
 [color]
-
   # Use colors in Git commands that are capable of colored output when
   # outputting to the terminal. (This is the default setting in Git ≥ 1.8.4.)
   ui = auto
 
 [color "branch"]
-
   current = yellow reverse
   local = yellow
   remote = green
 
 [color "diff"]
-
-  meta = yellow bold
-  frag = magenta bold # line info
-  old = red # deletions
-  new = green # additions
+	meta = yellow
+	frag = magenta bold
+	old = red bold
+	commit = yellow bold
+	whitespace = red reverse
 
 [color "status"]
-
   added = yellow
   changed = green
   untracked = cyan
 
 [commit]
-
   # https://help.github.com/articles/signing-commits-using-gpg/
   # TODO: setup this
   gpgsign = false
 
 [diff]
-
   # Detect copies as well as renames
   renames = copies
 
 [diff "bin"]
-
   # Use hexdump to diff binary files
   textconv = hexdump -v -C
 
 [merge]
-
   # Include summaries of merged commits in newly created merge commit messages
   log = true
 
 [push]
-
   # https://git-scm.com/docs/git-config#git-config-pushdefault
   default = current
+
+[branch]
+  autosetuprebase = always
+
+[github]
+  user = "madundead"
 
 [url "git@github.com:"]
 
@@ -183,7 +157,6 @@
   pushInsteadOf = "git://github.com/"
 
 [url "git://github.com/"]
-
   insteadOf = "github:"
 
 [url "git@gist.github.com:"]
@@ -193,7 +166,6 @@
   pushInsteadOf = "git://gist.github.com/"
 
 [url "git://gist.github.com/"]
-
   insteadOf = "gist:"
 
 [diff-so-fancy]
