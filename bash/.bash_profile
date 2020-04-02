@@ -2,10 +2,8 @@ if [ -s ~/.bashrc ]; then
     source ~/.bashrc;
 fi
 
-eval "$(rbenv init -)"
-export PATH="/usr/local/sbin:$PATH"
+eval "$(rbenv init - --no-rehash)"
+(rbenv rehash &) 2> /dev/null
 
-export PATH="$HOME/.cargo/bin:$PATH"
-
-export NVM_DIR="$HOME/.nvm"
+# export NVM_DIR="$HOME/.nvm"
 # [ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"

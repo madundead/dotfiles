@@ -105,12 +105,9 @@ alias fkill='fzf_kill'
 if [ -x /usr/local/bin/brew ]; then
     export PATH=/usr/local/bin:/usr/local/sbin:$PATH
     export MANPATH=/usr/local/share/man:$MANPATH
-
-    # bash_completion if installed
-    if [ -f `brew --prefix`/etc/bash_completion.d ]; then
-        . `brew --prefix`/etc/bash_completion.d
-    fi
 fi
+
+export PATH="$HOME/.cargo/bin:$PATH"
 
 __git_ps1() { :;}
 if [ -e ~/.git-prompt.sh ]; then

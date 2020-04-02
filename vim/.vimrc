@@ -68,7 +68,7 @@ Plug 'w0rp/ale'
 
 " ======== Snippets & Autocomplete ======================
 
-" Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
+Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 
 " ======== Appearence ===================================
 
@@ -95,6 +95,8 @@ Plug 'iamcco/markdown-preview.nvim',
 " Plug 'AndrewRadev/switch.vim'
 " Plug 'zxqfl/tabnine-vim'
 " Plug 'pechorin/any-jump.vim'
+
+" Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 call plug#end()
 
@@ -719,3 +721,6 @@ nnoremap K <nop>
 
 " replace the word under the cursor
 nnoremap <leader>S :%s/\<<c-r><c-w>\>//g<left><left>
+
+" this might be bad, but enables aliases from .bashrc
+set shellcmdflag=-ic
