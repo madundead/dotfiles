@@ -3,8 +3,8 @@ window:
     columns: 80
     lines: 24
   padding:
-    x: 3
-    y: 3
+    x: 0
+    y: 0
   decorations: none
   startup_mode: SimpleFullscreen
 tabspaces: 4
@@ -66,7 +66,9 @@ live_config_reload: true
 shell:
   program: /bin/bash
   args:
-    - --login
+    - -l
+    - -c
+    - "tmux attach || tmux"
 
 key_bindings:
   - { key: V,        mods: Command, action: Paste                        }

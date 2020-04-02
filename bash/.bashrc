@@ -1,4 +1,4 @@
-[ -z "$TMUX"  ] && tmux a
+# [ -z "$TMUX"  ] && tmux a
 
 [ -f ~/iCloud/secrets.sh ]           && . ~/iCloud/secrets.sh
 [ -f /etc/bashrc ]                   && . /etc/bashrc
