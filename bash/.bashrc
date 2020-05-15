@@ -1,5 +1,3 @@
-# [ -z "$TMUX"  ] && tmux a
-
 [ -f ~/iCloud/secrets.sh ]           && . ~/iCloud/secrets.sh
 [ -f /etc/bashrc ]                   && . /etc/bashrc
 [ -f /usr/local/etc/profile.d/z.sh ] && . /usr/local/etc/profile.d/z.sh
@@ -16,7 +14,11 @@ shopt -s checkwinsize
 shopt -s no_empty_cmd_completion
 shopt -s cdspell
 shopt -s checkhash
+shopt -s cmdhist # save multi-line commands in one
 
+export BASH_SILENCE_DEPRECATION_WARNING=1
+
+# export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:.:/usr/local/lib
 export EDITOR=nvim
 export LANG=en_US.UTF-8
@@ -109,7 +111,6 @@ fi
 
 export PATH="$HOME/.cargo/bin:$PATH"
 
-__git_ps1() { :;}
 if [ -e ~/.git-prompt.sh ]; then
   source ~/.git-prompt.sh
 fi

@@ -3,7 +3,6 @@
 " Description: Personal vim configuration
 
 
-
 " ========================================================
 " -> General
 " ========================================================
@@ -90,13 +89,9 @@ Plug 'tpope/vim-vinegar'
 
 " ======== Experimental =================================
 
-Plug 'iamcco/markdown-preview.nvim',
-      \ { 'do': ':call mkdp#util#install()', 'for': 'markdown', 'on': 'MarkdownPreview' }
 " Plug 'AndrewRadev/switch.vim'
 " Plug 'zxqfl/tabnine-vim'
 " Plug 'pechorin/any-jump.vim'
-
-" Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 call plug#end()
 
@@ -305,6 +300,7 @@ command! -nargs=? -complete=dir AF
   \   'source': 'fd --type f --hidden --follow --exclude .git --no-ignore . '.expand(<q-args>)
   \ })))
 
+let g:fzf_preview_window = ''
 let g:fzf_layout = { 'window': { 'width': 0.3, 'height': 0.6, 'border': 'sharp' } }
 let g:fzf_colors =
 \ { 'fg':      ['fg', 'Normal'],
