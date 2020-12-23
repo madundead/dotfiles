@@ -1,6 +1,7 @@
 [user]
-  email = madundead@gmail.com
+  email = kostya.b@matic.com
   name = Konstantin Bukley
+  signingkey = 0EBBF5ABB284C942
 
 [includeIf "gitdir:~/Development/work/"]
   path = ~/Development/work/.gitconfig
@@ -151,7 +152,6 @@
   user = "madundead"
 
 [url "git@github.com:"]
-
   insteadOf = "gh:"
   pushInsteadOf = "github:"
   pushInsteadOf = "git://github.com/"

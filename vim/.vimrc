@@ -60,7 +60,8 @@ Plug 'benmills/vimux'
 Plug 'janko-m/vim-test'
 Plug 'dyng/ctrlsf.vim'
 Plug 'terryma/vim-expand-region'
-Plug 'terryma/vim-multiple-cursors'
+" Plug 'terryma/vim-multiple-cursors'
+Plug 'mg979/vim-visual-multi'
 Plug 'bogado/file-line'
 Plug 'vim-utils/vim-interruptless'
 Plug 'w0rp/ale'
@@ -71,10 +72,10 @@ Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 
 " ======== Appearence ===================================
 
-Plug 'altercation/vim-colors-solarized'
+" Plug 'altercation/vim-colors-solarized'
 Plug 'airblade/vim-gitgutter'
-Plug 'mhinz/vim-startify'
 Plug 'machakann/vim-highlightedyank'
+Plug 'arcticicestudio/nord-vim'
 
 " ======== tpope <3  ====================================
 
@@ -155,75 +156,11 @@ function! CloseNERDTree()
   endif
 endfunction
 
-function! TweakSolarized()
-  hi! link txtBold                      Identifier
-  hi! link rubyControl                  Statement
-  hi! link rspecGroupMethods            rubyControl
-  hi! link rspecMocks                   Identifier
-  hi! link rspecKeywords                Identifier
-  hi! link rubyLocalVariableOrMethod    Normal
-  hi! link rubyStringDelimiter          Constant
-  hi! link rubyString                   Constant
-  hi! link rubyAccess                   Todo
-  hi! link rubySymbol                   Identifier
-  hi! link rubyPseudoVariable           Type
-  hi! link rubyRailsARAssociationMethod Title
-  hi! link rubyRailsARValidationMethod  Title
-  hi! link rubyRailsMethod              Title
-  hi! link rubyDoBlock                  Normal
-  hi! link MatchParen                   DiffText
-  hi! link javascriptFuncName           Type
-  hi! link javascriptFunction           Statement
-  hi! link javascriptThis               Statement
-  hi! link javascriptParens             Normal
-  hi! link NERDTreeFile                 Constant
-  hi! link NERDTreeDir                  Identifier
-  hi! link Visual                       DiffChange
-  hi! link Search                       DiffAdd
-  hi! link Delimiter                    Identifier
-  hi! link rDollar                      Identifier
-  hi! link vimMapModKey                 Operator
-  hi! link vimNotation                  Label
-  hi! link htmlLink                     Include
-
-  " Line numbers
-  hi LineNR       ctermfg=23 ctermbg=8
-  hi CursorLineNR ctermfg=23 ctermbg=8
-
-  " Hide ~ at the bottom
-  hi NonText cterm=NONE ctermfg=8
-
-  " Status Line
-  hi StatusLine   cterm=NONE ctermbg=0 ctermfg=166
-  hi StatusLineNC cterm=NONE ctermbg=0 ctermfg=0
-
-  " Misc adjustments
-  hi WildMenu     cterm=NONE ctermbg=0 ctermfg=7
-  hi Pmenu        cterm=NONE ctermbg=0 ctermfg=25
-  hi PmenuSel     cterm=NONE ctermbg=0 ctermfg=7
-  hi PmenuSbar    cterm=NONE ctermbg=0 ctermfg=7
-  hi PmenuThumb   cterm=NONE ctermbg=0 ctermfg=7
-  hi SpecialKey   cterm=NONE ctermbg=8 ctermfg=1
-  hi CtrlPLinePre cterm=NONE ctermbg=8 ctermfg=8
-  hi Folded       cterm=NONE ctermbg=0 ctermfg=4
-  hi TabLine      cterm=NONE ctermbg=0 ctermfg=244
-  hi TabLineFill  cterm=NONE ctermbg=0 ctermfg=4
-  hi TabLineSel   cterm=NONE ctermbg=0 ctermfg=166
-  hi VertSplit    cterm=NONE ctermbg=0 ctermfg=0
-
-  " GitGutter sign column adjustments
-  hi GitGutterAdd          ctermbg=8 ctermfg=2
-  hi GitGutterChange       ctermbg=8 ctermfg=3
-  hi GitGutterDelete       ctermbg=8 ctermfg=1
-  hi GitGutterChangeDelete ctermbg=8 ctermfg=3
-endfunction
-
 
 
 " ========================================================
 " -> Plugin settings
 " ========================================================
-
 
 " Enable matchit.vim
 runtime macros/matchit.vim
@@ -305,14 +242,14 @@ let g:fzf_layout = { 'window': { 'width': 0.3, 'height': 0.6, 'border': 'sharp' 
 let g:fzf_colors =
 \ { 'fg':      ['fg', 'Normal'],
   \ 'bg':      ['bg', 'Normal'],
-  \ 'hl':      ['fg', 'Normal'],
-  \ 'fg+':     ['fg', 'Normal'],
-  \ 'bg+':     ['bg', 'Normal'],
-  \ 'hl+':     ['fg', 'Normal'],
+  \ 'hl':      ['fg', 'Comment'],
+  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+  \ 'hl+':     ['fg', 'Statement'],
   \ 'info':    ['fg', 'PreProc'],
   \ 'border':  ['fg', 'Ignore'],
   \ 'prompt':  ['fg', 'Conditional'],
-  \ 'pointer': ['fg', 'Identifier'],
+  \ 'pointer': ['fg', 'Exception'],
   \ 'marker':  ['fg', 'Keyword'],
   \ 'spinner': ['fg', 'Label'],
   \ 'header':  ['fg', 'Comment'] }
@@ -343,35 +280,6 @@ let g:gist_show_privates   = 1
 
 let g:vroom_use_vimux = 1
 
-" --- vim-startify
-
-let g:startify_relative_path          = 0
-let g:startify_files_number           = 5
-let g:startify_session_persistence    = 1
-let g:startify_session_autoload       = 1
-let g:startify_session_delete_buffers = 1
-let g:startify_enable_special         = 1
-let g:startify_change_to_vcs_root     = 1
-let g:startify_show_sessions          = 1
-let g:startify_list_order =
-  \ [
-  \   [ ' > Recent: ' ],
-  \   'dir',
-  \   [ ' > Bookmarks: ' ],
-  \   'bookmarks'
-  \ ]
-let g:startify_skiplist =
-  \ [
-  \   'COMMIT_EDITMSG',
-  \   $VIMRUNTIME .'/doc',
-  \   'bundle/.*/doc',
-  \   '\.vimgolf',
-  \ ]
-let g:startify_custom_indices = [ '1', '2', '3', '4', '5', 'h', 'd', 'E', 'z' ]
-let g:startify_bookmarks      = [ '~/', '~/Development', '~/.vimrc', '~/.zshrc' ]
-let g:startify_custom_footer  = [ '', '   All work and no play makes Jack a dull boy', '' ]
-let g:startify_custom_header  = []
-
 
 
 " ========================================================
@@ -383,31 +291,30 @@ if has("autocmd")
   au filetype help nnoremap <buffer><BS> <c-T>
   au filetype help set nonumber
 
-  " au filetype markdown nnoremap <silent> <leader><leader> :MarkdownPreview<CR>
-
   au BufNewFile,BufRead Capfile,Gemfile,Vagrantfile setl ft=ruby
   au BufNewFile,BufRead *.rabl,*.jbuilder           setl ft=ruby
-
-  au BufNewFile,BufRead *.phtml         setl ft=html
-  " au BufNewFile,BufRead *.md,*.markdown setl ft=ghmarkdown
+  au BufNewFile,BufRead *.docker                    setl ft=Dockerfile
 
   " Hide statusline
   autocmd! FileType fzf
   autocmd  FileType fzf set laststatus=0 noshowmode noruler
          \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
 
+  " NB: ! cursorline seems to be slow https://github.com/tmux/tmux/issues/353#issuecomment-364588634
   " Only show cursorline in the current window and in normal mode.
-  augroup cline
-      au!
-      au WinLeave,InsertEnter * set nocursorline
-      au WinEnter,InsertLeave * set cursorline
-  augroup END
+  " augroup cline
+  "     au!
+  "     au WinLeave,InsertEnter * set nocursorline
+  "     au WinEnter,InsertLeave * set cursorline
+  " augroup END
 
   " Close tab if only NERDTree left
   au WinEnter * call CloseNERDTree()
 
-  " Apply solarized tweak
-  au ColorScheme solarized call TweakSolarized()
+  " Resize when the host window resized
+  " NB: I remember it being laggy or something
+  " There was some curlpit here don't remember
+  au VimResized * wincmd =
 
   " Prevent CtrlP or NERDTree from opening a split in Startify
   au User Startified setl buftype=
@@ -420,12 +327,12 @@ endif
 " ========================================================
 
 " Solarized is love solarized is life
-colorscheme solarized
+" colorscheme solarized
+colorscheme nord
 set background=dark
 
-set guifont=Source\ Code\ Pro:h16
+set guifont=Fira\ Code\ Medium:h18
 if has('gui_running')
-  set guifont=Menlo:h14
   set guioptions-=T                         " Remove toolbar
   set guioptions-=m                         " Remove menubar
   set guioptions+=LlRrb                     " Remove
@@ -462,8 +369,9 @@ set lazyredraw
 set tabline=%!Tabline()
 " show status even for single buffer displayed
 set laststatus=2
-" highlight current line
-set cursorline
+" NB: cursorline seems to slow down things quite a bit
+" highlight current line https://github.com/tmux/tmux/issues/353#issuecomment-364588634
+" set cursorline
 " number rows
 set number
 " disable welcome message
