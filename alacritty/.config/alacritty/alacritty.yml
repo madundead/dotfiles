@@ -7,6 +7,7 @@ window:
     y: 0
   decorations: none
   startup_mode: Maximized
+  dynamic_title: true
 draw_bold_text_with_bright_colors: true
 font:
   normal:
@@ -18,7 +19,7 @@ font:
   italic:
     family: Fira Code
     style: Light
-  size: 18.0
+  size: 22.0
   offset:
     x: 0
     y: 0
@@ -75,14 +76,13 @@ colors:
     cyan: '0x8FBCBB'
     white: '0xECEFF4'
 
-visual_bell:
-  duration: 0
-  background_opacity: 1.0
+# visual_bell:
+#   duration: 0
+#   background_opacity: 1.0
 mouse:
   hide_when_typing: true
 selection:
   semantic_escape_chars: ",│`|:\"' ()[]{}<>"
-dynamic_title: true
 cursor:
   style: Block
   unfocused_hollow: true

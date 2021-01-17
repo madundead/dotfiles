@@ -17,17 +17,7 @@ shopt -s checkhash
 shopt -s cmdhist # save multi-line commands in one
 
 export BASH_SILENCE_DEPRECATION_WARNING=1
-
-# ruby-build installs a non-Homebrew OpenSSL for each Ruby version installed and these are never upgraded.
-
-# To link Rubies to Homebrew's OpenSSL 1.1 (which is upgraded) add the following
-# to your /Users/madundead/.bash_profile:
-#   export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
-
-# Note: this may interfere with building old versions of Ruby (e.g <2.4) that use
-# OpenSSL <1.1.
-
-# export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
+export RUBY_CONFIGURE_OPTS="--with-openssl-dir=/usr/local/opt/openssl@1.1"
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:.:/usr/local/lib
 export EDITOR=nvim
 export LANG=en_US.UTF-8
@@ -53,6 +43,7 @@ alias md='mkdir -p'
 
 alias gco='git checkout'
 alias gcom='git checkout master'
+alias gcob='git checkout -b'
 alias gd='git diff'
 alias gdc='git diff --cached'
 alias gc='git commit'
@@ -130,7 +121,6 @@ function q() { if [ -z "$1" ]; then return 1; fi; kubectl exec -n $1 -it $(kubec
 function o() { if [ -z "$1" ]; then return 1; fi; kubectl exec -n $1 -it $(kubectl get pods -n $1 -l product=origin,app=origin-rails-webserver -o=custom-columns=NAME:.metadata.name | tail -1) ${@:2}; }
 function olb() { if [ -z "$1" ]; then return 1; fi; kubectl exec -n $1 -it $(kubectl get pods -n $1 -l product=online-bind,app=online-bind-rails-webserver -o=custom-columns=NAME:.metadata.name | tail -1) ${@:2}; }
 function qstag() { kubectl exec -n staging -it $(kubectl get pods -n staging -l product=quoting,app=quoting-rails-webserver -o=custom-columns=NAME:.metadata.name | tail -1) ${@:2}; }
-# bash ops-deployment/tools/debug quoting production rails c
 
 function _calcram() {
   local sum

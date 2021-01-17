@@ -27,13 +27,14 @@ for i, mapping in ipairs(hyperModeAppMappings) do
 end
 --------------------------------------------------------------------------
 hs.window.animationDuration = 0
+window = hs.getObjectMetatable("hs.window")
 
 -- +-----------------+
 -- |        |        |
 -- |  HERE  |        |
 -- |        |        |
 -- +-----------------+
-function hs.window.left(win)
+function window.left(win)
   local f = win:frame()
   local screen = win:screen()
   local max = screen:frame()
@@ -50,7 +51,7 @@ end
 -- |        |  HERE  |
 -- |        |        |
 -- +-----------------+
-function hs.window.right(win)
+function window.right(win)
   local f = win:frame()
   local screen = win:screen()
   local max = screen:frame()
@@ -67,7 +68,7 @@ end
 -- +-----------------+
 -- |                 |
 -- +-----------------+
-function hs.window.up(win)
+function window.up(win)
   local f = win:frame()
   local screen = win:screen()
   local max = screen:frame()
@@ -84,7 +85,7 @@ end
 -- +-----------------+
 -- |      HERE       |
 -- +-----------------+
-function hs.window.down(win)
+function window.down(win)
   local f = win:frame()
   local screen = win:screen()
   local max = screen:frame()
@@ -101,7 +102,7 @@ end
 -- +--------+        |
 -- |                 |
 -- +-----------------+
-function hs.window.upLeft(win)
+function window.upLeft(win)
   local f = win:frame()
   local screen = win:screen()
   local max = screen:fullFrame()
@@ -118,7 +119,7 @@ end
 -- +--------+        |
 -- |  HERE  |        |
 -- +-----------------+
-function hs.window.downLeft(win)
+function window.downLeft(win)
   local f = win:frame()
   local screen = win:screen()
   local max = screen:fullFrame()
@@ -135,7 +136,7 @@ end
 -- |        +--------|
 -- |        |  HERE  |
 -- +-----------------+
-function hs.window.downRight(win)
+function window.downRight(win)
   local f = win:frame()
   local screen = win:screen()
   local max = screen:fullFrame()
@@ -153,7 +154,7 @@ end
 -- |        +--------|
 -- |                 |
 -- +-----------------+
-function hs.window.upRight(win)
+function window.upRight(win)
   local f = win:frame()
   local screen = win:screen()
   local max = screen:fullFrame()
@@ -170,7 +171,7 @@ end
 -- |  |  HERE  |  |
 -- |  |        |  |
 -- +---------------+
-function hs.window.centerWithFullHeight(win)
+function window.centerWithFullHeight(win)
   local f = win:frame()
   local screen = win:screen()
   local max = screen:fullFrame()
@@ -187,7 +188,7 @@ end
 -- | HERE |          |
 -- |      |          |
 -- +-----------------+
-function hs.window.left40(win)
+function window.left40(win)
   local f = win:frame()
   local screen = win:screen()
   local max = screen:frame()
@@ -204,7 +205,7 @@ end
 -- |      |   HERE   |
 -- |      |          |
 -- +-----------------+
-function hs.window.right60(win)
+function window.right60(win)
   local f = win:frame()
   local screen = win:screen()
   local max = screen:frame()
@@ -216,7 +217,7 @@ function hs.window.right60(win)
   win:setFrame(f)
 end
 
-function hs.window.nextScreen(win)
+function window.nextScreen(win)
   local currentScreen = win:screen()
   local allScreens = hs.screen.allScreens()
   currentScreenIndex = hs.fnutils.indexOf(allScreens, currentScreen)
@@ -248,32 +249,9 @@ end
 
 local status, windowMappings = pcall(require, 'keyboard.windows-bindings')
 
--- if not status then
---   windowMappings = require('keyboard.windows-bindings-defaults')
--- end
-
-local windowMappings = {
-  modifiers = {'ctrl'},
-  showHelp  = false,
-  trigger   = 's',
-  mappings  = {
-    { {},         'return', 'maximize' },
-    { {},         'space',  'centerWithFullHeight' },
-    { {},         'h',      'left' },
-    { {},         'j',      'down' },
-    { {},         'k',      'up' },
-    { {},         'l',      'right' },
-    { {'shift'},  'h',      'left40' },
-    { {'shift'},  'l',      'right60' },
-    { {},         'i',      'upLeft' },
-    { {},         'o',      'upRight' },
-    { {},         ',',      'downLeft' },
-    { {},         '.',      'downRight' },
-    { {},         'n',      'nextScreen' },
-    { {},         'right',  'moveOneScreenEast' },
-    { {},         'left',   'moveOneScreenWest' },
-  }
-}
+if not status then
+  windowMappings = require('keyboard.windows-bindings-defaults')
+end
 
 local modifiers = windowMappings.modifiers
 local showHelp  = windowMappings.showHelp
@@ -323,3 +301,48 @@ end)
 windowLayoutMode:bind(modifiers, trigger, function()
   windowLayoutMode:exit()
 end)
+
+
+-- https://github.com/dbalatero/VimMode.spoon/tree/21805205e39cc693dbf6ea671d47f2c5ba920262#manual-instructions
+--------------------------------
+-- TODO: check this out, seems cool
+--------------------------------
+--local VimMode = hs.loadSpoon("VimMode")
+--local vim = VimMode:new()
+
+---- Configure apps you do *not* want Vim mode enabled in
+---- For example, you don't want this plugin overriding your control of Terminal
+---- vim
+--vim
+--  :disableForApp('Code')
+--  :disableForApp('zoom.us')
+--  :disableForApp('iTerm')
+--  :disableForApp('iTerm2')
+--  :disableForApp('Terminal')
+
+---- If you want the screen to dim (a la Flux) when you enter normal mode
+---- flip this to true.
+--vim:shouldDimScreenInNormalMode(false)
+
+---- If you want to show an on-screen alert when you enter normal mode, set
+---- this to true
+--vim:shouldShowAlertInNormalMode(true)
+
+---- You can configure your on-screen alert font
+--vim:setAlertFont("Courier New")
+
+---- Enter normal mode by typing a key sequence
+--vim:enterWithSequence('jk')
+
+---- if you want to bind a single key to entering vim, remove the
+---- :enterWithSequence('jk') line above and uncomment the bindHotKeys line
+---- below:
+----
+---- To customize the hot key you want, see the mods and key parameters at:
+----   https://www.hammerspoon.org/docs/hs.hotkey.html#bind
+----
+---- vim:bindHotKeys({ enter = { {'ctrl'}, ';' } })
+
+----------------------------------
+---- END VIM CONFIG
+----------------------------------
