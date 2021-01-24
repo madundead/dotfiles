@@ -9,21 +9,16 @@
 
 " Turn off vi-compatible mode
 set nocompatible
-
 " Encoding
 set encoding=utf-8
 set fileencoding=utf-8
-
 " History length
 set history=1000
-
 " Remap the <leader> to <Space>
 nnoremap <Space> <Nop>
 let mapleader=' '
-
 " Includes ftplugin.vim which is responsible for filetype detection
 filetype plugin indent on
-
 " Set syntax highlighting
 syntax on
 
@@ -60,7 +55,6 @@ Plug 'benmills/vimux'
 Plug 'janko-m/vim-test'
 Plug 'dyng/ctrlsf.vim'
 Plug 'terryma/vim-expand-region'
-" Plug 'terryma/vim-multiple-cursors'
 Plug 'mg979/vim-visual-multi'
 Plug 'bogado/file-line'
 Plug 'vim-utils/vim-interruptless'
@@ -72,7 +66,6 @@ Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 
 " ======== Appearence ===================================
 
-" Plug 'altercation/vim-colors-solarized'
 Plug 'airblade/vim-gitgutter'
 Plug 'machakann/vim-highlightedyank'
 Plug 'arcticicestudio/nord-vim'
@@ -193,12 +186,6 @@ let g:UltiSnipsExpandTrigger       = '<tab>'
 let g:UltiSnipsJumpForwardTrigger  = '<tab>'
 let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'
 
-" --- scratch
-
-" let g:scratch_persistence_file = '~/iCloud/Notebook/index.md'
-" let g:scratch_no_mappings = 1
-
-
 " --- gitgutter
 
 let g:gitgutter_sign_added = '│'
@@ -291,33 +278,18 @@ if has("autocmd")
   au filetype help nnoremap <buffer><BS> <c-T>
   au filetype help set nonumber
 
-  au BufNewFile,BufRead Capfile,Gemfile,Vagrantfile setl ft=ruby
-  au BufNewFile,BufRead *.rabl,*.jbuilder           setl ft=ruby
-  au BufNewFile,BufRead *.docker                    setl ft=Dockerfile
+  au BufNewFile,BufRead *.docker setl ft=Dockerfile
 
   " Hide statusline
-  autocmd! FileType fzf
-  autocmd  FileType fzf set laststatus=0 noshowmode noruler
-         \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
-
-  " NB: ! cursorline seems to be slow https://github.com/tmux/tmux/issues/353#issuecomment-364588634
-  " Only show cursorline in the current window and in normal mode.
-  " augroup cline
-  "     au!
-  "     au WinLeave,InsertEnter * set nocursorline
-  "     au WinEnter,InsertLeave * set cursorline
-  " augroup END
+  au! FileType fzf
+  au  FileType fzf set laststatus=0 noshowmode noruler
+       \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
 
   " Close tab if only NERDTree left
   au WinEnter * call CloseNERDTree()
 
   " Resize when the host window resized
-  " NB: I remember it being laggy or something
-  " There was some curlpit here don't remember
   au VimResized * wincmd =
-
-  " Prevent CtrlP or NERDTree from opening a split in Startify
-  au User Startified setl buftype=
 endif
 
 
@@ -326,8 +298,6 @@ endif
 " -> Colors & Fonts
 " ========================================================
 
-" Solarized is love solarized is life
-" colorscheme solarized
 colorscheme nord
 set background=dark
 
@@ -352,56 +322,55 @@ endif
 " -> User Interface
 " ========================================================
 
-" enables menu at the bottom
+" Enables menu at the bottom
 set wildmenu
-" highlight search
+" Highlight search
 set hlsearch
-" nicer separators
+" Nicer separators
 set fillchars=diff:⣿,vert:│
-" don't try to highlight lines longer than 800 characters.
+" Don't try to highlight lines longer than 800 characters.
 set synmaxcol=200
-" when a file has been detected to have been changed outside of Vim and
+" When a file has been detected to have been changed outside of Vim and
 " it has not been changed inside of Vim, automatically read it again.
 set autoread
-" do not redraw while running macros
+" Do not redraw while running macros
 set lazyredraw
-" tab label - requires vim-madundead
+" Tab label - requires vim-madundead
 set tabline=%!Tabline()
-" show status even for single buffer displayed
+" Show status even for single buffer displayed
 set laststatus=2
 " NB: cursorline seems to slow down things quite a bit
 " highlight current line https://github.com/tmux/tmux/issues/353#issuecomment-364588634
 " set cursorline
 " number rows
 set number
-" disable welcome message
+" Disable welcome message
 set shortmess+=I
-" show matching braces
+" Show matching braces
 set showmatch
-" shows when you are in insert mode
+" Shows when you are in insert mode
 set showmode
-" shows commands in right bottom corner
+" Shows commands in right bottom corner
 set showcmd
-" show cursor position all the tiem
+" Show cursor position all the tiem
 set ruler
-" show title in console status bar
+" Show title in console status bar
 set title
-" dont wrap lines
+" Dont wrap lines
 set nowrap
-" when I scroll up or down, there are 2 lines between the line I'm on and the bottom or top of the screen.
+" When I scroll up or down, there are 2 lines between the line I'm on and the bottom or top of the screen.
 set scrolloff=5
-" how many tenths of a second to blink on matching brackets
+" How many tenths of a second to blink on matching brackets
 set mat=2
-" disable cursor blink
+" Disable cursor blink
 set gcr=a:blinkon0
-" hide the mouse pointer while typing
+" Hide the mouse pointer while typing
 set mousehide
-" conceal mostly for markdown
+" Conceal mostly for markdown
 set conceallevel=2
-
 " Highlight VCS conflict markers
 match ErrorMsg '^\(<\|=\|>\)\{7\}\([^=].\+\)\?$'
-
+" Statusline
 set statusline=%<%f
 
 " ========================================================
@@ -420,67 +389,51 @@ set wildignore+=*.gem
 set wildignore+=log/**
 set wildignore+=tmp/**
 set wildignore+=*.png,*.jpg,*.gif
-
 " Russian keymap support
 set langmap=ФИСВУАПРШОЛДЬТЩЗЙКЫЕГМЦЧНЯЖ;ABCDEFGHIJKLMNOPQRSTUVWXYZ:,фисвуапршолдьтщзйкыегмцчня;abcdefghijklmnopqrstuvwxyz
-
 " W invokes sudo
 command! W w !sudo tee % > /dev/null
-
 " Use the OS clipboard by default (requires `+clipboard`)
 set clipboard=unnamed
-
-" Dunno
+" Tenths of a second to show the matching paren
 set matchtime=2
-
 " Force backspace to behave like in any other editor
 set backspace=2
-
 " Start searching as soon as you type first letter
 set incsearch
-
 " Turn off visualbell
 set novisualbell
-
 " Fuck backups
 set nobackup
 set nowb
 set noswapfile
-
 " Doesn't select lines number in vim
 set mouse=a
-
 " Fancy whitespace characters
 set list listchars=tab:→\ ,trail:·
-
 " Abbrev. of messages (avoids 'hit enter')
 set shortmess+=filmnrxoOtT
-
 " Start scrolling when we're 8 lines away from margins
 set scrolloff=8
-
 " The minimal number of screen columns to keep to the left and to the
 " right of the cursor if 'nowrap' is set.
 set sidescrolloff=15
-
 " The minimal number of columns to scroll horizontally
 set sidescroll=1
-
 " Vertical splits in diff mode
 set diffopt+=vertical
-
 " Reduce delay between modes
 set timeoutlen=1000 ttimeoutlen=0
-
 " Delete comment character when joining commented lines
 if v:version > 703 || v:version == 703 && has("patch541")
   set formatoptions+=j
 endif
-
 " Use ripgrep if possible
 if executable('rg')
   set grepprg=rg\ -i\ --vimgrep
 endif
+" Enables aliases from .bashrc in :! commands
+set shellcmdflag=-ic
 
 
 
@@ -514,44 +467,44 @@ nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 
-cnoremap <C-A> <Home>
-cnoremap <C-E> <End>
-
 nnoremap ,, <C-^>
 
-nnoremap <silent> <expr> <leader>f (expand('%') =~ 'NERD_tree' ? "\<C-w>\<C-w>" : '').":Files\<CR>"
-nnoremap <silent> <expr> <leader>b (expand('%') =~ 'NERD_tree' ? "\<C-w>\<C-w>" : '').":Buffers\<CR>"
+nnoremap <silent><expr><leader>f (expand('%') =~ 'NERD_tree' ? "\<C-w>\<C-w>" : '').":Files\<CR>"
+nnoremap <silent><expr><leader>b (expand('%') =~ 'NERD_tree' ? "\<C-w>\<C-w>" : '').":Buffers\<CR>"
+nnoremap <silent><expr><leader>gl (expand('%') =~ 'NERD_tree' ? "\<C-w>\<C-w>" : '').":Commits\<CR>"
 
-nnoremap <silent> <leader>a :A<CR>
-nnoremap <silent> <leader>s :Switch<CR>
-nnoremap <silent> <leader>x :ALEFix<CR>
-nnoremap <silent> <leader>n :NERDTreeToggle<CR>
-nnoremap <silent> <leader>N :NERDTreeFind<CR>
-nnoremap <silent> <leader>c <ESC>/\v^[<=>]{7}( .*\|$)<CR>
-nnoremap <silent> <leader>t :tabnew<CR>
-nnoremap <silent> <leader>d orequire 'pry'; binding.pry<ESC>
-nnoremap <silent> <leader>D oit { require 'pry'; binding.pry }<ESC>
-nnoremap <silent> <leader>r :TestFile<CR>
-nnoremap <silent> <leader>R :TestSuite<CR>
-nnoremap <silent> <leader>J :%!python -m json.tool<CR>
-nnoremap <silent> <leader>w :w<CR>
-nnoremap <silent> <leader>q :q!<CR>
-nnoremap <silent> <leader>e :e!<CR>
-nnoremap <silent> <leader>= <C-w>=
-nnoremap <silent> <leader><space> :nohlsearch<CR>
+nnoremap <silent><leader>a :A<CR>
+nnoremap <silent><leader>s :Switch<CR>
+nnoremap <silent><leader>x :ALEFix<CR>
+nnoremap <silent><leader>n :NERDTreeToggle<CR>
+nnoremap <silent><leader>N :NERDTreeFind<CR>
+nnoremap <silent><leader>c <ESC>/\v^[<=>]{7}( .*\|$)<CR>
+nnoremap <silent><leader>t :tabnew<CR>
+nnoremap <silent><leader>d orequire 'pry'; binding.pry<ESC>
+nnoremap <silent><leader>D oit { require 'pry'; binding.pry }<ESC>
+nnoremap <silent><leader>r :TestFile<CR>
+nnoremap <silent><leader>R :TestSuite<CR>
+nnoremap <silent><leader>J :%!python -m json.tool<CR>
+nnoremap <silent><leader>w :w<CR>
+nnoremap <silent><leader>q :q!<CR>
+nnoremap <silent><leader>e :e!<CR>
+nnoremap <silent><leader>= <C-w>=
+nnoremap <silent><leader><space> :nohlsearch<CR>
 
-nnoremap <silent> <leader>ga :Gwrite<CR>
-nnoremap <silent> <leader>gc :Gcommit<CR>
-nnoremap <silent> <leader>gp :Gpush<CR>
-nnoremap <silent> <leader>gup :Gpull<CR>
-nnoremap <silent> <leader>gs :Gstatus<CR>
-nnoremap <silent> <leader>gd :Gvdiff<CR>
-nnoremap <silent> <expr> <leader>gl (expand('%') =~ 'NERD_tree' ? "\<C-w>\<C-w>" : '').":Commits\<CR>"
-
-nnoremap <leader>p :echo @%<CR>
+nnoremap <silent><leader>ga  :Gwrite<CR>
+nnoremap <silent><leader>gc  :Gcommit<CR>
+nnoremap <silent><leader>gp  :Gpush<CR>
+nnoremap <silent><leader>gup :Gpull<CR>
+nnoremap <silent><leader>gs  :Gstatus<CR>
+nnoremap <silent><leader>gd  :Gvdiff<CR>
+nnoremap <silent><leader>gb  :Gblame<CR>
 
 nnoremap <silent><Tab> :tabnext<CR>
 nnoremap <silent><S-Tab> :tabprevious<CR>
+nnoremap <silent>vv <c-w>v
+nnoremap <silent><C-w> :call StripTrailingWhitespace()<CR>
+
+nnoremap <leader>S :%s/\<<c-r><c-w>\>//g<left><left>
 
 nnoremap yy Y
 nnoremap Y y$
@@ -562,6 +515,7 @@ nnoremap k gk
 nnoremap H ^
 nnoremap L $
 nnoremap J mzJ`z
+nnoremap K <Nop>
 nnoremap gQ <Nop>
 
 vnoremap . :normal .<CR>
@@ -570,61 +524,15 @@ vnoremap K :m '<-2<CR>gv=gv
 vnoremap < <gv
 vnoremap > >gv
 
-xmap \  <Plug>Commentary
-nmap \  <Plug>Commentary
-nmap \\ <Plug>CommentaryLine
+inoremap <C-e> <End>
+vnoremap <C-e> <End>
+cnoremap <C-e> <End>
+inoremap <C-a> <Home>
+vnoremap <C-a> <Home>
+cnoremap <C-a> <Home>
 
-nnoremap <silent> <BS> :tabnew ~/iCloud/Notebook/index.md<CR>
-
-nnoremap <silent>vv <c-w>v
-" nnoremap <silent>ss <c-w>s TODO:
-
-nmap <C-f> <Plug>CtrlSFPrompt
-nnoremap <silent><C-w> :call StripTrailingWhitespace()<CR>
-
-inoremap <C-e> <END>
-vnoremap <C-e> <END>
-cnoremap <C-e> <END>
-inoremap <C-a> <HOME>
-vnoremap <C-a> <HOME>
-cnoremap <C-a> <HOME>
-
-" =====================================
-" TODO: DEAL WITH THIS
-"
-" this is taken already
-" nnoremap <leader>= gg=G<C-o><C-o>
-
-" TODO: this requires double C-b for some reason
-nnoremap <silent><C-b> :Gblame<CR>
-
-nnoremap <C-s> :%s//g<left><left>
-
-" ,rh -> hashrocket to : TODO: think about it
-" nnoremap <leader>rh :%s/\v:(\w+) \=\>/\1:/g<CR>
-
-" ,s -> reload vimrc TODO: do something useful instead
-" nnoremap <silent><leader>s :so ~/.vimrc<CR>
-"
-" nnoremap <silent><C-g> :Gitv<CR> TODO: No longer have gitv
-
-" Start interactive EasyAlign in visual mode
+nmap <C-f>   <Plug>CtrlSFPrompt
+vmap <C-f>   <Plug>CtrlSFVwordPath
 vmap <Enter> <Plug>(EasyAlign)
-" Start interactive EasyAlign in visual mode (e.g. vipga)
 xmap ga      <Plug>(EasyAlign)
-" Start interactive EasyAlign for a motion/text object (e.g. gaip)
 nmap ga      <Plug>(EasyAlign)
-
-" Ctrl + e for emmet
-imap <C-e> <C-y>, <CR>
-
-" I don't use it
-nnoremap K <nop>
-" K reverse of J
-" nnoremap K f<space>r<CR>
-
-" replace the word under the cursor
-nnoremap <leader>S :%s/\<<c-r><c-w>\>//g<left><left>
-
-" this might be bad, but enables aliases from .bashrc
-set shellcmdflag=-ic
