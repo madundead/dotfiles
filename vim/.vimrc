@@ -80,6 +80,7 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-git'
 Plug 'tpope/vim-vinegar'
+Plug 'tpope/vim-rhubarb'
 
 " ======== Experimental =================================
 
