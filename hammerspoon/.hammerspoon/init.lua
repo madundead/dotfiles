@@ -28,6 +28,7 @@ end
 --------------------------------------------------------------------------
 hs.window.animationDuration = 0
 window = hs.getObjectMetatable("hs.window")
+window.animationDuration = 0
 
 -- +-----------------+
 -- |        |        |
