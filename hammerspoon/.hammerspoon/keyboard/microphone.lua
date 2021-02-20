@@ -1,3 +1,4 @@
+require('keyboard.microphone')
 local message = require('keyboard.status-message')
 
 local messageMuting = message.new('muted 🎤')
