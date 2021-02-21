@@ -217,7 +217,7 @@ let g:ale_fixers = {
 " --- fzf
 
 if has('nvim') || has('gui_running')
-  let $FZF_DEFAULT_OPTS .= ' --inline-info'
+  let $FZF_DEFAULT_OPTS .= ' --no-info --color=gutter:#2E3440'
 endif
 
 command! -nargs=? -complete=dir AF

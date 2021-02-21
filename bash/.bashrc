@@ -6,8 +6,6 @@
 
 # Don't put duplicate lines in the history. See bash(1) for more options
 export HISTCONTROL=$HISTCONTROL${HISTCONTROL+,}ignoredups
-# ... or force ignoredups and ignorespace
-export HISTCONTROL=ignoreboth
 
 shopt -s histappend
 shopt -s checkwinsize
@@ -26,11 +24,39 @@ export LC_ALL=en_US.UTF-8
 # fzf
 export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
 export FZF_DEFAULT_OPTS='--layout=reverse --inline-info'
+export FZF_CTRL_R_OPTS='--no-info'
+
+_gen_fzf_default_opts() {
+  local color00='#2E3440'
+  local color01='#3B4252'
+  local color02='#434C5E'
+  local color03='#4C566A'
+  local color04='#D8DEE9'
+  local color05='#E5E9F0'
+  local color06='#ECEFF4'
+  local color07='#8FBCBB'
+  local color08='#BF616A'
+  local color09='#D08770'
+  local color0A='#EBCB8B'
+  local color0B='#A3BE8C'
+  local color0C='#88C0D0'
+  local color0D='#81A1C1'
+  local color0E='#B48EAD'
+  local color0F='#5E81AC'
+
+export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS"\
+" --color=bg+:$color01,bg:$color00,spinner:$color0C,hl:$color0D"\
+" --color=fg:$color04,header:$color0D,info:$color0A,pointer:$color0C"\
+" --color=marker:$color0C,fg+:$color06,prompt:$color0A,hl+:$color0D"\
+" --color=gutter:$color00"
+}
+
+_gen_fzf_default_opts
 
 alias ~='cd ~'
-alias l='ls'
-alias ls='ls -G'
-alias ll='ls -l'
+alias l='exa'
+alias ls='exa'
+alias ll='exa -l'
 alias vim='nvim'
 alias vi='nvim'
 alias v='nvim'
