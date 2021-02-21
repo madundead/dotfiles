@@ -281,6 +281,9 @@ if has("autocmd")
 
   au BufNewFile,BufRead *.docker setl ft=Dockerfile
 
+  au FileType xml setlocal equalprg=xmllint\ --format\ --recover\ -\ 2>/dev/null
+  au FileType json setlocal equalprg=python\ -m\ json.tool
+
   " Hide statusline
   au! FileType fzf
   au  FileType fzf set laststatus=0 noshowmode noruler
@@ -475,7 +478,6 @@ nnoremap <silent><expr><leader>b (expand('%') =~ 'NERD_tree' ? "\<C-w>\<C-w>" : 
 nnoremap <silent><expr><leader>gl (expand('%') =~ 'NERD_tree' ? "\<C-w>\<C-w>" : '').":Commits\<CR>"
 
 nnoremap <silent><leader>a :A<CR>
-nnoremap <silent><leader>s :Switch<CR>
 nnoremap <silent><leader>x :ALEFix<CR>
 nnoremap <silent><leader>n :NERDTreeToggle<CR>
 nnoremap <silent><leader>N :NERDTreeFind<CR>
