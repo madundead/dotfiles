@@ -1,0 +1,159 @@
+# the default configuration file is https://github.com/jonas/tig/blob/master/tigrc
+
+set main-view             = line-number:no,interval=5 id:yes date:default author:abbreviated,width=0,maxwidth=2 commit-title:yes,graph,refs,overflow=no
+set main-view-date        = custom
+set main-view-date-format = "%Y-%m-%d %H:%M"
+set ignore-case           = smart-case
+set mouse                 = yes
+set mouse-scroll          = 5
+# set diff-highlight        = true
+set refresh-mode          = periodic
+set refresh-interval      = 3
+set tab-size              = 4
+# show untracked files in one dir as a dir like `git status` instead of multiple files
+set status-show-untracked-dirs = false
+
+## bindings priorities: view->generic->default
+#bind generic    E    !>sh -c "vim ~/.tigrc"
+#bind generic    S    view-stage
+bind generic    g    none # disable single g
+#bind generic    gs   view-grep
+bind generic    gg   move-first-line
+bind generic    G    move-last-line
+#bind generic    p    none # disable single p for pager(default)
+#bind generic    pl   !git pull
+#bind generic    pl   !git pull %(remote)
+#bind generic    pu   !<git push
+#bind generic    pU   !<git push -u %(remote) %(repo:head)
+#bind generic    v    :source ~/.tigrc
+#bind main       G    move-last-line # overwrite the default
+#bind generic    <Ctrl-f>   scroll-page-down
+#bind generic    <Ctrl-b>   scroll-page-up
+
+#bind status     c    >git commit --verbose
+#bind stage      c    >git commit --verbose
+#bind generic    +    ?>git commit --verbose --amend
+
+## NOTE: the ignore here only works for new untrcked files
+#bind status     i    ?>sh -c "echo '%(file)'>>.gitignore" # ignore files
+#bind stage      i    ?>sh -c "echo '%(file)'>>.gitignore" # ignore files
+
+## FIXME: Space to select/mark the file, currently it is not supported
+#bind status     S    status-update # stage/unstage/track/untrack a file
+#bind status     u    status-revert # revert changes in file
+#bind status     C    ?>git checkout -- %(file) # delete changes on files in unstaged status
+#bind status     X    ?>git clean -f -d -- %(file) # delete untracked files/dirs
+#bind status     D    ?>sh -c "rm -rfv %(file)"
+#bind status     d    view-stage
+#bind status     gS   !>sh -c "git diff HEAD > stage.diff" # save stage buffer into file
+
+#bind stage      S    status-update # stage/unstage/track/untrack a file
+#bind stage      u    status-revert # revert changes in file
+#bind stage      C    ?>git checkout -- %(file) # delete changes on files in unstaged status
+#bind stage      X    ?>git clean -f -d -- %(file) # delete untracked files/dirs
+#bind stage      D    ?>sh -c "rm -rfv %(file)"
+#bind stage      d    view-stage
+
+#bind generic    Y    >git stash push -m "%(prompt Msg: )" %(file)
+#bind stash      p    ?>git stash pop %(stash)
+#bind diff       p    ?>git stash pop %(stash)
+#bind stash      d    ?>git stash drop %(stash)
+#bind status     P    >git stash push -m "%(prompt Msg: )" -p %(file)
+#bind stage      P    >git stash push -m "%(prompt Msg: )" -p %(file)
+#bind stage      gS   !>sh -c "git diff HEAD > stage.diff" # save stage buffer into file
+
+#bind generic    c    none # disable single c
+#bind generic    cb   ?git checkout -b "%(prompt Enter new branch name: )"
+#bind refs       cc   ?git checkout %(branch)
+
+#bind diff       [    :?^@@  # jump to the prev diff hunk
+#bind diff       ]    :/^@@  # jump to the next diff hunk
+#bind diff       <LessThan> :?^diff --(git|cc) # jump to the prev diff header
+#bind diff       >    :/^diff --(git|cc) # jump to the next diff header
+#bind diff       {    :toggle diff-context -1  # Decrease the diff context
+#bind diff       }    :toggle diff-context +1  # Increase the diff context
+#bind diff       gS   !>sh -c "git show %(commit) > %(commit).diff" # save diff buffer into file
+
+#bind stage      [    :?^@@  # jump to the prev diff hunk
+#bind stage      ]    :/^@@  # jump to the next diff hunk
+#bind stage      <LessThan> :?^diff --(git|cc) # jump to the prev diff header
+#bind stage      >    :/^diff --(git|cc) # jump to the next diff header
+#bind stage      {    :toggle diff-context -1  # Decrease the diff context
+#bind stage      }    :toggle diff-context +1  # Increase the diff context
+
+#bind log        [    :?"^commit " # jump to the prev commit
+#bind log        ]    :/"^commit " # jump to the next commit
+#bind log        gm    !git show -m %(commit) # use this when diff can not be displayed, such as for merge
+#bind diff       gm    !git show -m %(commit) # use this when diff can not be displayed, such as for merge
+#bind stage      gm    !git show -m %(commit) # use this when diff can not be displayed, such as for merge
+
+##Commit
+## bind generic C      !git commit
+## bind refs    C      !git commit
+## bind main    C      !git commit
+#bind generic <Esc>u !git add -p %(file)
+
+##Pull
+#bind generic U      ?git pull %(remote)
+
+##Fetch
+#bind generic F      ?git fetch %(remote)
+#bind main    F      ?git fetch %(remote)
+
+##Move cursol
+#bind generic J move-page-down
+#bind generic K move-page-up
+
+##Reflog
+#bind generic L      !sh -c "git reflog --pretty=raw | tig --pretty=raw"
+#bind generic _      ?git reset --hard HEAD@{"%(prompt Enter HEAD@{} number: )"}
+
+##Reset --hard
+#bind main    H      ?git reset --hard %(commit)
+#bind diff    H      ?git reset --hard %(commit)
+#bind refs    H      ?git reset --hard %(branch)
+#bind status  H      ?git reset --hard HEAD
+
+##Checkout
+#bind main    =      ?git checkout %(branch)
+#bind refs    =      ?git checkout %(branch)
+#bind main    <Esc>= ?git checkout %(commit)
+
+##Merge
+#bind main    M      ?git merge %(branch)
+#bind diff    M      ?git merge %(branch)
+#bind refs    M      ?git merge %(branch)
+#bind main    <Esc>m ?git merge %(commit)
+#bind diff    <Esc>m ?git merge %(commit)
+
+##Rebase
+## bind main    R      ?git rebase %(branch)
+## bind diff    R      ?git rebase %(branch)
+## bind refs    R      ?git rebase %(branch)
+## bind main    <Esc>r ?git rebase %(commit)
+## bind diff    <Esc>r ?git rebase %(commit)
+
+##Rebase -i
+#bind main    I      ?git rebase -i %(branch)
+#bind diff    I      ?git rebase -i %(branch)
+#bind refs    I      ?git rebase -i %(branch)
+#bind main    <Esc>i ?git rebase -i %(commit)
+#bind diff    <Esc>i ?git rebase -i %(commit)
+
+##Open to brouse
+#bind main    ;      @hub browse -- commit/%(commit)
+#bind blame   ;      @hub browse -- commit/%(commit)
+#bind diff    ;      @hub browse -- commit/%(commit)
+#bind tree    ;      @hub browse -- blob/%(branch)/%(file)
+#bind blob    ;      @hub browse -- blob/%(branch)/%(file)
+#bind grep    ;      @hub browse -- blob/%(branch)/%(file)
+#bind tree    <Esc>; @hub browse -- blob/"%(prompt Enter branch name: )"/%(file)
+#bind blob    <Esc>; @hub browse -- blob/"%(prompt Enter branch name: )"/%(file)
+#bind grep    <Esc>; @hub browse -- blob/"%(prompt Enter branch name: )"/%(file)
+
+##Pull request
+#bind main    w      @hub browse -- compare/%(branch)?expand=1
+#bind diff    w      @hub browse -- compare/%(branch)?expand=1
+
+##diff
+#bind refs    w      @hub browse -- compare/%(branch)?expand=1
