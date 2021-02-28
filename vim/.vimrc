@@ -84,10 +84,6 @@ Plug 'tpope/vim-rhubarb'
 
 " ======== Experimental =================================
 
-" Plug 'AndrewRadev/switch.vim'
-" Plug 'zxqfl/tabnine-vim'
-" Plug 'pechorin/any-jump.vim'
-
 call plug#end()
 
 
