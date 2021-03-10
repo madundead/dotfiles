@@ -1,14 +1,14 @@
 --------------------------------------------------------------------------
 hyperModeAppMappings = {
-  { 'a', 'Alacritty' },                 -- "A" for "Apple Music"
+  { 'a', 'Alacritty' },                 -- "A" for "Alacritty"
   { 's', 'Safari' },                    -- "S" for "Safari"
-  { 'c', 'Telegram' },                  -- "C for "Chat"
-  { 'd', 'Discord' },                   -- "D for "Discord"
+  { 't', 'Telegram' },                  -- "T" for "Telegram"
+  { 'd', 'Discord' },                   -- "D" for "Discord"
   { 'f', 'Finder' },                    -- "F" for "Finder"
   { 'g', 'Mail' },                      -- "G" for "Gmail"
-  { 'z', 'Slack' },                     -- "Z" for "zzz"
+  { 'z', 'Slack' },                     -- "C" for "Chat"
   { 'n', 'Notion' },                    -- "N" for "Notion"
-  { 'm', 'Music' },                     -- "M" for "Music"
+  { 'm', 'Spotify' },                   -- "M" for "Music"
   { 'w', 'World of Warcraft Classic' }, -- "W" for "World of Warcraft"
 }
 
