@@ -83,6 +83,7 @@ Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-rhubarb'
 
 " ======== Experimental =================================
+Plug 'christoomey/vim-tmux-navigator'
 
 call plug#end()
 
