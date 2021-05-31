@@ -109,6 +109,9 @@ alias rs='bin/rails s -p3001'
 
 alias mux='tmuxinator start'
 
+alias ibrew='arch -x86_64 /usr/local/bin/brew'
+alias mbrew='arch -arm64e /opt/homebrew/bin/brew'
+
 yta() {
   streamlink $1 audio_mp4
 }
@@ -132,7 +135,8 @@ alias fkill='fzf_kill'
 
 # Homebrew stuff
 if [ -x /usr/local/bin/brew ]; then
-    export PATH=/usr/local/bin:/usr/local/sbin:$PATH
+    # export PATH=/usr/local/bin:/usr/local/sbin:$PATH
+    export PATH=/opt/homebrew/bin:/opt/homebrew/opt:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin:$PATH
     export MANPATH=/usr/local/share/man:$MANPATH
 fi
 
