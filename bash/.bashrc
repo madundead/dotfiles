@@ -4,10 +4,19 @@
 [ -f /etc/bash_completion ]          && . /etc/bash_completion
 [ -f ~/.fzf.bash ]                   && . ~/.fzf.bash
 
-# Don't put duplicate lines in the history. See bash(1) for more options
-export HISTCONTROL=$HISTCONTROL${HISTCONTROL+,}ignoredups
+# Save 10,000 lines of history in memory
+HISTSIZE=10000
+# Save 2,000,000 lines of history to disk (will have to grep ~/.bash_history for full listing)
+HISTFILESIZE=2000000
+# Ignore redundant or space commands
+HISTCONTROL=ignoreboth
+# Ignore more
+HISTIGNORE='ls:ll:ls -alh:pwd:clear:history'
+HISTIGNORE=$HISTIGNORE':gcom:gcob:gd:gdc:gc:gca:gcw:gs:ga:grm:gup:gp:gpf:gpt:gb:gg:gl:gr:gr1:gh'
+# Immediately store command to the history
+PROMPT_COMMAND='history -a'
 
-shopt -s histappend
+shopt -s histappend # Append to history instead of overwrite
 shopt -s checkwinsize
 shopt -s no_empty_cmd_completion
 shopt -s cdspell
