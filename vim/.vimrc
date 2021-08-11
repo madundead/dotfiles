@@ -88,6 +88,10 @@ Plug 'tpope/vim-rhubarb'
 " ======== Experimental =================================
 Plug 'christoomey/vim-tmux-navigator'
 
+Plug 'nvim-lua/popup.nvim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
+
 call plug#end()
 
 
@@ -226,7 +230,7 @@ command! -nargs=? -complete=dir AF
   \ })))
 
 let g:fzf_preview_window = ''
-let g:fzf_layout = { 'window': { 'width': 0.3, 'height': 0.6, 'border': 'sharp' } }
+let g:fzf_layout = { 'window': { 'width': 0.6, 'height': 0.6, 'border': 'sharp' } }
 let g:fzf_colors =
 \ { 'fg':      ['fg', 'Normal'],
   \ 'bg':      ['bg', 'Normal'],
@@ -504,7 +508,8 @@ nnoremap <silent><leader>gb  :Gblame<CR>
 
 nnoremap <silent><Tab> :tabnext<CR>
 nnoremap <silent><S-Tab> :tabprevious<CR>
-nnoremap <silent>vv <c-w>v
+" nnoremap <silent>vv <c-w>v
+nnoremap <silent>vv :sp <CR>
 nnoremap <silent><C-w> :call StripTrailingWhitespace()<CR>
 
 nnoremap <leader>S :%s/\<<c-r><c-w>\>//g<left><left>
@@ -539,3 +544,11 @@ vmap <C-f>   <Plug>CtrlSFVwordPath
 vmap <Enter> <Plug>(EasyAlign)
 xmap ga      <Plug>(EasyAlign)
 nmap ga      <Plug>(EasyAlign)
+
+
+nnoremap <silent><expr><leader>e (expand('%') =~ 'NERD_tree' ? "\<C-w>\<C-w>" : '').":Files ~/Tmp\<CR>"
+nnoremap <leader>E :e ~/Tmp/
+
+
+" nnoremap <leader>f <cmd>Telescope find_files<cr>
+" nmap <C-f>   <cmd>Telescope live_grep<cr>
