@@ -549,6 +549,9 @@ nmap ga      <Plug>(EasyAlign)
 nnoremap <silent><expr><leader>e (expand('%') =~ 'NERD_tree' ? "\<C-w>\<C-w>" : '').":Files ~/Tmp\<CR>"
 nnoremap <leader>E :e ~/Tmp/
 
+nnoremap <silent><expr><leader>o (expand('%') =~ 'NERD_tree' ? "\<C-w>\<C-w>" : '').":Files ~/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/Personal\<CR>"
+nnoremap <leader>O :e ~/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/Personal
+
 
 " nnoremap <leader>f <cmd>Telescope find_files<cr>
 " nmap <C-f>   <cmd>Telescope live_grep<cr>
