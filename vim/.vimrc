@@ -35,7 +35,7 @@ call plug#begin('~/.vim/plugged')
 
 " ======== Languages / Textobjects =======================
 
-Plug 'sheerun/vim-polyglot'
+" Plug 'sheerun/vim-polyglot'
 Plug 'kana/vim-textobj-user'
 Plug 'nelstrom/vim-textobj-rubyblock'
 Plug 'austintaylor/vim-indentobject'
@@ -75,7 +75,7 @@ Plug 'arcticicestudio/nord-vim'
 
 " ======== tpope <3  ====================================
 
-Plug 'tpope/vim-endwise'
+" Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-rails',     { 'for': 'ruby' }
 Plug 'tpope/vim-surround'
@@ -91,6 +91,8 @@ Plug 'christoomey/vim-tmux-navigator'
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
+
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
 call plug#end()
 
@@ -477,7 +479,7 @@ nnoremap <C-l> <C-w>l
 
 nnoremap ,, <C-^>
 
-nnoremap <silent><expr><leader>f (expand('%') =~ 'NERD_tree' ? "\<C-w>\<C-w>" : '').":Files\<CR>"
+nnoremap <silent><expr><leader>ff (expand('%') =~ 'NERD_tree' ? "\<C-w>\<C-w>" : '').":Files\<CR>"
 nnoremap <silent><expr><leader>b (expand('%') =~ 'NERD_tree' ? "\<C-w>\<C-w>" : '').":Buffers\<CR>"
 nnoremap <silent><expr><leader>gl (expand('%') =~ 'NERD_tree' ? "\<C-w>\<C-w>" : '').":Commits\<CR>"
 
@@ -552,6 +554,21 @@ nnoremap <leader>E :e ~/Tmp/
 nnoremap <silent><expr><leader>o (expand('%') =~ 'NERD_tree' ? "\<C-w>\<C-w>" : '').":Files ~/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/Personal\<CR>"
 nnoremap <leader>O :e ~/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/Personal
 
+" EXPERIMENTAL STUFF
+nnoremap <leader>ft <cmd>Telescope find_files<cr>
+" nmap <leader>ft   <cmd>Telescope live_grep<cr>
 
-" nnoremap <leader>f <cmd>Telescope find_files<cr>
-" nmap <C-f>   <cmd>Telescope live_grep<cr>
+" undo break points
+inoremap , ,<c-g>u
+inoremap . .<c-g>u
+inoremap ! !<c-g>u
+inoremap ? ?<c-g>u
+
+lua <<EOF
+require'nvim-treesitter.configs'.setup {
+  ensure_installed = "maintained", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
+  highlight = { enable = true },
+  indent = { enable = true },
+  autopairs = { enable = true },
+}
+EOF
