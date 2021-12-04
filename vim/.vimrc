@@ -7,22 +7,9 @@
 " -> General
 " ========================================================
 
-" Turn off vi-compatible mode
-set nocompatible
-" Encoding
-set encoding=utf-8
 set fileencoding=utf-8
-" History length
-set history=1000
-" Remap the <leader> to <Space>
 nnoremap <Space> <Nop>
 let mapleader=' '
-" Includes ftplugin.vim which is responsible for filetype detection
-filetype plugin indent on
-" Set syntax highlighting
-syntax on
-
-
 
 " ========================================================
 " -> Plugins
@@ -65,7 +52,7 @@ Plug 'vim-utils/vim-interruptless'
 
 " ======== Snippets & Autocomplete ======================
 
-Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
+" Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 
 " ======== Appearence ===================================
 
@@ -88,12 +75,15 @@ Plug 'tpope/vim-rhubarb'
 " ======== Experimental =================================
 Plug 'christoomey/vim-tmux-navigator'
 
-Plug 'nvim-lua/popup.nvim'
-Plug 'nvim-lua/plenary.nvim'
-Plug 'nvim-telescope/telescope.nvim'
+" Plug 'nvim-lua/popup.nvim'
+" Plug 'nvim-lua/plenary.nvim'
+" Plug 'nvim-telescope/telescope.nvim'
 
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'neovim/nvim-lspconfig'
+
+Plug 'hrsh7th/nvim-compe'
+Plug 'hrsh7th/vim-vsnip'
 
 call plug#end()
 
@@ -333,27 +323,15 @@ endif
 " -> User Interface
 " ========================================================
 
-" Enables menu at the bottom
-set wildmenu
-" Highlight search
-set hlsearch
 " Nicer separators
 set fillchars=diff:⣿,vert:│
 " Don't try to highlight lines longer than 800 characters.
 set synmaxcol=200
-" When a file has been detected to have been changed outside of Vim and
-" it has not been changed inside of Vim, automatically read it again.
-set autoread
 " Do not redraw while running macros
 set lazyredraw
 " Tab label - requires vim-madundead
 set tabline=%!Tabline()
-" Show status even for single buffer displayed
-set laststatus=2
-" NB: cursorline seems to slow down things quite a bit
-" highlight current line https://github.com/tmux/tmux/issues/353#issuecomment-364588634
-" set cursorline
-" number rows
+" Number rows
 set number
 " Disable welcome message
 set shortmess+=I
@@ -361,10 +339,6 @@ set shortmess+=I
 set showmatch
 " Shows when you are in insert mode
 set showmode
-" Shows commands in right bottom corner
-set showcmd
-" Show cursor position all the tiem
-set ruler
 " Show title in console status bar
 set title
 " Dont wrap lines
@@ -408,10 +382,6 @@ command! W w !sudo tee % > /dev/null
 set clipboard=unnamed
 " Tenths of a second to show the matching paren
 set matchtime=2
-" Force backspace to behave like in any other editor
-set backspace=2
-" Start searching as soon as you type first letter
-set incsearch
 " Turn off visualbell
 set novisualbell
 " Fuck backups
@@ -429,16 +399,10 @@ set scrolloff=8
 " The minimal number of screen columns to keep to the left and to the
 " right of the cursor if 'nowrap' is set.
 set sidescrolloff=15
-" The minimal number of columns to scroll horizontally
-set sidescroll=1
 " Vertical splits in diff mode
 set diffopt+=vertical
 " Reduce delay between modes
 set timeoutlen=1000 ttimeoutlen=0
-" Delete comment character when joining commented lines
-if v:version > 703 || v:version == 703 && has("patch541")
-  set formatoptions+=j
-endif
 " Use ripgrep if possible
 if executable('rg')
   set grepprg=rg\ -i\ --vimgrep
@@ -454,8 +418,6 @@ set shellcmdflag=-ic
 
 " Automatically inserts one extra level of indentation in some cases
 set smartindent
-" Affects how <TAB> key presses are interpreted depending on where the cursor is
-set smarttab
 " Tab counts as 2 columns
 set tabstop=2
 " Numbers of spaces to (auto)indent
@@ -501,16 +463,13 @@ nnoremap <silent><leader>e :e!<CR>
 nnoremap <silent><leader>= <C-w>=
 nnoremap <silent><leader><space> :nohlsearch<CR>
 
-nnoremap <silent><leader>ga  :Gwrite<CR>
-nnoremap <silent><leader>gc  :Gcommit<CR>
-nnoremap <silent><leader>gp  :Gpush<CR>
-nnoremap <silent><leader>gup :Gpull<CR>
-nnoremap <silent><leader>gs  :Gstatus<CR>
-nnoremap <silent><leader>gd  :Gvdiff<CR>
-nnoremap <silent><leader>gb  :Gblame<CR>
+nnoremap <silent><leader>ga :Gwrite<CR>
+nnoremap <silent><leader>gs :Git<CR>
+nnoremap <silent><leader>gb :Git blame<CR>
 
 nnoremap <silent><Tab> :tabnext<CR>
 nnoremap <silent><S-Tab> :tabprevious<CR>
+
 " nnoremap <silent>vv <c-w>v
 nnoremap <silent>vv :sp <CR>
 nnoremap <silent><C-w> :call StripTrailingWhitespace()<CR>
@@ -552,6 +511,7 @@ nmap ga      <Plug>(EasyAlign)
 nnoremap <silent><expr><leader>e (expand('%') =~ 'NERD_tree' ? "\<C-w>\<C-w>" : '').":Files ~/Tmp\<CR>"
 nnoremap <leader>E :e ~/Tmp/
 
+" TODO Ignore .obsidian/
 nnoremap <silent><expr><leader>o (expand('%') =~ 'NERD_tree' ? "\<C-w>\<C-w>" : '').":Files ~/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/Personal\<CR>"
 nnoremap <leader>O :e ~/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/Personal
 
@@ -575,6 +535,7 @@ require'nvim-treesitter.configs'.setup {
 EOF
 
 lua << EOF
+require'lspconfig'.solargraph.setup{}
 local nvim_lsp = require('lspconfig')
 
 -- Use an on_attach function to only map the following keys
@@ -621,4 +582,80 @@ for _, lsp in ipairs(servers) do
     }
   }
 end
+EOF
+
+
+
+lua << EOF
+vim.o.completeopt = "menuone,noselect"
+
+require'compe'.setup {
+  enabled = true;
+  autocomplete = true;
+  debug = false;
+  min_length = 1;
+  preselect = 'enable';
+  throttle_time = 80;
+  source_timeout = 200;
+  incomplete_delay = 400;
+  max_abbr_width = 100;
+  max_kind_width = 100;
+  max_menu_width = 100;
+  documentation = false;
+
+  source = {
+    path = true;
+    buffer = true;
+    calc = true;
+    vsnip = true;
+    nvim_lsp = true;
+    nvim_lua = true;
+    spell = true;
+    tags = true;
+    snippets_nvim = true;
+    treesitter = true;
+  };
+}
+local t = function(str)
+  return vim.api.nvim_replace_termcodes(str, true, true, true)
+end
+
+local check_back_space = function()
+    local col = vim.fn.col('.') - 1
+    if col == 0 or vim.fn.getline('.'):sub(col, col):match('%s') then
+        return true
+    else
+        return false
+    end
+end
+
+-- Use (s-)tab to:
+--- move to prev/next item in completion menuone
+--- jump to prev/next snippet's placeholder
+_G.tab_complete = function()
+  if vim.fn.pumvisible() == 1 then
+    return t "<C-n>"
+  elseif vim.fn.call("vsnip#available", {1}) == 1 then
+    return t "<Plug>(vsnip-expand-or-jump)"
+  elseif check_back_space() then
+    return t "<Tab>"
+  else
+    return vim.fn['compe#complete']()
+  end
+end
+_G.s_tab_complete = function()
+  if vim.fn.pumvisible() == 1 then
+    return t "<C-p>"
+  elseif vim.fn.call("vsnip#jumpable", {-1}) == 1 then
+    return t "<Plug>(vsnip-jump-prev)"
+  else
+    -- If <S-Tab> is not working in your terminal, change it to <C-h>
+    return t "<S-Tab>"
+  end
+end
+
+vim.api.nvim_set_keymap("i", "<Tab>", "v:lua.tab_complete()", {expr = true})
+vim.api.nvim_set_keymap("s", "<Tab>", "v:lua.tab_complete()", {expr = true})
+vim.api.nvim_set_keymap("i", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
+vim.api.nvim_set_keymap("s", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
 EOF
