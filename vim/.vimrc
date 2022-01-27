@@ -20,18 +20,6 @@ let mapleader=' '
 
 call plug#begin('~/.vim/plugged')
 
-" ======== Languages / Textobjects =======================
-
-" Plug 'sheerun/vim-polyglot'
-Plug 'kana/vim-textobj-user'
-Plug 'nelstrom/vim-textobj-rubyblock'
-Plug 'austintaylor/vim-indentobject'
-Plug 'lucapette/vim-textobj-underscore'
-Plug 'bootleq/vim-textobj-rubysymbol'
-
-" ======== Utility  ======================================
-
-Plug 'mattn/emmet-vim',
 Plug 'scrooloose/nerdtree',     { 'on': ['NERDTreeToggle', 'NERDTreeFind'] }
 Plug 'junegunn/vim-easy-align', { 'on': ['<Plug>(EasyAlign)', 'EasyAlign'] }
 Plug 'gregsexton/MatchTag',     { 'for': 'html' }
@@ -42,27 +30,16 @@ Plug 'mattn/gist-vim' | Plug 'mattn/webapi-vim'
 Plug 'Raimondi/delimitMate'
 Plug 'nelstrom/vim-visual-star-search'
 Plug 'benmills/vimux'
-Plug 'janko-m/vim-test'
+Plug 'vim-test/vim-test'
 Plug 'dyng/ctrlsf.vim'
 Plug 'terryma/vim-expand-region'
 Plug 'mg979/vim-visual-multi'
 Plug 'bogado/file-line'
 Plug 'vim-utils/vim-interruptless'
-" Plug 'w0rp/ale'
-
-" ======== Snippets & Autocomplete ======================
-
-" Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
-
-" ======== Appearence ===================================
-
 Plug 'airblade/vim-gitgutter'
 Plug 'machakann/vim-highlightedyank'
 Plug 'arcticicestudio/nord-vim'
-
-" ======== tpope <3  ====================================
-
-" Plug 'tpope/vim-endwise'
+Plug 'christoomey/vim-tmux-navigator'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-rails',     { 'for': 'ruby' }
 Plug 'tpope/vim-surround'
@@ -72,8 +49,10 @@ Plug 'tpope/vim-git'
 Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-rhubarb'
 
+" Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
+Plug 'L3MON4D3/LuaSnip' | Plug 'honza/vim-snippets'
+
 " ======== Experimental =================================
-Plug 'christoomey/vim-tmux-navigator'
 
 " Plug 'nvim-lua/popup.nvim'
 " Plug 'nvim-lua/plenary.nvim'
@@ -81,9 +60,6 @@ Plug 'christoomey/vim-tmux-navigator'
 
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'neovim/nvim-lspconfig'
-
-Plug 'hrsh7th/nvim-compe'
-Plug 'hrsh7th/vim-vsnip'
 
 call plug#end()
 
@@ -178,12 +154,6 @@ let NERDTreeHijackNetrw      = 1
 
 let g:highlightedyank_highlight_duration = 400
 
-" --- Ultisnips
-
-let g:UltiSnipsExpandTrigger       = '<tab>'
-let g:UltiSnipsJumpForwardTrigger  = '<tab>'
-let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'
-
 " --- gitgutter
 
 let g:gitgutter_sign_added = '│'
@@ -191,25 +161,6 @@ let g:gitgutter_sign_modified = '│'
 let g:gitgutter_sign_removed = '│'
 let g:gitgutter_sign_modified_removed = '│'
 let g:gitgutter_sign_removed_first_line = '│'
-
-" --- ale
-
-" let g:ale_sign_error = 'x'
-" let g:ale_sign_warning = '│'
-" let g:ale_echo_msg_format = '[%severity%] %s'
-" let g:ale_lint_on_text_changed = 'never'
-" let g:ale_lint_on_insert_leave = 0
-" let g:ale_lint_delay = 0
-
-" let g:ale_linters = {
-" \   'typescriptreact': ['tslint'],
-" \   'javascript': ['tslint'],
-" \   'typescript': ['tslint'],
-" \}
-
-" let g:ale_fixers = {
-" \   'ruby': ['rubocop'],
-" \}
 
 " --- fzf
 
@@ -261,11 +212,6 @@ let g:gist_detect_filetype = 1
 let g:gist_post_private    = 1
 let g:gist_show_privates   = 1
 
-" --- vimux
-
-let g:vroom_use_vimux = 1
-
-
 
 " ========================================================
 " -> Autocommands
@@ -280,6 +226,8 @@ if has("autocmd")
 
   au FileType xml setlocal equalprg=xmllint\ --format\ --recover\ -\ 2>/dev/null
   au FileType json setlocal equalprg=python\ -m\ json.tool
+
+  au FileType markdown set wrap
 
   " Hide statusline
   au! FileType fzf
@@ -447,7 +395,7 @@ nnoremap <silent><expr><leader>b (expand('%') =~ 'NERD_tree' ? "\<C-w>\<C-w>" : 
 nnoremap <silent><expr><leader>gl (expand('%') =~ 'NERD_tree' ? "\<C-w>\<C-w>" : '').":Commits\<CR>"
 
 nnoremap <silent><leader>a :A<CR>
-nnoremap <silent><leader>x :ALEFix<CR>
+nnoremap <silent><leader>x <nop>
 nnoremap <silent><leader>n :NERDTreeToggle<CR>
 nnoremap <silent><leader>N :NERDTreeFind<CR>
 nnoremap <silent><leader>c <ESC>/\v^[<=>]{7}( .*\|$)<CR>
@@ -532,6 +480,7 @@ nnoremap <silent> gx :execute 'silent! !open ' . shellescape(expand('<cWORD>'), 
 lua <<EOF
 require'nvim-treesitter.configs'.setup {
   ensure_installed = "maintained", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
+  ignore_install = { "norg" },
   highlight = { enable = true },
   indent = { enable = true },
   autopairs = { enable = true },
@@ -560,10 +509,10 @@ local on_attach = function(client, bufnr)
   buf_set_keymap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
   buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
   -- buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-  buf_set_keymap('n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
-  buf_set_keymap('n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
-  buf_set_keymap('n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
-  buf_set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+  -- buf_set_keymap('n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
+  -- buf_set_keymap('n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
+  -- buf_set_keymap('n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
+  -- buf_set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
   buf_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
   buf_set_keymap('n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
   buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
@@ -586,40 +535,28 @@ for _, lsp in ipairs(servers) do
     }
   }
 end
-EOF
 
-lua << EOF
-vim.o.completeopt = "menuone,noselect"
 
-require'compe'.setup {
-  enabled = true;
-  autocomplete = true;
-  debug = false;
-  min_length = 1;
-  preselect = 'enable';
-  throttle_time = 80;
-  source_timeout = 200;
-  incomplete_delay = 400;
-  max_abbr_width = 100;
-  max_kind_width = 100;
-  max_menu_width = 100;
-  documentation = false;
 
-  source = {
-    path = true;
-    buffer = true;
-    calc = true;
-    vsnip = true;
-    nvim_lsp = true;
-    nvim_lua = true;
-    spell = true;
-    tags = true;
-    snippets_nvim = true;
-    treesitter = true;
-  };
-}
+
+
+
+
+
+
+require("luasnip.loaders.from_snipmate").load()
+
+local function prequire(...)
+local status, lib = pcall(require, ...)
+if (status) then return lib end
+    return nil
+end
+
+local luasnip = prequire('luasnip')
+local cmp = prequire("cmp")
+
 local t = function(str)
-  return vim.api.nvim_replace_termcodes(str, true, true, true)
+    return vim.api.nvim_replace_termcodes(str, true, true, true)
 end
 
 local check_back_space = function()
@@ -631,33 +568,33 @@ local check_back_space = function()
     end
 end
 
--- Use (s-)tab to:
---- move to prev/next item in completion menuone
---- jump to prev/next snippet's placeholder
 _G.tab_complete = function()
-  if vim.fn.pumvisible() == 1 then
-    return t "<C-n>"
-  elseif vim.fn.call("vsnip#available", {1}) == 1 then
-    return t "<Plug>(vsnip-expand-or-jump)"
-  elseif check_back_space() then
-    return t "<Tab>"
-  else
-    return vim.fn['compe#complete']()
-  end
+    if cmp and cmp.visible() then
+        cmp.select_next_item()
+    elseif luasnip and luasnip.expand_or_jumpable() then
+        return t("<Plug>luasnip-expand-or-jump")
+    elseif check_back_space() then
+        return t "<Tab>"
+    else
+        cmp.complete()
+    end
+    return ""
 end
 _G.s_tab_complete = function()
-  if vim.fn.pumvisible() == 1 then
-    return t "<C-p>"
-  elseif vim.fn.call("vsnip#jumpable", {-1}) == 1 then
-    return t "<Plug>(vsnip-jump-prev)"
-  else
-    -- If <S-Tab> is not working in your terminal, change it to <C-h>
-    return t "<S-Tab>"
-  end
+    if cmp and cmp.visible() then
+        cmp.select_prev_item()
+    elseif luasnip and luasnip.jumpable(-1) then
+        return t("<Plug>luasnip-jump-prev")
+    else
+        return t "<S-Tab>"
+    end
+    return ""
 end
 
 vim.api.nvim_set_keymap("i", "<Tab>", "v:lua.tab_complete()", {expr = true})
 vim.api.nvim_set_keymap("s", "<Tab>", "v:lua.tab_complete()", {expr = true})
 vim.api.nvim_set_keymap("i", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
 vim.api.nvim_set_keymap("s", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
+vim.api.nvim_set_keymap("i", "<C-E>", "<Plug>luasnip-next-choice", {})
+vim.api.nvim_set_keymap("s", "<C-E>", "<Plug>luasnip-next-choice", {})
 EOF
