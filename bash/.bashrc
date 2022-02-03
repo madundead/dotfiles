@@ -1,6 +1,5 @@
-[ -f ~/iCloud/secrets.sh ]           && . ~/iCloud/secrets.sh
+[ -f ~/ownCloud/secrets.sh ]         && . ~/ownCloud/secrets.sh
 [ -f /etc/bashrc ]                   && . /etc/bashrc
-[ -f /usr/local/etc/profile.d/z.sh ] && . /usr/local/etc/profile.d/z.sh
 [ -f /etc/bash_completion ]          && . /etc/bash_completion
 [ -f ~/.fzf.bash ]                   && . ~/.fzf.bash
 
@@ -32,35 +31,11 @@ export LC_ALL=en_US.UTF-8
 
 # fzf
 export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
-export FZF_DEFAULT_OPTS='--layout=reverse --inline-info'
 export FZF_CTRL_R_OPTS='--no-info'
-
-_gen_fzf_default_opts() {
-  local color00='#2E3440'
-  local color01='#3B4252'
-  local color02='#434C5E'
-  local color03='#4C566A'
-  local color04='#D8DEE9'
-  local color05='#E5E9F0'
-  local color06='#ECEFF4'
-  local color07='#8FBCBB'
-  local color08='#BF616A'
-  local color09='#D08770'
-  local color0A='#EBCB8B'
-  local color0B='#A3BE8C'
-  local color0C='#88C0D0'
-  local color0D='#81A1C1'
-  local color0E='#B48EAD'
-  local color0F='#5E81AC'
-
-export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS"\
-" --color=bg+:$color01,bg:$color00,spinner:$color0C,hl:$color0D"\
-" --color=fg:$color04,header:$color0D,info:$color0A,pointer:$color0C"\
-" --color=marker:$color0C,fg+:$color06,prompt:$color0A,hl+:$color0D"\
-" --color=gutter:$color00"
-}
-
-_gen_fzf_default_opts
+export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS
+  --height 100% --layout=reverse --border --cycle --info=inline
+  --bind=ctrl-d:preview-page-down
+  --bind=ctrl-u:preview-page-up"
 
 alias ~='cd ~'
 alias l='exa'
@@ -110,20 +85,15 @@ alias rdm='bin/rails db:migrate'
 alias rdr='bin/rails db:rollback'
 alias rds='bin/rails db:seed'
 
+alias d='docker'
 alias k='kubectl'
+alias dc='docker-compose'
 
-alias br='bin/rails'
 alias rc='bin/rails c'
 alias rs='bin/rails s -p3001'
 
-alias mux='tmuxinator start'
-
 alias ibrew='arch -x86_64 /usr/local/bin/brew'
 alias mbrew='arch -arm64e /opt/homebrew/bin/brew'
-
-yta() {
-  streamlink $1 audio_mp4
-}
 
 fzf_kill() {
     local pids=$(
@@ -132,12 +102,6 @@ fzf_kill() {
     if [[ -n $pids ]]; then
         echo "$pids" | xargs kill -9 "$@"
     fi
-}
-
-unalias z 2> /dev/null
-z() {
-  [ $# -gt 0 ] && _z "$*" && return
-  cd "$(_z -l 2>&1 | fzf --height 40% --nth 2.. --reverse --inline-info +s --tac --query "${*##-* }" | sed 's/^[0-9,.]* *//')"
 }
 
 alias fkill='fzf_kill'
