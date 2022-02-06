@@ -18,6 +18,20 @@ local function nmap(lhs, rhs, opts)
   map('n', lhs, rhs, opts)
 end
 
+local install_path = vim.fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
+if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
+    PACKER_BOOTSTRAP = vim.fn.system({
+        'git',
+        'clone',
+        '--depth',
+        '1',
+        'https://github.com/wbthomason/packer.nvim',
+        install_path,
+    })
+    print('Installing packer close and reopen Neovim...')
+    vim.cmd('packadd packer.nvim')
+end
+
 require('packer').startup(function()
   use 'wbthomason/packer.nvim'
   use 'arcticicestudio/nord-vim'
@@ -28,6 +42,8 @@ require('packer').startup(function()
   use 'junegunn/fzf.vim'
   use 'junegunn/vim-easy-align'
   use 'christoomey/vim-tmux-navigator'
+  use 'airblade/vim-gitgutter'
+  use 'tpope/vim-repeat'
 end)
 
 cmd('au TextYankPost * lua vim.highlight.on_yank { timeout = 250 }')
@@ -92,6 +108,13 @@ g.mapleader = ' '
 g.netrw_banner    = 0
 g.netrw_liststyle = 4
 
+-- git-gutter
+g.gitgutter_sign_added = '│'
+g.gitgutter_sign_modified = '│'
+g.gitgutter_sign_removed = '│'
+g.gitgutter_sign_modified_removed = '│'
+g.gitgutter_sign_removed_first_line = '│'
+
 -- fzf
 g.fzf_preview_window = ''
 g.fzf_layout = { window = { width = 0.6, height = 0.6, border = 'sharp' } }
@@ -147,8 +170,11 @@ map('v', 'ga', ':EasyAlign<CR>')
 -- Tree-sitter
 require('nvim-treesitter.configs').setup {
   -- one of "all", "maintained" (parsers with maintainers), or a list of languages
-  ensure_installed = 'maintained',
-  ignore_install = { 'norg' },
+  ensure_installed = { 'bash', 'c', 'cpp', 'c_sharp', 'clojure', 'cmake', 'comment', 'commonlisp',
+    'css', 'dockerfile', 'elixir', 'erlang', 'fish', 'go', 'html', 'http', 'java',
+    'javascript', 'json', 'kotlin', 'latex', 'lua', 'make', 'markdown', 'perl', 'php',
+    'python', 'ruby', 'rust', 'scss', 'swift', 'toml', 'tsx', 'vim', 'vue', 'yaml' },
+  -- ignore_install = { 'norg' },
   highlight = { enable = true },
   indent = { enable = true },
   autopairs = { enable = true },
