@@ -18,18 +18,9 @@ local function nmap(lhs, rhs, opts)
   map('n', lhs, rhs, opts)
 end
 
-local install_path = vim.fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
+local install_path = vim.fn.stdpath 'data' .. '/site/pack/packer/start/packer.nvim'
 if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
-    PACKER_BOOTSTRAP = vim.fn.system({
-        'git',
-        'clone',
-        '--depth',
-        '1',
-        'https://github.com/wbthomason/packer.nvim',
-        install_path,
-    })
-    print('Installing packer close and reopen Neovim...')
-    vim.cmd('packadd packer.nvim')
+  vim.fn.execute('!git clone https://github.com/wbthomason/packer.nvim ' .. install_path)
 end
 
 require('packer').startup(function()
@@ -44,6 +35,8 @@ require('packer').startup(function()
   use 'christoomey/vim-tmux-navigator'
   use 'airblade/vim-gitgutter'
   use 'tpope/vim-repeat'
+  use 'scrooloose/nerdtree' -- other file tree plugins are too fancy
+  use 'ellisonleao/glow.nvim'
 end)
 
 cmd('au TextYankPost * lua vim.highlight.on_yank { timeout = 250 }')
@@ -74,7 +67,7 @@ opt.list          = true            -- List mode
 opt.timeoutlen    = 1000            -- Delay for mappings
 opt.ttimeoutlen   = 0               -- Delay between modes
 opt.shellcmdflag  = '-ic'           -- Enables aliases from .bashrc in :! commands
-opt.grepprg       = 'rg -i --vimgrep'           -- TODO: check for existance of rg otherwise fallback to grep
+opt.grepprg       = 'rg -i --vimgrep'           -- TODO: check for existence of rg otherwise fallback to grep
 opt.diffopt:append({ vertical = true })         -- Vertical splits in diff mode
 opt.shortmess:append({ I = true })              -- Remove welcome message (:intro)
 opt.shortmess:append({ a = true })              -- Short messages for everything
@@ -118,6 +111,13 @@ g.gitgutter_sign_removed_first_line = '│'
 -- fzf
 g.fzf_preview_window = ''
 g.fzf_layout = { window = { width = 0.6, height = 0.6, border = 'sharp' } }
+
+-- NERDTree
+g.NERDTreeWinPos           = "right"
+g.NERDTreeMinimalUI        = 1
+g.NERDTreeDirArrows        = 1
+g.NERDTreeAutoDeleteBuffer = 1
+g.NERDTreeHijackNetrw      = 1
 
 --- Mappings
 -- Essentials
@@ -165,6 +165,13 @@ nmap('<leader>fo', ":call fzf#run(fzf#wrap(fzf#vim#with_preview({ 'source': 'fd 
 -- vim-easy-align
 map('x', 'ga', ':EasyAlign<CR>') -- TODO: this should allow for gaip, but does not
 map('v', 'ga', ':EasyAlign<CR>')
+
+-- nvim-tree.lua
+nmap('<leader>n', ':NERDTreeToggle<CR>')
+nmap('<leader>N', ':NERDTreeFind<CR>')
+
+-- glow.vim
+nmap('<leader>p', ':Glow<CR>')
 
 -- Plugin config
 -- Tree-sitter
