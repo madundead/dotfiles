@@ -1,15 +1,13 @@
 --------------------------------------------------------------------------
 hyperModeAppMappings = {
-  { 'a', 'Alacritty' },                 -- "A" for "Alacritty"
-  { 's', 'Safari' },                    -- "S" for "Safari"
-  { 't', 'Telegram' },                  -- "T" for "Telegram"
-  { 'd', 'Discord' },                   -- "D" for "Discord"
-  { 'f', 'Finder' },                    -- "F" for "Finder"
-  { 'g', 'Mail' },                      -- "G" for "Gmail"
-  { 'z', 'Slack' },                     -- "C" for "Chat"
-  { 'n', 'Notion' },                    -- "N" for "Notion"
-  { 'm', 'Spotify' },                   -- "M" for "Music"
-  { 'w', 'World of Warcraft Classic' }, -- "W" for "World of Warcraft"
+  { 'a', 'Alacritty' },     -- "A" for "Alacritty"
+  { 's', 'Slack' },         -- "S" for "Slack"
+  { 't', 'Telegram' },      -- "T" for "Telegram"
+  { 'd', 'Discord' },       -- "D" for "Discord"
+  { 'f', 'Finder' },        -- "F" for "Finder"
+  { 'm', 'Spark' },         -- "M" for "Mail"
+  { 'y', 'Spotify' },       -- "Y" for "SpotifY"
+  { 'b', 'Brave Browser' }  -- "B" for "Brave" or "Browser"
 }
 
 for i, mapping in ipairs(hyperModeAppMappings) do
@@ -17,7 +15,7 @@ for i, mapping in ipairs(hyperModeAppMappings) do
   local app = mapping[2]
   hs.hotkey.bind({'shift', 'ctrl', 'alt', 'cmd'}, key, function()
     if (type(app) == 'string') then
-      hs.application.open(app)
+      hs.application.launchOrFocus(app)
     elseif (type(app) == 'function') then
       app()
     else
