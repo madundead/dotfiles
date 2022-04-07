@@ -37,6 +37,14 @@ require('packer').startup(function()
   use 'tpope/vim-repeat'
   use 'scrooloose/nerdtree' -- other file tree plugins are too fancy
   use 'ellisonleao/glow.nvim'
+
+  -- Snippets
+  use 'L3MON4D3/LuaSnip'
+  use 'hrsh7th/nvim-cmp'
+  use 'saadparwaiz1/cmp_luasnip'
+  use 'rafamadriz/friendly-snippets'
+
+  use 'neovim/nvim-lspconfig'
 end)
 
 cmd('au TextYankPost * lua vim.highlight.on_yank { timeout = 250 }')
@@ -64,6 +72,7 @@ opt.writebackup   = false           -- No backups
 opt.swapfile      = false           -- No backups
 opt.mouse         = 'a'             -- Support mouse (for proper mouse highlight)
 opt.list          = true            -- List mode
+opt.listchars     = { trail = '·', tab = '->' }
 opt.timeoutlen    = 1000            -- Delay for mappings
 opt.ttimeoutlen   = 0               -- Delay between modes
 opt.shellcmdflag  = '-ic'           -- Enables aliases from .bashrc in :! commands
@@ -83,17 +92,10 @@ opt.wildignore:append('*.gem')
 opt.wildignore:append('log/**,tmp/**')
 opt.wildignore:append('*.png,*.jpg,*.gif')
 
--- TODO :h gcr
--- " Disable cursor blink
--- set gcr=a:blinkon0
 -- " Conceal mostly for markdown TODO :h conceallevel
 -- set conceallevel=2
 -- " Highlight VCS conflict markers TODO: translate to LUA
 -- match ErrorMsg '^\(<\|=\|>\)\{7\}\([^=].\+\)\?$'
--- " Russian keymap support TODO: do I still need this?
--- set langmap=ФИСВУАПРШОЛДЬТЩЗЙКЫЕГМЦЧНЯЖ;ABCDEFGHIJKLMNOPQRSTUVWXYZ:,фисвуапршолдьтщзйкыегмцчня;abcdefghijklmnopqrstuvwxyz
--- " W invokes sudo TODO
--- command! W w !sudo tee % > /dev/null
 
 g.mapleader = ' '
 
@@ -185,4 +187,144 @@ require('nvim-treesitter.configs').setup {
   highlight = { enable = true },
   indent = { enable = true },
   autopairs = { enable = true },
+}
+
+-------------------------------
+
+-- TODO: figure out how to simplify the snippets config
+-- TODO: figure out how to create custom snippets
+-- TODO: is it possible to use luasnip without nvim-cpm?
+
+local function prequire(...)
+local status, lib = pcall(require, ...)
+if (status) then return lib end
+    return nil
+end
+
+local luasnip = prequire('luasnip')
+local cmp = prequire("cmp")
+
+local t = function(str)
+    return vim.api.nvim_replace_termcodes(str, true, true, true)
+end
+
+local check_back_space = function()
+    local col = vim.fn.col('.') - 1
+    if col == 0 or vim.fn.getline('.'):sub(col, col):match('%s') then
+        return true
+    else
+        return false
+    end
+end
+
+_G.tab_complete = function()
+    if cmp and cmp.visible() then
+        cmp.select_next_item()
+    elseif luasnip and luasnip.expand_or_jumpable() then
+        return t("<Plug>luasnip-expand-or-jump")
+    elseif check_back_space() then
+        return t "<Tab>"
+    else
+        cmp.complete()
+    end
+    return ""
+end
+_G.s_tab_complete = function()
+    if cmp and cmp.visible() then
+        cmp.select_prev_item()
+    elseif luasnip and luasnip.jumpable(-1) then
+        return t("<Plug>luasnip-jump-prev")
+    else
+        return t "<S-Tab>"
+    end
+    return ""
+end
+
+vim.api.nvim_set_keymap("i", "<Tab>", "v:lua.tab_complete()", {expr = true})
+vim.api.nvim_set_keymap("s", "<Tab>", "v:lua.tab_complete()", {expr = true})
+vim.api.nvim_set_keymap("i", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
+vim.api.nvim_set_keymap("s", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
+vim.api.nvim_set_keymap("i", "<C-E>", "<Plug>luasnip-next-choice", {})
+vim.api.nvim_set_keymap("s", "<C-E>", "<Plug>luasnip-next-choice", {})
+
+require("luasnip.loaders.from_vscode").lazy_load()
+
+
+
+----------- LSP
+require'lspconfig'.solargraph.setup{}
+local nvim_lsp = require('lspconfig')
+
+-- Use an on_attach function to only map the following keys
+-- after the language server attaches to the current buffer
+local on_attach = function(client, bufnr)
+  local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
+  local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
+
+  -- Enable completion triggered by <c-x><c-o>
+  buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+  -- Mappings.
+  local opts = { noremap=true, silent=true }
+
+  -- See `:help vim.lsp.*` for documentation on any of the below functions
+  buf_set_keymap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
+  buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+  buf_set_keymap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
+  buf_set_keymap('n', '<space>=', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+end
+
+-- Use a loop to conveniently call 'setup' on multiple servers and
+-- map buffer local keybindings when the language server attaches
+local servers = { 'solargraph' }
+for _, lsp in ipairs(servers) do
+  nvim_lsp[lsp].setup {
+    on_attach = on_attach,
+    flags = {
+      debounce_text_changes = 150,
+    }
+  }
+end
+
+local cmp = require 'cmp'
+cmp.setup {
+  snippet = {
+    expand = function(args)
+      require('luasnip').lsp_expand(args.body)
+    end,
+  },
+  mapping = {
+    ['<C-p>'] = cmp.mapping.select_prev_item(),
+    ['<C-n>'] = cmp.mapping.select_next_item(),
+    ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+    ['<C-f>'] = cmp.mapping.scroll_docs(4),
+    ['<C-Space>'] = cmp.mapping.complete(),
+    ['<C-e>'] = cmp.mapping.close(),
+    ['<CR>'] = cmp.mapping.confirm {
+      behavior = cmp.ConfirmBehavior.Replace,
+      select = true,
+    },
+    ['<Tab>'] = function(fallback)
+      if cmp.visible() then
+        cmp.select_next_item()
+      elseif luasnip.expand_or_jumpable() then
+        vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<Plug>luasnip-expand-or-jump', true, true, true), '')
+      else
+        fallback()
+      end
+    end,
+    ['<S-Tab>'] = function(fallback)
+      if cmp.visible() then
+        cmp.select_prev_item()
+      elseif luasnip.jumpable(-1) then
+        vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<Plug>luasnip-jump-prev', true, true, true), '')
+      else
+        fallback()
+      end
+    end,
+  },
+  sources = {
+    { name = 'nvim_lsp' },
+    { name = 'luasnip' },
+  },
 }
