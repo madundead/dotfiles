@@ -162,7 +162,7 @@ map('v', '>', '>gv')
 -- fzf
 nmap('<leader>ff', ':Files<CR>')
 nmap('<leader>ft', ':Files ~/Tmp<CR>')
-nmap('<leader>fo', ":call fzf#run(fzf#wrap(fzf#vim#with_preview({ 'source': 'fd . --type f --extension=md --follow --exclude .git ~/ownCloud/Obsidian/Personal' })))<CR>", { silent = true })
+nmap('<leader>fo', ":call fzf#run(fzf#wrap(fzf#vim#with_preview({ 'source': 'fd . --type f --extension=md --follow --exclude .git ~/Syncthing/Obsidian/Personal' })))<CR>", { silent = true })
 
 -- vim-easy-align
 map('x', 'ga', ':EasyAlign<CR>') -- TODO: this should allow for gaip, but does not

@@ -7,7 +7,6 @@
 " -> General
 " ========================================================
 
-set fileencoding=utf-8
 nnoremap <Space> <Nop>
 let mapleader=' '
 
@@ -168,9 +167,10 @@ if has('nvim') || has('gui_running')
   let $FZF_DEFAULT_OPTS .= ' --no-info --color=gutter:#2E3440'
 endif
 
-command! -nargs=? -complete=dir AF
+" Obsidian
+command! FO
   \ call fzf#run(fzf#wrap(fzf#vim#with_preview({
-  \   'source': 'fd --type f --hidden --follow --exclude .git --no-ignore . '.expand(<q-args>)
+  \   'source': 'fd . --type f --extension=md --follow --exclude .git ~/Syncthing/Obsidian/Personal'
   \ })))
 
 let g:fzf_preview_window = ''
@@ -415,6 +415,7 @@ nnoremap <silent><leader>ga :Gwrite<CR>
 nnoremap <silent><leader>gs :Git<CR>
 nnoremap <silent><leader>gb :Git blame<CR>
 
+nnoremap <silent><leader>t :tabnew<CR>
 nnoremap <silent><Tab> :tabnext<CR>
 nnoremap <silent><S-Tab> :tabprevious<CR>
 
@@ -456,16 +457,11 @@ xmap ga      <Plug>(EasyAlign)
 nmap ga      <Plug>(EasyAlign)
 
 
-nnoremap <silent><expr><leader>e (expand('%') =~ 'NERD_tree' ? "\<C-w>\<C-w>" : '').":Files ~/Tmp\<CR>"
-nnoremap <leader>E :e ~/Tmp/
+nnoremap <silent><expr><leader>ft (expand('%') =~ 'NERD_tree' ? "\<C-w>\<C-w>" : '').":Files ~/Tmp\<CR>"
+nnoremap <leader>T :e ~/Tmp/
 
-" TODO Ignore .obsidian/
-nnoremap <silent><expr><leader>o (expand('%') =~ 'NERD_tree' ? "\<C-w>\<C-w>" : '').":Files ~/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/Personal\<CR>"
-nnoremap <leader>O :e ~/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/Personal
-
-" EXPERIMENTAL STUFF
-nnoremap <leader>ft <cmd>Telescope find_files<cr>
-" nmap <leader>ft   <cmd>Telescope live_grep<cr>
+nnoremap <silent><expr><leader>fo (expand('%') =~ 'NERD_tree' ? "\<C-w>\<C-w>" : '').":FO<CR>"
+nnoremap <leader>O :e ~/ownCloud/Obsidian/Personal
 
 " undo break points
 inoremap , ,<c-g>u
@@ -473,8 +469,7 @@ inoremap . .<c-g>u
 inoremap ! !<c-g>u
 inoremap ? ?<c-g>u
 
-" Fix gx
-" https://github.com/vim/vim/issues/4738#issuecomment-856925080
+" Fix gx https://github.com/vim/vim/issues/4738#issuecomment-856925080
 nnoremap <silent> gx :execute 'silent! !open ' . shellescape(expand('<cWORD>'), 1)<cr>
 
 lua <<EOF
@@ -535,9 +530,6 @@ for _, lsp in ipairs(servers) do
     }
   }
 end
-
-
-
 
 
 
