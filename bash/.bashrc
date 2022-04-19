@@ -1,7 +1,8 @@
-[ -f ~/ownCloud/secrets.sh ]         && . ~/ownCloud/secrets.sh
-[ -f /etc/bashrc ]                   && . /etc/bashrc
-[ -f /etc/bash_completion ]          && . /etc/bash_completion
-[ -f ~/.fzf.bash ]                   && . ~/.fzf.bash
+[ -f /etc/bashrc ]            && . /etc/bashrc
+[ -f /etc/bash_completion ]   && . /etc/bash_completion
+[ -f ~/.fzf.bash ]            && . ~/.fzf.bash
+[ -f ~/.cargo/env ]           && . ~/.cargo/env
+[ -f ~/Syncthing/secrets.sh ] && . ~/Syncthing/secrets.sh
 
 # Save 10,000 lines of history in memory
 HISTSIZE=10000
@@ -50,6 +51,7 @@ alias be='bundle exec'
 alias ..='cd ..'
 alias ...='cd ../..'
 alias md='mkdir -p'
+alias j='jira'
 
 alias gco='git checkout'
 alias gcom='git checkout master'
@@ -95,6 +97,8 @@ alias rs='bin/rails s -p3001'
 alias ibrew='arch -x86_64 /usr/local/bin/brew'
 alias mbrew='arch -arm64e /opt/homebrew/bin/brew'
 
+alias proxy='kubectl port-forward -n staging svc/tinyproxy-svc 8888:8888'
+
 fzf_kill() {
     local pids=$(
       ps -f -u $USER | sed 1d | fzf --multi | tr -s [:blank:] | cut -d' ' -f3
@@ -108,7 +112,6 @@ alias fkill='fzf_kill'
 
 # Homebrew stuff
 if [ -x /usr/local/bin/brew ]; then
-    # export PATH=/usr/local/bin:/usr/local/sbin:$PATH
     export PATH=/opt/homebrew/bin:/opt/homebrew/opt:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin:$PATH
     export MANPATH=/usr/local/share/man:$MANPATH
 fi
@@ -118,38 +121,5 @@ export PATH="$HOME/.cargo/bin:$PATH"
 if [ -e ~/.git-prompt.sh ]; then
   source ~/.git-prompt.sh
 fi
+
 PS1='\W$(__git_ps1 ":%s") '
-
-function q() { if [ -z "$1" ]; then return 1; fi; kubectl exec -n $1 -it $(kubectl get pods -n $1 -l product=quoting,app=quoting-rails-webserver -o=custom-columns=NAME:.metadata.name | tail -1) ${@:2}; }
-function o() { if [ -z "$1" ]; then return 1; fi; kubectl exec -n $1 -it $(kubectl get pods -n $1 -l product=origin,app=origin-rails-webserver -o=custom-columns=NAME:.metadata.name | tail -1) ${@:2}; }
-function olb() { if [ -z "$1" ]; then return 1; fi; kubectl exec -n $1 -it $(kubectl get pods -n $1 -l product=online-bind,app=online-bind-rails-webserver -o=custom-columns=NAME:.metadata.name | tail -1) ${@:2}; }
-function qstag() { kubectl exec -n staging -it $(kubectl get pods -n staging -l product=quoting,app=quoting-rails-webserver -o=custom-columns=NAME:.metadata.name | tail -1) ${@:2}; }
-
-function _calcram() {
-  local sum
-  sum=0
-  for i in `ps aux | grep -i "$1" | grep -v "grep" | awk '{print $6}'`; do
-    sum=$(($i + $sum))
-  done
-  sum=$(echo "scale=2; $sum / 1024.0" | bc)
-  echo $sum
-}
-
-# Show how much RAM application uses.
-# $ ram safari
-# # => safari uses 154.69 MBs of RAM
-function ram() {
-  local sum
-  local app="$1"
-  if [ -z "$app" ]; then
-    echo "First argument - pattern to grep from processes"
-    return 0
-  fi
-
-  sum=$(_calcram $app)
-  if [[ $sum != "0" ]]; then
-    echo "${fg[blue]}${app}${reset_color} uses ${fg[green]}${sum}${reset_color} MBs of RAM"
-  else
-    echo "No active processes matching pattern '${fg[blue]}${app}${reset_color}'"
-  fi
-}

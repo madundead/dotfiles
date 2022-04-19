@@ -7,7 +7,8 @@ hyperModeAppMappings = {
   { 'f', 'Finder' },        -- "F" for "Finder"
   { 'm', 'Spark' },         -- "M" for "Mail"
   { 'y', 'Spotify' },       -- "Y" for "SpotifY"
-  { 'b', 'Brave Browser' }  -- "B" for "Brave" or "Browser"
+  { 'b', 'Brave Browser' }, -- "B" for "Brave" or "Browser"
+  { 'o', 'Obsidian' }       -- "O" for "Obsidian"
 }
 
 for i, mapping in ipairs(hyperModeAppMappings) do
