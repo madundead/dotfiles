@@ -47,6 +47,7 @@ require('packer').startup(function()
   use 'neovim/nvim-lspconfig'
 end)
 
+cmd("au BufNewFile,BufRead Capfile,Gemfile,Vagrantfile,Brewfile setl ft=ruby")
 cmd('au TextYankPost * lua vim.highlight.on_yank { timeout = 250 }')
 cmd('colorscheme nord')
 
