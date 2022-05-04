@@ -90,8 +90,12 @@ alias rdr='bin/rails db:rollback'
 alias rds='bin/rails db:seed'
 
 alias d='docker'
-alias k='kubectl'
 alias dc='docker-compose'
+alias dcu='docker-compose up -d'
+alias dcd='docker-compose stop'
+alias dcr='docker-compose restart'
+alias dcl='docker-compose logs -tf --tail="50"'
+alias k='kubectl'
 
 alias rc='bin/rails c'
 alias rs='bin/rails s -p3001'

@@ -7,6 +7,8 @@ eval "$(rbenv init - --no-rehash)"
 
 eval "$(zoxide init bash)"
 
+. /opt/homebrew/opt/asdf/libexec/asdf.sh
+
 # eval "$(docker-machine env default)"
 
 # export NVM_DIR="$HOME/.nvm"
@@ -14,6 +16,7 @@ eval "$(zoxide init bash)"
 
 export PATH="/usr/local/opt/icu4c/bin:$PATH"
 export PATH="/usr/local/opt/icu4c/sbin:$PATH"
+export PATH="/opt/homebrew/sbin:$PATH"
 export PATH="/opt/homebrew/opt/avr-gcc@8/bin:$PATH"
 export PATH="/opt/homebrew/opt/arm-gcc-bin@8/bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
