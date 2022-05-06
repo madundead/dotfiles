@@ -45,6 +45,16 @@ require('packer').startup(function()
   use 'rafamadriz/friendly-snippets'
 
   use 'neovim/nvim-lspconfig'
+
+  -- tpope
+  use 'tpope/vim-fugitive'
+  use 'tpope/vim-rails'
+
+  -- tests
+  use 'vim-test/vim-test'
+  use 'benmills/vimux'
+
+  use 'dyng/ctrlsf.vim'
 end)
 
 cmd("au BufNewFile,BufRead Capfile,Gemfile,Vagrantfile,Brewfile setl ft=ruby")
@@ -57,13 +67,23 @@ opt.shiftwidth    = 2               -- Numbers of spaces to (auto)indent
 opt.expandtab     = true            -- Tabs to spaces
 opt.clipboard     = 'unnamed'       -- Share clipboard with the OS
 opt.number        = true            -- Display line numbers
-opt.fillchars     = 'diff:⣿,vert:│' -- Nicer separators
+opt.fillchars = {
+  vert = '▕',   -- alternatives │
+  eob = ' ',    -- suppress ~ at EndOfBuffer
+  msgsep = '‾',
+  diff = '⣿',
+  fold = ' ',
+  foldopen = '▾',
+  foldsep = '│',
+  foldclose = '▸',
+}
 opt.synmaxcol     = 500             -- Do not try to highlight lines longer than 500 characters
 opt.lazyredraw    = true            -- Do not redraw while running macros
 opt.showmatch     = true            -- Show matching braces
 opt.matchtime     = 2               -- Show matching braces for 2 tenths of second
 opt.showmode      = true            -- Shows when you are in insert mode
 opt.title         = true            -- Show title in console status bar
+opt.laststatus    = 3
 opt.wrap          = false           -- Dont wrap lines
 opt.scrolloff     = 5               -- Keep 5 rows on the screen when scrolling
 opt.sidescrolloff = 15              -- Horizontal scrolloff
@@ -122,6 +142,26 @@ g.NERDTreeDirArrows        = 1
 g.NERDTreeAutoDeleteBuffer = 1
 g.NERDTreeHijackNetrw      = 1
 
+-- vim-test
+g['test#strategy'] = 'vimux'
+
+-- CtrlSF
+g.ctrlsf_ackprg         = 'rg'
+g.ctrlsf_regex_pattern  = 1
+g.ctrlsf_case_sensitive = 'smart'
+g.ctrlsf_default_root   = 'project'
+g.ctrlsf_context        = '-B 1 -A 1'
+g.ctrlsf_position       = 'bottom'
+g.ctrlsf_winsize        = '40%'
+g.ctrlsf_mapping        = {
+  next = 'n',
+  prev = 'N',
+}
+
+-- fzf
+g.fzf_preview_window = ''
+g.fzf_layout = { window = { width = 0.6, height = 0.6, border = 'sharp' } }
+
 --- Mappings
 -- Essentials
 nmap(';', ':')
@@ -175,6 +215,21 @@ nmap('<leader>N', ':NERDTreeFind<CR>')
 
 -- glow.vim
 nmap('<leader>p', ':Glow<CR>')
+
+-- fugitive.vim
+nmap('<leader>ga',':Gwrite<CR>')
+nmap('<leader>gs',':Git<CR>')
+nmap('<leader>gb',':Git blame<CR>')
+
+-- rails-vim
+nmap('<leader>a', ':A<CR>')
+
+-- test
+nmap('<leader>r', ':TestFile<CR>')
+nmap('<leader>R', ':TestSuite<CR>')
+
+-- CtrlSF
+nmap('<C-f>', '<Plug>CtrlSFPrompt')
 
 -- Plugin config
 -- Tree-sitter
