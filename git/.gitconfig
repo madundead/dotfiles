@@ -1,7 +1,6 @@
 [user]
-  email = kostya.b@matic.com
+  email = madundead@gmail.com
   name = Konstantin Bukley
-  signingkey = 0EBBF5ABB284C942
 
 [includeIf "gitdir:~/Development/work/"]
   path = ~/Development/work/.gitconfig
