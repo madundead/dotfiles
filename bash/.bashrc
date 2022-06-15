@@ -1,4 +1,5 @@
-[ -f /etc/bashrc ]            && . /etc/bashrc
+[ -f /opt/homebrew/opt/asdf/libexec/asdf.sh ] && . /opt/homebrew/opt/asdf/libexec/asdf.sh
+# [ -f /etc/bashrc ]            && . /etc/bashrc
 [ -f /etc/bash_completion ]   && . /etc/bash_completion
 [ -f ~/.fzf.bash ]            && . ~/.fzf.bash
 [ -f ~/.cargo/env ]           && . ~/.cargo/env
@@ -13,6 +14,8 @@ HISTCONTROL=ignoreboth
 # Ignore more
 HISTIGNORE='ls:ll:ls -alh:pwd:clear:history'
 HISTIGNORE=$HISTIGNORE':gcom:gcob:gd:gdc:gc:gca:gcw:gs:ga:grm:gup:gp:gpf:gpt:gb:gg:gl:gr:gr1:gh'
+HISTIGNORE=$HISTIGNORE':v:vi:nvim'
+HISTIGNORE=$HISTIGNORE':k:kp:ks:d:dc:dcu:dcd:dcr:dcl'
 # Immediately store command to the history
 PROMPT_COMMAND='history -a'
 
@@ -24,7 +27,7 @@ shopt -s checkhash
 shopt -s cmdhist # save multi-line commands in one
 
 export BASH_SILENCE_DEPRECATION_WARNING=1
-export RUBY_CONFIGURE_OPTS="--with-openssl-dir=/usr/local/opt/openssl@1.1"
+export RUBY_CONFIGURE_OPTS="--with-openssl-dir=/opt/homebrew/opt/openssl@1.1"
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:.:/usr/local/lib
 export EDITOR=nvim
 export LANG=en_US.UTF-8
@@ -95,6 +98,8 @@ alias dcd='docker-compose stop'
 alias dcr='docker-compose restart'
 alias dcl='docker-compose logs -tf --tail="50"'
 alias k='kubectl'
+alias kp='kubectx matic-production && kubens production'
+alias ks='kubectx matic-staging && kubens staging'
 
 alias rc='bin/rails c'
 alias rs='bin/rails s -p3001'
@@ -116,14 +121,22 @@ fzf_kill() {
 alias fkill='fzf_kill'
 
 # Homebrew stuff
-if [ -x /usr/local/bin/brew ]; then
-    export PATH=/opt/homebrew/bin:/opt/homebrew/opt:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin:$PATH
-    export MANPATH=/usr/local/share/man:$MANPATH
-fi
-
+export MANPATH=/usr/local/share/man:$MANPATH
+export PATH=/opt/homebrew/bin:/opt/homebrew/opt:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin:$PATH
 export PATH="$HOME/.cargo/bin:$PATH"
+export PATH="/usr/local/opt/icu4c/bin:$PATH"
+export PATH="/usr/local/opt/icu4c/sbin:$PATH"
+export PATH="/opt/homebrew/sbin:$PATH"
+export PATH="/opt/homebrew/opt/avr-gcc@8/bin:$PATH"
+export PATH="/opt/homebrew/opt/arm-gcc-bin@8/bin:$PATH"
+export PATH="/usr/local/sbin:$PATH"
+export PATH="/usr/local/opt/avr-gcc@8/bin:$PATH"
+export PATH="/usr/local/opt/arm-gcc-bin@8/bin:$PATH"
+export PATH="/usr/local/opt/arm-gcc-bin@8/bin:$PATH"
 
-if [ -e ~/.git-prompt.sh ]; then
+eval "$(zoxide init bash)"
+
+if [ -s ~/.git-prompt.sh ]; then
   source ~/.git-prompt.sh
 fi
 
