@@ -21,6 +21,7 @@ brew 'exa'
 brew 'fd'
 brew 'fzf'
 brew 'git'
+brew 'glow'
 brew 'htop'
 brew 'jq'
 brew 'kubectl'
@@ -76,3 +77,4 @@ cask 'vlc'
 cask 'wkhtmltopdf'
 
 mas 'Spark', id: 1176895641
+mas 'Soma FM', id: 449155338
