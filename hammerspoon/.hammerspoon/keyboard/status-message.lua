@@ -31,8 +31,8 @@ statusmessage.new = function(messageText)
         h = styledTextSize.h + 6
       }
     )
-    background:setRoundedRectRadii(10, 10)
-    background:setFillColor({ red = 0, green = 0, blue = 0, alpha=0.6 })
+    -- background:setRoundedRectRadii(10, 10)
+    background:setFillColor({ red = 255, green = 0, blue = 0, alpha=0.8 })
 
     return background, text
   end

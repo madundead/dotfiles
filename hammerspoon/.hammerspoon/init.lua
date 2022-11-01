@@ -8,7 +8,8 @@ hyperModeAppMappings = {
   { 'm', 'Spark' },         -- "M" for "Mail"
   { 'y', 'Spotify' },       -- "Y" for "SpotifY"
   { 'b', 'Brave Browser' }, -- "B" for "Brave" or "Browser"
-  { 'o', 'Obsidian' }       -- "O" for "Obsidian"
+  { 'o', 'Obsidian' },      -- "O" for "Obsidian"
+  { 'k', 'KeePassXC' }      -- "K" for "Keepass"
 }
 
 for i, mapping in ipairs(hyperModeAppMappings) do
@@ -268,7 +269,7 @@ function getModifiersStr(modifiers)
 end
 
 local msgStr = getModifiersStr(modifiers)
-msgStr = 'Window Layout Mode (' .. msgStr .. (string.len(msgStr) > 0 and '+' or '') .. trigger .. ')'
+msgStr = 'Window Layout Mode'
 
 for i, mapping in ipairs(mappings) do
   local modifiers, trigger, winFunction = table.unpack(mapping)
