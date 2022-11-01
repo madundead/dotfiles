@@ -6,7 +6,22 @@ require('nvim-treesitter.configs').setup {
     'javascript', 'json', 'kotlin', 'latex', 'lua', 'make', 'markdown', 'perl', 'php',
     'python', 'ruby', 'rust', 'scss', 'swift', 'toml', 'tsx', 'vim', 'vue', 'yaml' },
   -- ignore_install = { 'norg' },
-  highlight = { enable = true },
-  indent = { enable = true },
+  highlight = {
+    enable = true,
+    additional_vim_regex_highlighting = false,
+  },
+  context_commentstring = {
+    enable = true,
+    enable_autocmd = false,
+  },
+  rainbow = {
+    enable = true,
+    disable = { "html" },
+    extended_mode = false,
+    max_file_lines = nil,
+  },
+  indent = { enable = false },
   autopairs = { enable = true },
+  autotag = { enable = true },
+  incremental_selection = { enable = true },
 }

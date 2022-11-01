@@ -10,6 +10,8 @@ end
 
 --- Mappings
 -- Essentials
+vim.g.mapleader = ' '
+
 nmap(';', ':')
 nmap(',,', '<C-^>')
 nmap('<leader>w', ':w<CR>') -- TODO: stop this madness, :h autowrite
@@ -46,19 +48,21 @@ map('v', 'K', ':m \'<-2<CR>gv=gv')
 map('v', '<', '<gv')
 map('v', '>', '>gv')
 
--- fzf
-nmap('<leader>ff', ':Files<CR>')
-nmap('<leader>ft', ':Files ~/Tmp<CR>')
--- TODO: make the path relative to ~/Syncthing/Obsidian/Personal
-nmap('<leader>fo', ":call fzf#run(fzf#wrap(fzf#vim#with_preview({ 'source': 'fd . --type f --extension=md --follow --exclude .git ~/Syncthing/Obsidian/Personal' })))<CR>", { silent = true })
+-- Telescope
+nmap('<leader>ff', ':lua require("telescope.builtin").find_files({ hidden = true })<CR>')
+-- TODO: change to Telescope
+-- nmap('<leader>ft', ':Files ~/Tmp<CR>')
+-- nmap('<leader>fo', ":call fzf#run(fzf#wrap(fzf#vim#with_preview({ 'source': 'fd . --type f --extension=md --follow --exclude .git ~/Syncthing/Obsidian/Personal' })))<CR>", { silent = true })
 
 -- vim-easy-align
 map('x', 'ga', ':EasyAlign<CR>') -- TODO: this should allow for gaip, but does not
 map('v', 'ga', ':EasyAlign<CR>')
 
 -- nvim-tree.lua
-nmap('<leader>n', ':NERDTreeToggle<CR>')
-nmap('<leader>N', ':NERDTreeFind<CR>')
+-- nmap('<leader>n', ':NERDTreeToggle<CR>')
+-- nmap('<leader>N', ':NERDTreeFind<CR>')
+nmap('<leader>n', ':NvimTreeToggle<CR>')
+nmap('<leader>N', ':NvimTreeFindFile<CR>')
 
 -- glow.vim
 nmap('<leader>p', ':Glow<CR>')

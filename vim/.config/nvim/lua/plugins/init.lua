@@ -7,9 +7,8 @@ end
 
 require('packer').startup(function()
   use 'wbthomason/packer.nvim'
-  use 'arcticicestudio/nord-vim'
+  use 'shaunsingh/nord.nvim'
   use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
-  use 'tpope/vim-commentary'
   use 'tpope/vim-surround'
   use { 'junegunn/fzf', run = 'cd ~/.fzf && ./install --all' }
   use 'junegunn/fzf.vim'
@@ -17,20 +16,23 @@ require('packer').startup(function()
   use 'christoomey/vim-tmux-navigator'
   use 'airblade/vim-gitgutter'
   use 'tpope/vim-repeat'
-  use 'scrooloose/nerdtree' -- other file tree plugins are too fancy
+  use 'nvim-tree/nvim-tree.lua'
+  use 'numtostr/comment.nvim'
   use 'ellisonleao/glow.nvim'
 
   -- Snippets
   use 'L3MON4D3/LuaSnip'
   use 'hrsh7th/nvim-cmp'
+  use 'hrsh7th/cmp-nvim-lsp'
   use 'saadparwaiz1/cmp_luasnip'
-  use 'rafamadriz/friendly-snippets'
+  use "rafamadriz/friendly-snippets"
 
   use 'neovim/nvim-lspconfig'
 
   -- tpope
   use 'tpope/vim-fugitive'
   use 'tpope/vim-rails'
+  use 'tpope/vim-rhubarb'
 
   -- tests
   use 'vim-test/vim-test'
@@ -38,25 +40,32 @@ require('packer').startup(function()
 
   use 'dyng/ctrlsf.vim'
 
-  use 'nvim-lua/plenary.nvim'
-  use 'nvim-telescope/telescope.nvim'
+  -- Fuzzy Finder Algorithm which requires local dependencies to be built. Only load if `make` is available
+  use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make', cond = vim.fn.executable "make" == 1 }
+  use { 'nvim-telescope/telescope.nvim', branch = '0.1.x', requires = { 'nvim-lua/plenary.nvim' } }
+
+  use "williamboman/mason.nvim"
+  use "WhoIsSethDaniel/mason-tool-installer.nvim"
+  use "jose-elias-alvarez/null-ls.nvim"
+  use({
+    "williamboman/mason-lspconfig.nvim",
+    requires = {
+      "neovim/nvim-lspconfig",
+    }
+  })
+  use 'AndrewRadev/splitjoin.vim'
 end)
 
 require 'plugins/treesitter'
 require 'plugins/gitgutter'
 require 'plugins/lsp'
-require 'plugins/luasnip'
-
--- fzf
-g.fzf_preview_window = ''
-g.fzf_layout = { window = { width = 0.6, height = 0.6, border = 'sharp' } }
-
--- NERDTree
-g.NERDTreeWinPos           = "right"
-g.NERDTreeMinimalUI        = 1
-g.NERDTreeDirArrows        = 1
-g.NERDTreeAutoDeleteBuffer = 1
-g.NERDTreeHijackNetrw      = 1
+require 'plugins/cmp'
+require 'plugins/nord'
+require 'plugins/nvim-tree'
+require 'plugins/comment'
+require 'plugins/mason'
+require 'plugins/null-ls'
+require 'plugins/telescope'
 
 -- vim-test
 g['test#strategy'] = 'vimux'
@@ -73,7 +82,3 @@ g.ctrlsf_mapping        = {
   next = 'n',
   prev = 'N',
 }
-
--- fzf
-g.fzf_preview_window = ''
-g.fzf_layout = { window = { width = 0.6, height = 0.6, border = 'sharp' } }

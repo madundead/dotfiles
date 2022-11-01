@@ -12,6 +12,7 @@ cmd('au TextYankPost * lua vim.highlight.on_yank { timeout = 250 }')
 cmd('colorscheme nord')
 
 opt.smartindent   = true            -- Autoindenting when starting a new line
+opt.completeopt = {'menu', 'menuone', 'noselect'}
 opt.tabstop       = 2               -- Tab counts as 2 columns
 opt.shiftwidth    = 2               -- Numbers of spaces to (auto)indent
 opt.expandtab     = true            -- Tabs to spaces
@@ -47,6 +48,8 @@ opt.listchars     = { trail = '·', tab = '->' }
 opt.timeoutlen    = 1000            -- Delay for mappings
 opt.ttimeoutlen   = 0               -- Delay between modes
 opt.shellcmdflag  = '-ic'           -- Enables aliases from .bashrc in :! commands
+opt.termguicolors = true            -- 24-bit RGB color
+
 
 if vim.fn.executable('rg') > 0 then
   vim.o.grepprg = [[rg --glob "!.git" --no-heading --vimgrep --follow $*]]
