@@ -55,7 +55,7 @@ cmp.setup({
 
 -- Set up lspconfig.
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
-require('lspconfig')['solargraph'].setup({ capabilities = capabilities })
+-- require('lspconfig')['solargraph'].setup({ capabilities = capabilities })
 
 -- require("luasnip.loaders.from_lua").lazy_load()
 

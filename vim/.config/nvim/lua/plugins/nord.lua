@@ -1,30 +1,37 @@
--- https://github.com/shaunsingh/nord.nvim#%EF%B8%8F-configuration
+local M = {}
 
--- Make sidebars and popup menus like nvim-tree and telescope
--- have a different background
-vim.g.nord_contrast = true
+function M.setup()
+  -- https://github.com/shaunsingh/nord.nvim#%EF%B8%8F-configuration
 
--- Enable the border between verticaly split windows visable
-vim.g.nord_borders = true
+  -- Make sidebars and popup menus like nvim-tree and telescope
+  -- have a different background
+  vim.g.nord_contrast = true
 
--- Disable the setting of background color so that NeoVim
--- can use your terminal background
-vim.g.nord_disable_background = false
+  -- Enable the border between verticaly split windows visable
+  vim.g.nord_borders = true
 
--- Set the cursorline transparent/visible
-vim.g.nord_cursorline_transparent = false
+  -- Disable the setting of background color so that NeoVim
+  -- can use your terminal background
+  vim.g.nord_disable_background = false
 
--- Re-enables the background of the sidebar if you disabled the background of everything
-vim.g.nord_enable_sidebar_background = false
+  -- Set the cursorline transparent/visible
+  vim.g.nord_cursorline_transparent = false
 
--- Enables/disables italics
-vim.g.nord_italic = true
+  -- Re-enables the background of the sidebar if you disabled the background of everything
+  vim.g.nord_enable_sidebar_background = false
 
--- Enables/disables colorful backgrounds when used in diff mode
-vim.g.nord_uniform_diff_background = true
+  -- Enables/disables italics
+  vim.g.nord_italic = true
 
--- Enables/disables bold
-vim.g.nord_bold = false
+  -- Enables/disables colorful backgrounds when used in diff mode
+  vim.g.nord_uniform_diff_background = true
 
--- Load the colorscheme
-require('nord').set()
+  -- Enables/disables bold
+  vim.g.nord_bold = false
+end
+
+function M.config()
+  require('nord').set()
+end
+
+return M

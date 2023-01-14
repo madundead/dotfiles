@@ -30,6 +30,7 @@ nmap('L', '$')
 nmap('J', 'mzJ`z')
 nmap('K', '<Nop>')
 nmap('gQ', '<Nop>')
+nmap('vv', ':vs<CR>')
 
 -- Tabs
 nmap('<leader>t', ':tabnew<CR>')
@@ -47,12 +48,6 @@ map('v', 'J', ':m \'>+1<CR>gv=gv')
 map('v', 'K', ':m \'<-2<CR>gv=gv')
 map('v', '<', '<gv')
 map('v', '>', '>gv')
-
--- Telescope
-nmap('<leader>ff', ':lua require("telescope.builtin").find_files({ hidden = true })<CR>')
--- TODO: change to Telescope
--- nmap('<leader>ft', ':Files ~/Tmp<CR>')
--- nmap('<leader>fo', ":call fzf#run(fzf#wrap(fzf#vim#with_preview({ 'source': 'fd . --type f --extension=md --follow --exclude .git ~/Syncthing/Obsidian/Personal' })))<CR>", { silent = true })
 
 -- vim-easy-align
 map('x', 'ga', ':EasyAlign<CR>') -- TODO: this should allow for gaip, but does not
@@ -76,8 +71,11 @@ nmap('<leader>gb',':Git blame<CR>')
 nmap('<leader>a', ':A<CR>')
 
 -- test
-nmap('<leader>r', ':TestFile<CR>')
-nmap('<leader>R', ':TestSuite<CR>')
+-- nmap('<leader>r', ':TestFile<CR>')
+-- nmap('<leader>R', ':TestSuite<CR>')
 
 -- CtrlSF
 nmap('<C-f>', '<Plug>CtrlSFPrompt')
+
+-- trim whitespace
+nmap('<leader>W', ':TrimWhitespace<CR>')
