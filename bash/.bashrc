@@ -1,9 +1,13 @@
-[ -f /opt/homebrew/opt/asdf/libexec/asdf.sh ] && . /opt/homebrew/opt/asdf/libexec/asdf.sh
-# [ -f /etc/bashrc ]            && . /etc/bashrc
+[ -f /opt/homebrew/opt/asdf/libexec/asdf.sh ] \
+                              && . /opt/homebrew/opt/asdf/libexec/asdf.sh
 [ -f /etc/bash_completion ]   && . /etc/bash_completion
 [ -f ~/.fzf.bash ]            && . ~/.fzf.bash
 [ -f ~/.cargo/env ]           && . ~/.cargo/env
 [ -f ~/Syncthing/secrets.sh ] && . ~/Syncthing/secrets.sh
+
+if [ -x /usr/libexec/path_helper ]; then
+  eval `/usr/libexec/path_helper -s`
+fi
 
 # Save 10,000 lines of history in memory
 HISTSIZE=10000
@@ -15,7 +19,7 @@ HISTCONTROL=ignoreboth
 HISTIGNORE='ls:ll:ls -alh:pwd:clear:history'
 HISTIGNORE=$HISTIGNORE':gcom:gcob:gd:gdc:gc:gca:gcw:gs:ga:grm:gup:gp:gpf:gpt:gb:gg:gl:gr:gr1:gh'
 HISTIGNORE=$HISTIGNORE':v:vi:nvim'
-HISTIGNORE=$HISTIGNORE':k:kp:ks:d:dc:dcu:dcd:dcr:dcl'
+HISTIGNORE=$HISTIGNORE':k:kp:ks:kl:kgp:d:dc:dcu:dcd:dcr:dcl'
 # Immediately store command to the history
 PROMPT_COMMAND='history -a'
 
@@ -27,6 +31,7 @@ shopt -s checkhash
 shopt -s cmdhist # save multi-line commands in one
 
 export BASH_SILENCE_DEPRECATION_WARNING=1
+export HOMEBREW_NO_ENV_HINTS=true
 export RUBY_CONFIGURE_OPTS="--with-openssl-dir=/opt/homebrew/opt/openssl@1.1"
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:.:/usr/local/lib
 export EDITOR=nvim
@@ -55,7 +60,6 @@ alias be='bundle exec'
 alias ..='cd ..'
 alias ...='cd ../..'
 alias md='mkdir -p'
-alias j='jira'
 
 alias gco='git checkout'
 alias gcom='git checkout master'
@@ -97,15 +101,24 @@ alias dcu='docker-compose up -d'
 alias dcd='docker-compose stop'
 alias dcr='docker-compose restart'
 alias dcl='docker-compose logs -tf --tail="50"'
+
 alias k='kubectl'
-alias kp='kubectx matic-production && kubens production'
-alias ks='kubectx matic-staging && kubens staging'
+alias kp='kubectx matic-production'
+alias ks='kubectx matic-staging'
+alias kl='kubectx local-colima'
+alias kgp='kubectl get pods'
 
 alias rc='bin/rails c'
 alias rs='bin/rails s -p3001'
 
 alias ibrew='arch -x86_64 /usr/local/bin/brew'
 alias mbrew='arch -arm64e /opt/homebrew/bin/brew'
+
+alias pgu='asdf exec pg_ctl -D ./data/pg -l ./log/pg.log start'
+alias pgd='asdf exec pg_ctl -D ./data/pg stop'
+alias pgs='asdf exec pg_ctl -D ./data/pg status'
+
+alias oclean="fd . '/Users/madundead/Syncthing/Obsidian/Personal/.obsidian' | rg sync-conflict | xargs rm"
 
 alias proxy='kubectl port-forward -n staging svc/tinyproxy-svc 8888:8888'
 
@@ -126,12 +139,12 @@ export PATH=/opt/homebrew/bin:/opt/homebrew/opt:/usr/local/bin:/usr/bin:/bin:/us
 export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="/usr/local/opt/icu4c/bin:$PATH"
 export PATH="/usr/local/opt/icu4c/sbin:$PATH"
+export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
 export PATH="/opt/homebrew/sbin:$PATH"
 export PATH="/opt/homebrew/opt/avr-gcc@8/bin:$PATH"
 export PATH="/opt/homebrew/opt/arm-gcc-bin@8/bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
 export PATH="/usr/local/opt/avr-gcc@8/bin:$PATH"
-export PATH="/usr/local/opt/arm-gcc-bin@8/bin:$PATH"
 export PATH="/usr/local/opt/arm-gcc-bin@8/bin:$PATH"
 
 eval "$(zoxide init bash)"
