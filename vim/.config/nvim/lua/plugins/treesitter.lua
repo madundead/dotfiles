@@ -26,6 +26,31 @@ function M.config()
     autopairs = { enable = true },
     autotag = { enable = true },
     incremental_selection = { enable = true },
+    textobjects = { -- syntax-aware textobjects
+      select = {
+        enable = true,
+        disable = {},
+        keymaps = {
+          -- You can use the capture groups defined in textobjects.scm
+          ['af'] = '@function.outer',
+          ['if'] = '@function.inner',
+          ['aC'] = '@class.outer',
+          ['iC'] = '@class.inner',
+          ['ac'] = '@conditional.outer',
+          ['ic'] = '@conditional.inner',
+          ['ab'] = '@block.outer',
+          ['ib'] = '@block.inner',
+          ['al'] = '@loop.outer',
+          ['il'] = '@loop.inner',
+          ['is'] = '@statement.inner',
+          ['as'] = '@statement.outer',
+          ['am'] = '@call.outer',
+          ['im'] = '@call.inner',
+          ['ad'] = '@comment.outer',
+          ['id'] = '@comment.inner',
+        },
+      },
+    }
   }
 end
 
