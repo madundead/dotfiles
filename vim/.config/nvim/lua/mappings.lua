@@ -71,8 +71,8 @@ nmap('<leader>gb',':Git blame<CR>')
 nmap('<leader>a', ':A<CR>')
 
 -- test
--- nmap('<leader>r', ':TestFile<CR>')
--- nmap('<leader>R', ':TestSuite<CR>')
+nmap('<leader>r', ':TestFile<CR>')
+nmap('<leader>R', ':TestSuite<CR>')
 
 -- CtrlSF
 nmap('<C-f>', '<Plug>CtrlSFPrompt')

@@ -79,6 +79,11 @@ _G.packer_plugins = {
     path = "/Users/madundead/.local/share/nvim/site/pack/packer/start/LuaSnip",
     url = "https://github.com/L3MON4D3/LuaSnip"
   },
+  ["asyncrun.vim"] = {
+    loaded = true,
+    path = "/Users/madundead/.local/share/nvim/site/pack/packer/start/asyncrun.vim",
+    url = "https://github.com/skywind3000/asyncrun.vim"
+  },
   ["cmp-buffer"] = {
     loaded = true,
     path = "/Users/madundead/.local/share/nvim/site/pack/packer/start/cmp-buffer",
@@ -129,11 +134,6 @@ _G.packer_plugins = {
     path = "/Users/madundead/.local/share/nvim/site/pack/packer/start/glow.nvim",
     url = "https://github.com/ellisonleao/glow.nvim"
   },
-  ["hop.nvim"] = {
-    loaded = true,
-    path = "/Users/madundead/.local/share/nvim/site/pack/packer/start/hop.nvim",
-    url = "https://github.com/phaazon/hop.nvim"
-  },
   ["impatient.nvim"] = {
     loaded = true,
     path = "/Users/madundead/.local/share/nvim/site/pack/packer/start/impatient.nvim",
@@ -142,7 +142,7 @@ _G.packer_plugins = {
   ["lsp-zero.nvim"] = {
     loaded = true,
     path = "/Users/madundead/.local/share/nvim/site/pack/packer/start/lsp-zero.nvim",
-    url = "https://github.com/vonheikemen/lsp-zero.nvim"
+    url = "https://github.com/VonHeikemen/lsp-zero.nvim"
   },
   ["mason-lspconfig.nvim"] = {
     loaded = true,
@@ -160,6 +160,13 @@ _G.packer_plugins = {
     needs_bufread = false,
     path = "/Users/madundead/.local/share/nvim/site/pack/packer/opt/nord.nvim",
     url = "https://github.com/shaunsingh/nord.nvim"
+  },
+  ["nvim-bqf"] = {
+    loaded = false,
+    needs_bufread = true,
+    only_cond = false,
+    path = "/Users/madundead/.local/share/nvim/site/pack/packer/opt/nvim-bqf",
+    url = "https://github.com/kevinhwang91/nvim-bqf"
   },
   ["nvim-cmp"] = {
     loaded = true,
@@ -340,13 +347,6 @@ time([[Conditional loading of telescope-fzf-native.nvim]], false)
 
 -- Command lazy-loads
 time([[Defining lazy-load commands]], true)
-pcall(vim.api.nvim_create_user_command, 'TSPlaygroundToggle', function(cmdargs)
-          require('packer.load')({'playground'}, { cmd = 'TSPlaygroundToggle', l1 = cmdargs.line1, l2 = cmdargs.line2, bang = cmdargs.bang, args = cmdargs.args, mods = cmdargs.mods }, _G.packer_plugins)
-        end,
-        {nargs = '*', range = true, bang = true, complete = function()
-          require('packer.load')({'playground'}, {}, _G.packer_plugins)
-          return vim.fn.getcompletion('TSPlaygroundToggle ', 'cmdline')
-      end})
 pcall(vim.api.nvim_create_user_command, 'StartupTime', function(cmdargs)
           require('packer.load')({'vim-startuptime'}, { cmd = 'StartupTime', l1 = cmdargs.line1, l2 = cmdargs.line2, bang = cmdargs.bang, args = cmdargs.args, mods = cmdargs.mods }, _G.packer_plugins)
         end,
@@ -354,10 +354,21 @@ pcall(vim.api.nvim_create_user_command, 'StartupTime', function(cmdargs)
           require('packer.load')({'vim-startuptime'}, {}, _G.packer_plugins)
           return vim.fn.getcompletion('StartupTime ', 'cmdline')
       end})
+pcall(vim.api.nvim_create_user_command, 'TSPlaygroundToggle', function(cmdargs)
+          require('packer.load')({'playground'}, { cmd = 'TSPlaygroundToggle', l1 = cmdargs.line1, l2 = cmdargs.line2, bang = cmdargs.bang, args = cmdargs.args, mods = cmdargs.mods }, _G.packer_plugins)
+        end,
+        {nargs = '*', range = true, bang = true, complete = function()
+          require('packer.load')({'playground'}, {}, _G.packer_plugins)
+          return vim.fn.getcompletion('TSPlaygroundToggle ', 'cmdline')
+      end})
 time([[Defining lazy-load commands]], false)
 
 vim.cmd [[augroup packer_load_aucmds]]
 vim.cmd [[au!]]
+  -- Filetype lazy-loads
+time([[Defining lazy-load filetype autocommands]], true)
+vim.cmd [[au FileType qf ++once lua require("packer.load")({'nvim-bqf'}, { ft = "qf" }, _G.packer_plugins)]]
+time([[Defining lazy-load filetype autocommands]], false)
   -- Event lazy-loads
 time([[Defining lazy-load event autocommands]], true)
 vim.cmd [[au BufRead * ++once lua require("packer.load")({'nvim-treesitter'}, { event = "BufRead *" }, _G.packer_plugins)]]

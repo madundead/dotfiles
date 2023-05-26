@@ -29,6 +29,7 @@ function M.config()
     textobjects = { -- syntax-aware textobjects
       select = {
         enable = true,
+        lookahead = true, -- Automatically jump forward to textobj, similar to targets.vim
         disable = {},
         keymaps = {
           -- You can use the capture groups defined in textobjects.scm
@@ -48,6 +49,8 @@ function M.config()
           ['im'] = '@call.inner',
           ['ad'] = '@comment.outer',
           ['id'] = '@comment.inner',
+          ['aa'] = '@parameter.outer',
+          ['ia'] = '@parameter.inner',
         },
       },
     }
