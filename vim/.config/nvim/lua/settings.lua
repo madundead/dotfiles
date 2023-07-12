@@ -63,7 +63,8 @@ opt.list          = true            -- List mode
 opt.listchars     = { trail = '·', tab = '->' }
 opt.timeoutlen    = 1000            -- Delay for mappings
 opt.ttimeoutlen   = 0               -- Delay between modes
-opt.shellcmdflag  = '-ilc'          -- Enables aliases from .bashrc in :! commands
+-- TODO: leads to "bash: no job control in this shell"
+-- opt.shellcmdflag  = '-ilc'          -- Enables aliases from .bashrc in :! commands
 opt.termguicolors = true            -- 24-bit RGB color
 
 

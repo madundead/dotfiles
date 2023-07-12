@@ -1,5 +1,7 @@
 local cmd, fn, opt, g = vim.cmd, vim.fn, vim.opt, vim.g
 
+vim.loader.enable()
+
 cmd [[packadd packer.nvim]]
 local packer = require('packer')
 local use = packer.use
@@ -14,9 +16,6 @@ local use = packer.use
 
 packer.startup(function()
   use { 'wbthomason/packer.nvim', opt = true }
-
-  use 'lewis6991/impatient.nvim'
-  use 'nvim-lua/plenary.nvim'
 
   use {
     'shaunsingh/nord.nvim',
@@ -50,11 +49,12 @@ packer.startup(function()
   use { 'nvim-tree/nvim-tree.lua',
     config = function()
       require('plugins/nvim-tree').config()
-    end
+    end,
+    opt = true,
+    cmd = { 'NvimTreeToggle', 'NvimTreeFindFile' }
   }
 
   use 'numtostr/comment.nvim'
-  use 'ellisonleao/glow.nvim'
 
   use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make', cond = fn.executable "make" == 1 }
   use { 'nvim-telescope/telescope.nvim',
@@ -69,7 +69,11 @@ packer.startup(function()
   }
 
   -- Vimscript
-  use 'junegunn/vim-easy-align'
+  use { 'junegunn/vim-easy-align',
+    opt = true,
+    cmd = { 'EasyAlign' }
+  }
+
   use 'christoomey/vim-tmux-navigator'
   use 'lewis6991/gitsigns.nvim'
 
@@ -89,9 +93,11 @@ packer.startup(function()
 
   use 'andrewradev/splitjoin.vim'
 
+  use 'ggandor/leap.nvim'
+
   use {
     'VonHeikemen/lsp-zero.nvim',
-    branch = 'v1.x',
+    branch = 'v2.x',
     requires = {
       -- LSP Support
       {'neovim/nvim-lspconfig'},             -- Required

@@ -2,7 +2,8 @@
 -- License:     WTFPL
 -- Description: Personal neovim configuration
 
--- require('impatient') -- Should be at the top
+vim.loader.enable()
+
 require('filetypes')
 require('builtins')
 require('plugins')

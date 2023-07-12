@@ -54,8 +54,6 @@ map('x', 'ga', ':EasyAlign<CR>') -- TODO: this should allow for gaip, but does n
 map('v', 'ga', ':EasyAlign<CR>')
 
 -- nvim-tree.lua
--- nmap('<leader>n', ':NERDTreeToggle<CR>')
--- nmap('<leader>N', ':NERDTreeFind<CR>')
 nmap('<leader>n', ':NvimTreeToggle<CR>')
 nmap('<leader>N', ':NvimTreeFindFile<CR>')
 
@@ -79,3 +77,9 @@ nmap('<C-f>', '<Plug>CtrlSFPrompt')
 
 -- trim whitespace
 nmap('<leader>W', ':TrimWhitespace<CR>')
+
+
+-- EXPERIMENTAL:
+-- nmap('<leader>x', ':!rm %<CR>')
+nmap('<leader>x', ":call delete(expand('%')) | bdelete!<CR>")
+nmap('<leader>q', ':copen<CR>')
