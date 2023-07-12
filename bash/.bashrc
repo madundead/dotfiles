@@ -19,7 +19,7 @@ HISTCONTROL=ignoreboth
 HISTIGNORE='ls:ll:ls -alh:pwd:clear:history'
 HISTIGNORE=$HISTIGNORE':gcom:gcob:gd:gdc:gc:gca:gcw:gs:ga:grm:gup:gp:gpf:gpt:gb:gg:gl:gr:gr1:gh'
 HISTIGNORE=$HISTIGNORE':v:vi:nvim'
-HISTIGNORE=$HISTIGNORE':k:kp:ks:kl:kgp:d:dc:dcu:dcd:dcr:dcl'
+HISTIGNORE=$HISTIGNORE':k:kp:ks:kl:kgp:d:dc:dcu:dcd:dcr:dcl:dcs'
 # Immediately store command to the history
 PROMPT_COMMAND='history -a'
 
@@ -29,6 +29,9 @@ shopt -s no_empty_cmd_completion
 shopt -s cdspell
 shopt -s checkhash
 shopt -s cmdhist # save multi-line commands in one
+
+export KUBE_TMUX_SYMBOL_ENABLE=false
+export KUBE_TMUX_NS_ENABLE=false
 
 export BASH_SILENCE_DEPRECATION_WARNING=1
 export HOMEBREW_NO_ENV_HINTS=true
@@ -81,7 +84,7 @@ alias gg='git go'
 alias gl='git lg'
 alias gr='git reset'
 alias gr1='git reset HEAD~1'
-alias gh='git lg -1'
+# alias gh='git lg -1'
 function gcm () {
     git commit -m "$*"
 }
@@ -101,12 +104,19 @@ alias dcu='docker-compose up -d'
 alias dcd='docker-compose stop'
 alias dcr='docker-compose restart'
 alias dcl='docker-compose logs -tf --tail="50"'
+alias dcs='docker-compose ps'
 
 alias k='kubectl'
 alias kp='kubectx matic-production'
 alias ks='kubectx matic-staging'
 alias kl='kubectx local-colima'
-alias kgp='kubectl get pods'
+function kgp() {
+  if [ -z "$1" ]; then
+    kubectl get pods
+  else
+    kubectl get pods | grep $1
+  fi
+}
 
 alias rc='bin/rails c'
 alias rs='bin/rails s -p3001'
@@ -118,7 +128,7 @@ alias pgu='asdf exec pg_ctl -D ./data/pg -l ./log/pg.log start'
 alias pgd='asdf exec pg_ctl -D ./data/pg stop'
 alias pgs='asdf exec pg_ctl -D ./data/pg status'
 
-alias oclean="fd . '/Users/madundead/Syncthing/Obsidian/Personal/.obsidian' | rg sync-conflict | xargs rm"
+alias oclean="fd . '/Users/madundead/Syncthing/Obsidian/Personal' | rg sync-conflict | tr '\n' '\0' | xargs -0 rm"
 
 alias proxy='kubectl port-forward -n staging svc/tinyproxy-svc 8888:8888'
 
