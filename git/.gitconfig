@@ -143,6 +143,7 @@
 [push]
   # https://git-scm.com/docs/git-config#git-config-pushdefault
   default = current
+  autoSetupRemote = true
 
 [branch]
   autosetuprebase = always

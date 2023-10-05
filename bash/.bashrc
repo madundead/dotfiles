@@ -156,6 +156,8 @@ export PATH="/opt/homebrew/opt/arm-gcc-bin@8/bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
 export PATH="/usr/local/opt/avr-gcc@8/bin:$PATH"
 export PATH="/usr/local/opt/arm-gcc-bin@8/bin:$PATH"
+export LDFLAGS="-L/opt/homebrew/opt/openssl@3/lib"
+export CPPFLAGS="-I/opt/homebrew/opt/openssl@3/include"
 
 eval "$(zoxide init bash)"
 
