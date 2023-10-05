@@ -1,7 +1,7 @@
 local function map(mode, lhs, rhs, opts)
   local options = { noremap = true }
   if opts then options = vim.tbl_extend('force', options, opts) end
-  vim.api.nvim_set_keymap(mode, lhs, rhs, options)
+  vim.keymap.set(mode, lhs, rhs, options)
 end
 
 local function nmap(lhs, rhs, opts)
@@ -69,8 +69,8 @@ nmap('<leader>gb',':Git blame<CR>')
 nmap('<leader>a', ':A<CR>')
 
 -- test
-nmap('<leader>r', ':TestFile<CR>')
-nmap('<leader>R', ':TestSuite<CR>')
+nmap('<leader>r', function() os.execute("tmux send-keys -t '{down-of}' 'bundle exec rspec '" .. vim.fn.expand("%") .. " Enter") end)
+nmap('<leader>R', function() os.execute("tmux send-keys -t '{down-of}' 'bundle exec rspec .' Enter") end)
 
 -- CtrlSF
 nmap('<C-f>', '<Plug>CtrlSFPrompt')

@@ -85,10 +85,6 @@ packer.startup(function()
   use 'tpope/vim-rhubarb'
   use 'tpope/vim-repeat'
 
-  -- tests
-  use 'vim-test/vim-test'
-  use 'benmills/vimux'
-
   -- TODO: find lua replacement / or learn :grep / cfdo
   use 'dyng/ctrlsf.vim'
 
