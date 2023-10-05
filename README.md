@@ -1,13 +1,20 @@
 # DOTFILES
 
+## macOS
+```bash
+# cli tools + rosetta
 xcode-select --install
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 sudo softwareupdate --install-rosetta
 
-asdf plugin add ruby
+# brew
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+brew bundle install
 
-install tpm for tmux
-sudo vim /etc/shells
-/opt/homebrew/bin/bash
+# tmux plugins
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 
-$(brew --prefix)/opt/fzf/install - to have Ctlr + R
+$(brew --prefix)/opt/fzf/install # fzf ctrl + r
+```
+
+## Arch
+TBD
