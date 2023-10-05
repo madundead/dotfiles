@@ -50,8 +50,8 @@ map('v', '<', '<gv')
 map('v', '>', '>gv')
 
 -- vim-easy-align
-map('x', 'ga', ':EasyAlign<CR>') -- TODO: this should allow for gaip, but does not
-map('v', 'ga', ':EasyAlign<CR>')
+vim.keymap.set("n", "ga", "<Plug>(EasyAlign)")
+vim.keymap.set("x", "ga", "<Plug>(EasyAlign)")
 
 -- nvim-tree.lua
 nmap('<leader>n', ':NvimTreeToggle<CR>')

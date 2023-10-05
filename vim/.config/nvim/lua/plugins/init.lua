@@ -70,8 +70,9 @@ packer.startup(function()
 
   -- Vimscript
   use { 'junegunn/vim-easy-align',
-    opt = true,
-    cmd = { 'EasyAlign' }
+    -- opt = false,
+    -- event = { 'BufRead', 'BufNewFile' },
+    -- cmd = { 'EasyAlign' }
   }
 
   use 'christoomey/vim-tmux-navigator'
@@ -97,7 +98,7 @@ packer.startup(function()
 
   use {
     'VonHeikemen/lsp-zero.nvim',
-    branch = 'v2.x',
+    branch = 'v3.x',
     requires = {
       -- LSP Support
       {'neovim/nvim-lspconfig'},             -- Required
@@ -132,5 +133,6 @@ packer.startup(function()
 end)
 
 require('plugins.lsp')
+require('plugins.cmp')
 require('plugins.comment')
 require('plugins.gitsigns')
