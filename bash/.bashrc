@@ -49,6 +49,10 @@ export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS
   --bind=ctrl-d:preview-page-down
   --bind=ctrl-u:preview-page-up"
 
+# Fix for the following error in some Ruby version
+# objc[12590]: +[__NSCFConstantString initialize] may have been in progress in another thread when fork() was called.
+export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
+
 alias ~='cd ~'
 alias l='exa'
 alias ls='exa'

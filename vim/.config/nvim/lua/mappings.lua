@@ -69,8 +69,8 @@ nmap('<leader>gb',':Git blame<CR>')
 nmap('<leader>a', ':A<CR>')
 
 -- test
-nmap('<leader>r', function() os.execute("tmux send-keys -t '{down-of}' 'bundle exec rspec '" .. vim.fn.expand("%") .. " Enter") end)
-nmap('<leader>R', function() os.execute("tmux send-keys -t '{down-of}' 'bundle exec rspec .' Enter") end)
+nmap('<leader>r', function() os.execute("tmux send-keys -t '{down-of}' './bin/rspec '" .. vim.fn.expand("%") .. " Enter") end)
+nmap('<leader>R', function() os.execute("tmux send-keys -t '{down-of}' './bin/rspec .' Enter") end)
 
 -- CtrlSF
 nmap('<C-f>', '<Plug>CtrlSFPrompt')

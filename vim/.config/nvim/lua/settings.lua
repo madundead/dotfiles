@@ -1,9 +1,6 @@
-local cmd, fn, opt, g = vim.cmd, vim.fn, vim.opt, vim.g
-local command = vim.api.nvim_create_user_command
+local cmd, opt, g = vim.cmd, vim.opt, vim.g
 
 cmd('au TextYankPost * lua vim.highlight.on_yank { timeout = 250 }')
-
-g.ruby_host_prog = 'asdf exec neovim-ruby-host'
 
 opt.smartindent   = true            -- Autoindenting when starting a new line
 opt.completeopt = {'menu', 'menuone', 'noselect'}
@@ -12,38 +9,6 @@ opt.shiftwidth    = 2               -- Numbers of spaces to (auto)indent
 opt.expandtab     = true            -- Tabs to spaces
 opt.clipboard     = 'unnamedplus'   -- Share clipboard with the OS
 opt.number        = true            -- Display line numbers
-
--- opt.fillchars = {
---   vert = '▕',   -- alternatives │
---   eob = ' ',    -- suppress ~ at EndOfBuffer
---   msgsep = '‾',
---   diff = '⣿',
---   fold = ' ',
---   foldopen = '▾',
---   foldsep = '│',
---   foldclose = '▸',
--- }
---
-opt.listchars = {
-  nbsp = '⦸', -- CIRCLED REVERSE SOLIDUS (U+29B8, UTF-8: E2 A6 B8)
-  extends = '»', -- RIGHT-POINTING DOUBLE ANGLE QUOTATION MARK (U+00BB, UTF-8: C2 BB)
-  precedes = '«', -- LEFT-POINTING DOUBLE ANGLE QUOTATION MARK (U+00AB, UTF-8: C2 AB)
-  -- tab = '  ', -- '▷─' WHITE RIGHT-POINTING TRIANGLE (U+25B7, UTF-8: E2 96 B7) + BOX DRAWINGS HEAVY TRIPLE DASH HORIZONTAL (U+2505, UTF-8: E2 94 85)
-  trail = '•', -- BULLET (U+2022, UTF-8: E2 80 A2)
-  space = ' ',
-}
-
-opt.fillchars = {
-  diff = '⣿',
-  eob = ' ', -- NO-BREAK SPACE (U+00A0, UTF-8: C2 A0) to suppress ~ at EndOfBuffer
-  vert = '│', -- window border when window splits vertically ─ ┴ ┬ ┤ ├ ┼
-  msgsep = '‾',
-  fold = '·', -- MIDDLE DOT (U+00B7, UTF-8: C2 B7)
-  foldopen = '▾',
-  foldsep = '│',
-  foldclose = '▸'
-}
-
 opt.synmaxcol     = 500             -- Do not try to highlight lines longer than 500 characters
 opt.lazyredraw    = true            -- Do not redraw while running macros
 opt.showmatch     = true            -- Show matching braces
@@ -60,17 +25,30 @@ opt.writebackup   = false           -- No backups
 opt.swapfile      = false           -- No backups
 opt.mouse         = 'a'             -- Support mouse (for proper mouse highlight)
 opt.list          = true            -- List mode
-opt.listchars     = { trail = '·', tab = '->' }
 opt.timeoutlen    = 1000            -- Delay for mappings
 opt.ttimeoutlen   = 0               -- Delay between modes
--- TODO: leads to "bash: no job control in this shell"
--- opt.shellcmdflag  = '-ilc'          -- Enables aliases from .bashrc in :! commands
 opt.termguicolors = true            -- 24-bit RGB color
 
+opt.listchars = {
+  nbsp = '⦸', -- CIRCLED REVERSE SOLIDUS (U+29B8, UTF-8: E2 A6 B8)
+  extends = '»', -- RIGHT-POINTING DOUBLE ANGLE QUOTATION MARK (U+00BB, UTF-8: C2 BB)
+  precedes = '«', -- LEFT-POINTING DOUBLE ANGLE QUOTATION MARK (U+00AB, UTF-8: C2 AB)
+  -- tab = '  ', -- '▷─' WHITE RIGHT-POINTING TRIANGLE (U+25B7, UTF-8: E2 96 B7) + BOX DRAWINGS HEAVY TRIPLE DASH HORIZONTAL (U+2505, UTF-8: E2 94 85)
+  trail = '•', -- BULLET (U+2022, UTF-8: E2 80 A2)
+  space = ' ',
+  tab = '<->'
+}
 
-if vim.fn.executable('rg') > 0 then
-  vim.o.grepprg = [[rg --glob "!.git" --no-heading --vimgrep --follow $*]]
-end
+opt.fillchars = {
+  diff = '⣿',
+  eob = ' ', -- NO-BREAK SPACE (U+00A0, UTF-8: C2 A0) to suppress ~ at EndOfBuffer
+  vert = '│', -- window border when window splits vertically ─ ┴ ┬ ┤ ├ ┼
+  msgsep = '‾',
+  fold = '·', -- MIDDLE DOT (U+00B7, UTF-8: C2 B7)
+  foldopen = '▾',
+  foldsep = '│',
+  foldclose = '▸'
+}
 
 -- Use in vertical diff mode, blank lines to keep sides aligned, Ignore whitespace changes
 opt.diffopt = vim.opt.diffopt
@@ -99,6 +77,10 @@ opt.shortmess = {
   W = true, -- Don't show [w] or written when writing
 }
 
+if vim.fn.executable('rg') > 0 then
+  vim.o.grepprg = [[rg --glob "!.git" --no-heading --vimgrep --follow $*]]
+end
+
 -- ignore when autocompleting
 opt.wildignore = {
   '*.aux', '*.out', '*.toc', '*.o', '*.obj',
@@ -107,9 +89,6 @@ opt.wildignore = {
   '*.avi', '*.wav', '*.*~', '*~ ', '*.swp',
   '.lock', '.DS_Store', 'tags.lock'
 }
-
--- vim-test
-g['test#strategy'] = 'asyncrun_background'
 
 -- CtrlSF
 g.ctrlsf_ackprg         = 'rg'
@@ -123,3 +102,5 @@ g.ctrlsf_mapping        = {
   next = 'n',
   prev = 'N',
 }
+
+g.ruby_host_prog = 'asdf exec neovim-ruby-host'

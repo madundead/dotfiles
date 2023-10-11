@@ -8,43 +8,43 @@ function M.setup()
 end
 
 function M.config()
-    local telescope = require 'telescope'
+  local telescope = require('telescope')
 
-    telescope.setup {
-        defaults = {
-            layout_strategy = 'vertical',
-            winblend = 7,
-            set_env = { COLORTERM = 'truecolor' },
-            color_devicons = true,
-            scroll_strategy = 'limit',
-        },
-        pickers = {
-            live_grep = {
-                only_sort_text = true,
-                path_display = { 'shorten' },
-                layout_strategy = 'horizontal',
-                layout_config = { preview_width = 0.4 },
-            },
-            git_files = {
-                path_display = {},
-                hidden = true,
-                show_untracked = true,
-                layout_strategy = 'horizontal',
-                layout_config = { preview_width = 0.65 },
-            },
-        },
-        extensions = {
-            fzf = {
-                override_generic_sorter = true,
-                override_file_sorter = true,
-                case_mode = 'smart_case',
-            },
-        },
-    }
+  telescope.setup {
+    defaults = {
+      layout_strategy = 'vertical',
+      winblend = 7,
+      set_env = { COLORTERM = 'truecolor' },
+      color_devicons = true,
+      scroll_strategy = 'limit',
+    },
+    pickers = {
+      live_grep = {
+        only_sort_text = true,
+        path_display = { 'shorten' },
+        layout_strategy = 'horizontal',
+        layout_config = { preview_width = 0.4 },
+      },
+      git_files = {
+        path_display = {},
+        hidden = true,
+        show_untracked = true,
+        layout_strategy = 'horizontal',
+        layout_config = { preview_width = 0.65 },
+      },
+    },
+    extensions = {
+      fzf = {
+        override_generic_sorter = true,
+        override_file_sorter = true,
+        case_mode = 'smart_case',
+      },
+    },
+  }
 
-    -- pcall(require('telescope').load_extension, 'fzf')
-    -- Enable telescope fzf native, if installed
-    telescope.load_extension('fzf')
+  -- pcall(require('telescope').load_extension, 'fzf')
+  -- Enable telescope fzf native, if installed
+  telescope.load_extension('fzf')
 end
 
 -- Telescope
