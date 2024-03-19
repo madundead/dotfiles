@@ -125,7 +125,26 @@ packer.startup(function()
   -- EXPERIMENTAL: trying out different plugins
   use { 'skywind3000/asyncrun.vim' }
 
-  use {'kevinhwang91/nvim-bqf', ft = 'qf'} -- better qf
+  use { 'kevinhwang91/nvim-bqf', ft = 'qf' }
+  use { 'kevinhwang91/nvim-pqf', ft = 'qf' }
+  use { 'weilbith/vim-qfloc-edit', ft = 'qf' }
+
+  use({
+    "stevearc/oil.nvim",
+    config = function()
+      require("oil").setup({
+        -- skip_confirm_for_simple_edits = true,
+        -- prompt_save_on_select_new_entry = true,
+        default_file_explorer = true,
+
+        view_options = {
+          -- Show files and directories that start with "."
+          show_hidden = false,
+        }
+      })
+    end,
+  })
+
 end)
 
 require('plugins.lsp')

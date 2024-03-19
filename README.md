@@ -1,6 +1,8 @@
 # DOTFILES
 
 ## macOS
+https://gist.github.com/sarthakpranesh/c4ba43a2f8e75518acedb9480087a3ee
+
 ```bash
 # cli tools + rosetta
 xcode-select --install

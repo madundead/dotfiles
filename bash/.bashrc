@@ -37,6 +37,7 @@ export BASH_SILENCE_DEPRECATION_WARNING=1
 export HOMEBREW_NO_ENV_HINTS=true
 export RUBY_CONFIGURE_OPTS="--with-openssl-dir=/opt/homebrew/opt/openssl@1.1"
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:.:/usr/local/lib
+# export LIBRARY_PATH="$LIBRARY_PATH:$(brew --prefix)/lib"
 export EDITOR=nvim
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
@@ -73,6 +74,7 @@ alias gcom='git checkout master'
 alias gcob='git checkout -b'
 alias gd='git diff'
 alias gdc='git diff --cached'
+alias gdn='git diff --no-index'
 alias gc='git commit'
 alias gca='git commit --amend'
 alias gcw='git commit -m "wip"'

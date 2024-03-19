@@ -1,6 +1,4 @@
-local cmd, opt, g = vim.cmd, vim.opt, vim.g
-
-cmd('au TextYankPost * lua vim.highlight.on_yank { timeout = 250 }')
+local opt, g = vim.opt, vim.g
 
 opt.smartindent   = true            -- Autoindenting when starting a new line
 opt.completeopt = {'menu', 'menuone', 'noselect'}
@@ -33,16 +31,16 @@ opt.listchars = {
   nbsp = '⦸', -- CIRCLED REVERSE SOLIDUS (U+29B8, UTF-8: E2 A6 B8)
   extends = '»', -- RIGHT-POINTING DOUBLE ANGLE QUOTATION MARK (U+00BB, UTF-8: C2 BB)
   precedes = '«', -- LEFT-POINTING DOUBLE ANGLE QUOTATION MARK (U+00AB, UTF-8: C2 AB)
-  -- tab = '  ', -- '▷─' WHITE RIGHT-POINTING TRIANGLE (U+25B7, UTF-8: E2 96 B7) + BOX DRAWINGS HEAVY TRIPLE DASH HORIZONTAL (U+2505, UTF-8: E2 94 85)
   trail = '•', -- BULLET (U+2022, UTF-8: E2 80 A2)
   space = ' ',
-  tab = '<->'
+  tab = '→ '
 }
 
 opt.fillchars = {
   diff = '⣿',
   eob = ' ', -- NO-BREAK SPACE (U+00A0, UTF-8: C2 A0) to suppress ~ at EndOfBuffer
-  vert = '│', -- window border when window splits vertically ─ ┴ ┬ ┤ ├ ┼
+  -- vert = '│', -- window border when window splits vertically ─ ┴ ┬ ┤ ├ ┼
+  vert = '│',
   msgsep = '‾',
   fold = '·', -- MIDDLE DOT (U+00B7, UTF-8: C2 B7)
   foldopen = '▾',
@@ -79,6 +77,7 @@ opt.shortmess = {
 
 if vim.fn.executable('rg') > 0 then
   vim.o.grepprg = [[rg --glob "!.git" --no-heading --vimgrep --follow $*]]
+  -- opt.grepformat = opt.grepformat ^ { '%f:%l:%c:%m' }
 end
 
 -- ignore when autocompleting
@@ -104,3 +103,41 @@ g.ctrlsf_mapping        = {
 }
 
 g.ruby_host_prog = 'asdf exec neovim-ruby-host'
+
+-- highlight yanked text briefly
+vim.api.nvim_create_autocmd('TextYankPost', {
+  callback = function()
+    vim.highlight.on_yank {
+      higroup = 'Search',
+      timeout = 250,
+      on_visual = true,
+    }
+  end,
+})
+
+-- resize splits when Vim is resized
+vim.api.nvim_create_autocmd('VimResized', { command = 'horizontal wincmd =' })
+
+vim.api.nvim_create_augroup('cursorline_focus', {})
+vim.api.nvim_create_autocmd({ 'InsertLeave', 'WinEnter' }, {
+    group = 'cursorline_focus',
+    callback = function()
+        vim.wo.cursorline = true
+    end,
+})
+vim.api.nvim_create_autocmd({ 'InsertEnter', 'WinLeave' }, {
+    group = 'cursorline_focus',
+    callback = function()
+        vim.wo.cursorline = false
+    end,
+})
+
+-- Experimental
+opt.iskeyword:prepend { '-' } -- treat dash separated words as a word textobject
+
+opt.updatetime = 100
+opt.timeout = true
+opt.timeoutlen = 1000
+opt.ttimeoutlen = 10
+
+vim.cmd('packadd cfilter')

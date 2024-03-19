@@ -2,8 +2,11 @@ local M = {}
 
 function M.setup()
   vim.keymap.set('n', '<leader>ff', function() require('telescope.builtin').find_files({ hidden = true }) end)
+  vim.keymap.set('n', '<leader>fb', function() require('telescope.builtin').buffers({ hidden = true }) end)
   vim.keymap.set('n', '<leader>fo', function() require('telescope.builtin').find_files({ cwd = '~/Syncthing/Obsidian/Personal/', search_file = '*.md' }) end)
+  vim.keymap.set('n', '<leader>fO', function() require('telescope.builtin').live_grep({ cwd = '~/Syncthing/Obsidian/Personal/', search_file = '*.md' }) end)
   vim.keymap.set('n', '<leader>fh', function() require('telescope.builtin').help_tags() end)
+  vim.keymap.set('n', '<leader>fq', function() require('telescope.builtin').quickfix() end)
   -- require('telescope.builtin').find_files({ hidden = true })
 end
 

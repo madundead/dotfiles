@@ -13,8 +13,11 @@ end
 vim.g.mapleader = ' '
 
 nmap(';', ':')
+map('v', ';', ':')
 nmap(',,', '<C-^>')
-nmap('<leader>w', ':w<CR>') -- TODO: stop this madness, :h autowrite
+-- TODO: stop this madness, :h autowrite
+-- doesnt seem to work well in terminal
+nmap('<leader>w', ':w<CR>')
 nmap('Q', ':q!<CR>')
 nmap('<leader><space>', ':nohlsearch<CR>', { silent = true })
 
@@ -28,7 +31,7 @@ nmap('k', 'gk')
 nmap('H', '^')
 nmap('L', '$')
 nmap('J', 'mzJ`z')
-nmap('K', '<Nop>')
+-- nmap('K', '<Nop>')
 nmap('gQ', '<Nop>')
 nmap('vv', ':vs<CR>')
 
@@ -50,20 +53,21 @@ map('v', '<', '<gv')
 map('v', '>', '>gv')
 
 -- vim-easy-align
-vim.keymap.set("n", "ga", "<Plug>(EasyAlign)")
-vim.keymap.set("x", "ga", "<Plug>(EasyAlign)")
+map("n", "ga", "<Plug>(EasyAlign)")
+map("x", "ga", "<Plug>(EasyAlign)")
 
 -- nvim-tree.lua
-nmap('<leader>n', ':NvimTreeToggle<CR>')
-nmap('<leader>N', ':NvimTreeFindFile<CR>')
+-- nmap('<leader>n', ':NvimTreeToggle<CR>')
+-- nmap('<leader>N', ':NvimTreeFindFile<CR>')
+vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
 
 -- glow.vim
 nmap('<leader>p', ':Glow<CR>')
 
 -- fugitive.vim
-nmap('<leader>ga',':Gwrite<CR>')
-nmap('<leader>gs',':Git<CR>')
-nmap('<leader>gb',':Git blame<CR>')
+nmap('<leader>ga', ':Gwrite<CR>')
+nmap('<leader>gs', ':Git<CR>')
+nmap('<leader>gb', ':Git blame<CR>')
 
 -- rails-vim
 nmap('<leader>a', ':A<CR>')
@@ -78,8 +82,28 @@ nmap('<C-f>', '<Plug>CtrlSFPrompt')
 -- trim whitespace
 nmap('<leader>W', ':TrimWhitespace<CR>')
 
-
 -- EXPERIMENTAL:
--- nmap('<leader>x', ':!rm %<CR>')
 nmap('<leader>x', ":call delete(expand('%')) | bdelete!<CR>")
+
 nmap('<leader>q', ':copen<CR>')
+nmap(']q', ':cnext<CR>')
+nmap('[q', ':cprevious<CR>')
+
+-- command mode
+vim.keymap.set('c', '<C-a>', '<Home>')
+vim.keymap.set('c', '<C-e>', '<End>')
+
+-- paste in visual mode and keep available
+local expr = { expr = true, noremap = false, silent = false }
+vim.keymap.set('x', 'p', [['pgv"'.v:register.'y`>']], expr)
+vim.keymap.set('x', 'P', [['Pgv"'.v:register.'y`>']], expr)
+
+-- vim.keymap.set('n', 'gQ', 'mzgggqG`z<cmd>delmarks z<cr>zz', { desc = 'Format buffer' })
+
+vim.keymap.set('n', '<C-d>', '<C-d>zz', { desc = 'Scroll downwards' })
+vim.keymap.set('n', '<C-u>', '<C-u>zz', { desc = 'Scroll upwards' })
+
+-- vim.keymap.set('n', '<leader>to', '<cmd>tabonly<cr>', { desc = 'Close other tab pages' })
+
+-- Make U opposite to u.
+-- vim.keymap.set('n', 'U', '<C-r>', { desc = 'Redo' })
