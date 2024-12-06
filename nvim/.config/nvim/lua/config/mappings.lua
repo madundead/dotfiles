@@ -12,6 +12,14 @@ end
 -- Essentials
 vim.g.mapleader = ' '
 
+-- TODO: move to keys (lazy telescope)
+vim.keymap.set('n', '<leader>ff', function() require('telescope.builtin').find_files({ hidden = true }) end)
+vim.keymap.set('n', '<leader>fb', function() require('telescope.builtin').buffers({ hidden = true }) end)
+vim.keymap.set('n', '<leader>fo', function() require('telescope.builtin').find_files({ cwd = '~/Syncthing/Obsidian/Personal/', search_file = '*.md' }) end)
+vim.keymap.set('n', '<leader>fO', function() require('telescope.builtin').live_grep({ cwd = '~/Syncthing/Obsidian/Personal/', search_file = '*.md' }) end)
+vim.keymap.set('n', '<leader>fh', function() require('telescope.builtin').help_tags() end)
+vim.keymap.set('n', '<leader>fq', function() require('telescope.builtin').quickfix() end)
+
 nmap(';', ':')
 map('v', ';', ':')
 nmap(',,', '<C-^>')
@@ -70,24 +78,42 @@ nmap('<leader>gs', ':Git<CR>')
 nmap('<leader>gb', ':Git blame<CR>')
 
 -- rails-vim
-nmap('<leader>a', ':A<CR>')
+-- nmap('<leader>a', ':A<CR>')
+nmap('<leader>a', function()
+  local path = vim.fn.expand('%')
+
+  vim.print(path)
+
+  -- if path.ends('_spec.rb') then
+  --   vim.print('spec')
+  -- elseif path.contains('app') then
+  --   vim.print('app')
+  -- else
+  --   vim.print('nothing')
+  -- end
+end)
 
 -- test
 nmap('<leader>r', function() os.execute("tmux send-keys -t '{down-of}' './bin/rspec '" .. vim.fn.expand("%") .. " Enter") end)
 nmap('<leader>R', function() os.execute("tmux send-keys -t '{down-of}' './bin/rspec .' Enter") end)
 
--- CtrlSF
-nmap('<C-f>', '<Plug>CtrlSFPrompt')
+-- grep
+nmap('<C-f>', ':grep ')
 
 -- trim whitespace
 nmap('<leader>W', ':TrimWhitespace<CR>')
 
 -- EXPERIMENTAL:
-nmap('<leader>x', ":call delete(expand('%')) | bdelete!<CR>")
+-- this is bad because of the accidental missclicks
+-- nmap('<leader>x', ":call delete(expand('%')) | bdelete!<CR>")
 
 nmap('<leader>q', ':copen<CR>')
+
+-- pick one (comma makes more sense?)
 nmap(']q', ':cnext<CR>')
-nmap('[q', ':cprevious<CR>')
+nmap('[q', ':cprev<CR>')
+nmap(',w', ':cnext<CR>')
+nmap(',q', ':cprev<CR>')
 
 -- command mode
 vim.keymap.set('c', '<C-a>', '<Home>')
@@ -102,6 +128,13 @@ vim.keymap.set('x', 'P', [['Pgv"'.v:register.'y`>']], expr)
 
 vim.keymap.set('n', '<C-d>', '<C-d>zz', { desc = 'Scroll downwards' })
 vim.keymap.set('n', '<C-u>', '<C-u>zz', { desc = 'Scroll upwards' })
+
+  -- TODO: luaify
+  -- create alternate buffer if not exist
+-- vim.api.nvim_exec([[
+--   command AC :execute "e " . eval('rails#buffer().alternate()')
+-- ]], false)
+
 
 -- vim.keymap.set('n', '<leader>to', '<cmd>tabonly<cr>', { desc = 'Close other tab pages' })
 

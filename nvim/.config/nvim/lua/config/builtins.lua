@@ -15,3 +15,4 @@ vim.g.loaded_matchit = 1
 vim.g.loaded_matchparen = 1
 vim.g.loaded_logiPat = 1
 vim.g.loaded_rrhelper = 1
+vim.g.loaded_shada_plugin = 1

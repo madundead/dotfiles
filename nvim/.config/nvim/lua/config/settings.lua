@@ -1,7 +1,7 @@
 local opt, g = vim.opt, vim.g
 
 opt.smartindent   = true            -- Autoindenting when starting a new line
-opt.completeopt = {'menu', 'menuone', 'noselect'}
+opt.completeopt = { 'menu', 'menuone', 'noselect' }
 opt.tabstop       = 2               -- Tab counts as 2 columns
 opt.shiftwidth    = 2               -- Numbers of spaces to (auto)indent
 opt.expandtab     = true            -- Tabs to spaces
@@ -77,7 +77,6 @@ opt.shortmess = {
 
 if vim.fn.executable('rg') > 0 then
   vim.o.grepprg = [[rg --glob "!.git" --no-heading --vimgrep --follow $*]]
-  -- opt.grepformat = opt.grepformat ^ { '%f:%l:%c:%m' }
 end
 
 -- ignore when autocompleting
@@ -90,17 +89,17 @@ opt.wildignore = {
 }
 
 -- CtrlSF
-g.ctrlsf_ackprg         = 'rg'
-g.ctrlsf_regex_pattern  = 1
-g.ctrlsf_case_sensitive = 'smart'
-g.ctrlsf_default_root   = 'project'
-g.ctrlsf_context        = '-B 1 -A 1'
-g.ctrlsf_position       = 'bottom'
-g.ctrlsf_winsize        = '40%'
-g.ctrlsf_mapping        = {
-  next = 'n',
-  prev = 'N',
-}
+-- g.ctrlsf_ackprg         = 'rg'
+-- g.ctrlsf_regex_pattern  = 1
+-- g.ctrlsf_case_sensitive = 'smart'
+-- g.ctrlsf_default_root   = 'project'
+-- g.ctrlsf_context        = '-B 1 -A 1'
+-- g.ctrlsf_position       = 'bottom'
+-- g.ctrlsf_winsize        = '40%'
+-- g.ctrlsf_mapping        = {
+--   next = 'n',
+--   prev = 'N',
+-- }
 
 g.ruby_host_prog = 'asdf exec neovim-ruby-host'
 
@@ -139,5 +138,3 @@ opt.updatetime = 100
 opt.timeout = true
 opt.timeoutlen = 1000
 opt.ttimeoutlen = 10
-
-vim.cmd('packadd cfilter')
