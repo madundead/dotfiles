@@ -44,26 +44,6 @@ return {
         'neovim/nvim-lspconfig',
         event = { 'BufReadPost', 'BufNewFile' },
         init = function()
-            -- client log level
-            vim.lsp.set_log_level(vim.lsp.log_levels.INFO)
-
-            vim.api.nvim_create_user_command('LspFormat', function()
-                vim.lsp.buf.format { async = false }
-            end, {})
-
-            vim.api.nvim_create_autocmd('LspAttach', {
-                group = au,
-                desc = 'LSP tagfunc',
-                callback = function(args)
-                    local bufnr = args.buf
-                    vim.api.nvim_set_option_value(
-                        'tagfunc',
-                        'v:lua.vim.lsp.tagfunc',
-                        { buf = bufnr }
-                    )
-                end,
-            })
-
             vim.api.nvim_create_autocmd('LspAttach', {
                 group = au,
                 desc = 'LSP keymaps',
@@ -92,41 +72,10 @@ return {
                     end)
                     map('n', '<leader>li', vim.lsp.buf.incoming_calls)
                     map('n', '<leader>lo', vim.lsp.buf.outgoing_calls)
-                    vim.opt.shortmess:append 'c'
+                    -- vim.opt.shortmess:append 'c'
                 end,
             })
 
-            vim.api.nvim_create_autocmd('LspAttach', {
-                group = au,
-                desc = 'LSP highlight',
-                callback = function(args)
-                    local bufnr = args.buf
-                    local client = vim.lsp.get_client_by_id(args.data.client_id)
-                    if
-                        client
-                        and client.supports_method 'textDocument/documentHighlight'
-                    then
-                        local augroup_lsp_highlight = 'lsp_highlight'
-                        vim.api.nvim_create_augroup(
-                            augroup_lsp_highlight,
-                            { clear = false }
-                        )
-                        vim.api.nvim_create_autocmd(
-                            { 'CursorHold', 'CursorHoldI' },
-                            {
-                                group = augroup_lsp_highlight,
-                                buffer = bufnr,
-                                callback = vim.lsp.buf.document_highlight,
-                            }
-                        )
-                        vim.api.nvim_create_autocmd('CursorMoved', {
-                            group = augroup_lsp_highlight,
-                            buffer = bufnr,
-                            callback = vim.lsp.buf.clear_references,
-                        })
-                    end
-                end,
-            })
 
             vim.api.nvim_create_autocmd('LspAttach', {
                 group = au,
@@ -139,34 +88,6 @@ return {
                         and client.supports_method 'textDocument/inlayHint'
                         and pcall(require, 'vim.lsp.inlay_hint') -- NOTE: check that API exists
                     then
-                        -- vim.notify(
-                        --     'register inlay hints',
-                        --     vim.lsp.log_levels.DEBUG
-                        -- )
-                        vim.api.nvim_create_autocmd({
-                            'BufWritePost',
-                            'BufEnter',
-                            'InsertLeave',
-                            'FocusGained',
-                            'CursorHold',
-                        }, {
-                            buffer = bufnr,
-                            callback = function()
-                                vim.lsp.inlay_hint.enable(
-                                    true,
-                                    { bufnr = bufnr }
-                                )
-                            end,
-                        })
-                        vim.api.nvim_create_autocmd('InsertEnter', {
-                            callback = function()
-                                vim.lsp.inlay_hint.enable(
-                                    false,
-                                    { bufnr = bufnr }
-                                )
-                            end,
-                        })
-                        -- initial request
                         vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
                     end
                 end,
@@ -191,59 +112,15 @@ return {
                     end
                 end,
             })
-
-            vim.api.nvim_create_autocmd('LspAttach', {
-                group = au,
-                desc = 'LSP notify',
-                callback = function(args)
-                    -- local client = vim.lsp.get_client_by_id(args.data.client_id)
-                    -- if client then
-                    --     vim.notify(
-                    --         ('%s attached to buffer %s'):format(
-                    --             client.name,
-                    --             args.buf
-                    --         ),
-                    --         vim.log.levels.DEBUG
-                    --     )
-                    -- end
-                end,
-            })
-
-            -- local function periodic_refresh_semantic_tokens()
-            --     -- vim.notify(
-            --     --     'periodic refresh semantic tokens',
-            --     --     vim.log.levels.DEBUG
-            --     -- )
-            --     vim.lsp.semantic_tokens.force_refresh()
-            --     vim.defer_fn(periodic_refresh_semantic_tokens, 30000)
-            -- end
-
-            -- local function debounce(ms, fn)
-            --     local timer = assert(vim.uv.new_timer())
-            --     return function(...)
-            --         local argv = { ... }
-            --         timer:start(ms, 0, function()
-            --             timer:stop()
-            --             vim.schedule_wrap(fn)(unpack(argv))
-            --         end)
-            --     end
-            -- end
-
-            -- vim.api.nvim_create_autocmd({ 'TextChanged', 'InsertLeave' }, {
-            --     callback = debounce(1000, function()
-            --         -- vim.notify('refresh semantic tokens', vim.log.levels.DEBUG)
-            --         vim.lsp.semantic_tokens.force_refresh()
-            --     end),
-            -- })
         end,
         dependencies = {
-            {
-                'folke/neoconf.nvim',
-                cmd = 'Neoconf',
-                config = false,
-                dependencies = { 'nvim-lspconfig' },
-            },
-            { 'folke/neodev.nvim', opts = {} },
+            -- {
+            --     'folke/neoconf.nvim',
+            --     cmd = 'Neoconf',
+            --     config = false,
+            --     dependencies = { 'nvim-lspconfig' },
+            -- },
+            -- { 'folke/neodev.nvim', opts = {} },
             'hrsh7th/cmp-nvim-lsp',
             'mason.nvim',
             {
@@ -251,9 +128,6 @@ return {
                 opts = {
                     ensure_installed = {
                         'lua_ls',
-                        -- 'ruby-lsp ',
-                        -- 'pylyzer',
-                        -- 'rust_analyzer',
                         'dockerls',
                         'docker_compose_language_service',
                         'yamlls',
@@ -263,20 +137,14 @@ return {
                         'gopls',
                         'clangd',
                         'texlab',
+                        'ts_ls',
                         'vtsls',
-                        -- 'denols',
-                        -- 'eslint',
-                        -- 'vale_ls',
                         'terraformls',
                         'helm_ls',
                         'bashls'
                     },
                     handlers = {
                         function(server_name)
-                            -- vim.notify(
-                            --     'Mason LSP setup ' .. server_name,
-                            --     vim.log.levels.DEBUG
-                            -- )
                             require('lspconfig')[server_name].setup {}
                         end,
                         ['yamlls'] = function()
@@ -322,9 +190,6 @@ return {
                                 },
                             }
                         end,
-                        -- ['pylyzer'] = function() end, -- disable
-                        -- ['vale_ls'] = function() end, -- disable
-                        -- ['rust_analyzer'] = function() end, -- use rustaceanvim instead
                         ['dockerls'] = function()
                             require('lspconfig').dockerls.setup {
                                 settings = {
@@ -430,6 +295,7 @@ return {
                                         telemetry = { enable = false },
                                         diagnostics = {
                                             unusedLocalExclude = { '_*' },
+                                            globals = { 'vim' }
                                         },
                                         format = { enable = false },
                                         hint = {
@@ -440,396 +306,9 @@ return {
                                 },
                             }
                         end,
-                        -- ['denols'] = function()
-                        --     require('lspconfig').denols.setup {
-                        --         autostart = false,
-                        --         root_dir = require('lspconfig.util').root_pattern(
-                        --             'deno.json',
-                        --             'deno.jsonc'
-                        --         ),
-                        --         filetypes = {
-                        --             'javascript',
-                        --             'javascriptreact',
-                        --             'javascript.jsx',
-                        --             'typescript',
-                        --             'typescriptreact',
-                        --             'typescript.tsx',
-                        --             'yaml',
-                        --             'json',
-                        --             'markdown',
-                        --             'html',
-                        --             'css',
-                        --         },
-                        --         init_options = {
-                        --             enable = true,
-                        --             lint = true,
-                        --             unstable = true,
-                        --             importMap = './import_map.json',
-                        --         },
-                        --         single_file_support = false,
-                        --     }
-                        -- end,
-                        ['texlab'] = function()
-                            require('lspconfig').texlab.setup {
-                                settings = {
-                                    texlab = {
-                                        auxDirectory = '.',
-                                        bibtexFormatter = 'texlab',
-                                        build = {
-                                            args = {
-                                                '-pdflua',
-                                                '-shell-escape',
-                                                '-interaction=nonstopmode',
-                                                '-synctex=1',
-                                                '-pv',
-                                                '%f',
-                                            },
-                                            executable = 'latexmk',
-                                            forwardSearchAfter = false,
-                                            onSave = false,
-                                        },
-                                        chktex = {
-                                            onEdit = false,
-                                            onOpenAndSave = false,
-                                        },
-                                        diagnosticsDelay = 300,
-                                        formatterLineLength = 80,
-                                        forwardSearch = {
-                                            args = {},
-                                        },
-                                        latexFormatter = 'latexindent',
-                                        latexindent = {
-                                            modifyLineBreaks = false,
-                                        },
-                                    },
-                                },
-                            }
-                        end,
                     },
                 },
             },
-            {
-                'antosha417/nvim-lsp-file-operations',
-                dependencies = {
-                    'nvim-lua/plenary.nvim',
-                    'nvim-tree/nvim-tree.lua',
-                },
-                opts = {},
-            },
         },
     },
-    {
-        'zbirenbaum/neodim',
-        event = { 'BufReadPost', 'BufNewFile' },
-        opts = {
-            alpha = 0.70,
-            blend_color = '#000000',
-            update_in_insert = {
-                enable = false,
-                delay = 100,
-            },
-            hide = {
-                virtual_text = false,
-                signs = false,
-                underline = true,
-            },
-        },
-        config = function(_, opts)
-            vim.api.nvim_create_autocmd('LspAttach', {
-                group = au,
-                desc = 'LSP dim unused',
-                callback = function()
-                    require('neodim').setup(opts)
-                end,
-            })
-        end,
-    },
-    {
-        'stevearc/conform.nvim',
-        event = { 'BufWritePre' },
-        dependencies = {
-            {
-                'williamboman/mason.nvim',
-                opts = function(_, opts)
-                    opts.ensure_installed = opts.ensure_installed or {}
-                    vim.list_extend(opts.ensure_installed, {
-                        'stylua',
-                        'ruff',
-                        -- 'dprint',
-                        'isort',
-                        'black',
-                        'prettierd',
-                        'shfmt',
-                    })
-                end,
-            },
-        },
-        opts = {
-            formatters_by_ft = {
-                lua = { 'stylua' },
-                python = function(bufnr)
-                    if
-                        require('conform').get_formatter_info(
-                            'ruff_format',
-                            bufnr
-                        ).available
-                    then
-                        return { 'ruff_fix', 'ruff_format' }
-                    else
-                        return { 'isort', 'black' }
-                    end
-                end,
-                json = { 'dprint' },
-                jsonc = { 'dprint' },
-                markdown = { 'dprint', 'injected' },
-                -- javascript = { 'dprint' },
-                -- javascriptreact = { 'dprint' },
-                -- typescript = { 'dprint' },
-                -- typescriptreact = { 'dprint' },
-                toml = { 'dprint' },
-                dockerfile = { 'dprint' },
-                css = { 'dprint' },
-                html = { 'dprint' },
-                htmldjango = { 'dprint' },
-                yaml = { 'dprint' },
-                graphql = { { 'prettierd', 'prettier' } },
-                sh = { 'shfmt' },
-                http = {
-                    'injected',
-                    -- 'trim_newlines', -- FIXME: breaks injected
-                    'trim_whitespace',
-                },
-                ['_'] = { 'trim_newlines', 'trim_whitespace' },
-            },
-            format_on_save = function(bufnr)
-                -- Disable with a global or buffer-local variable
-                if
-                    vim.g.disable_autoformat
-                    or vim.b[bufnr].disable_autoformat
-                then
-                    return
-                end
-                return {
-                    timeout_ms = 5000, -- HACK: high because dprint needs to download WASM plugins on first run
-                    lsp_fallback = true,
-                }
-            end,
-            log_level = vim.log.levels.TRACE,
-        },
-        init = function()
-            vim.api.nvim_create_user_command('Format', function()
-                require('conform').format()
-            end, { desc = 'Format buffer using conform' })
-
-            vim.api.nvim_create_user_command('FormatDisable', function(args)
-                if args.bang then
-                    -- FormatDisable! will disable formatting just for this buffer
-                    ---@diagnostic disable-next-line: inject-field
-                    vim.b.disable_autoformat = true
-                else
-                    vim.g.disable_autoformat = true
-                end
-            end, {
-                desc = 'Disable autoformat-on-save',
-                bang = true,
-            })
-            vim.api.nvim_create_user_command('FormatEnable', function()
-                ---@diagnostic disable-next-line: inject-field
-                vim.b.disable_autoformat = false
-                vim.g.disable_autoformat = false
-            end, {
-                desc = 'Re-enable autoformat-on-save',
-            })
-
-            vim.api.nvim_create_autocmd('LspAttach', {
-                group = au,
-                desc = 'LSP formatexpr',
-                callback = function(args)
-                    local bufnr = args.buf
-                    vim.api.nvim_set_option_value(
-                        'formatexpr',
-                        'v:lua.require\'conform\'.formatexpr()',
-                        { buf = bufnr }
-                    )
-                end,
-            })
-        end,
-        config = function(_, opts)
-            local conform = require 'conform'
-            conform.setup(opts)
-
-            conform.formatters.stylua = {
-                require_cwd = true,
-            }
-            -- conform.formatters.ruff_fix = {
-            --     prepend_args = { '--respect-gitignore' },
-            -- }
-            -- conform.formatters.ruff_format = {
-            --     prepend_args = { '--silent', '--respect-gitignore' },
-            -- }
-            conform.formatters.shfmt = {
-                prepend_args = { '-i', '4', '-ci' },
-            }
-            conform.formatters.dprint = {
-                prepend_args = function(self, ctx)
-                    if not self:cwd(ctx) then
-                        vim.notify 'falling back to global dprint config'
-                        return {
-                            '--config',
-                            vim.fn.expand '~/.config/dprint.jsonc',
-                        }
-                    end
-                end,
-            }
-            conform.formatters.dprint_injected = vim.tbl_deep_extend(
-                'force',
-                require 'conform.formatters.dprint',
-                conform.formatters.dprint,
-                {
-                    args = function(self, ctx)
-                        local extension = vim.fn.fnamemodify(ctx.filename, ':e')
-                        local ret = vim.list_extend(
-                            { 'fmt', '--stdin', extension },
-                            self:prepend_args(ctx)
-                        )
-                        return ret
-                    end,
-                }
-            )
-            conform.formatters.injected = {
-                options = {
-                    ignore_errors = false,
-                    lang_to_formatters = {
-                        json = { 'dprint_injected' },
-                        python = { 'black' }, -- FIXME: ruff_format deletes content
-                    },
-                },
-            }
-
-            -- TODO: custom formatters
-            conform.formatters.blackd = {
-                command = 'blackd-client',
-            }
-        end,
-    },
-    {
-        'joechrisellis/lsp-format-modifications.nvim',
-        lazy = true,
-        dependencies = { 'nvim-lua/plenary.nvim' },
-        init = function()
-            vim.api.nvim_create_user_command('FormatModified', function()
-                local bufnr = vim.api.nvim_get_current_buf()
-                local clients = vim.lsp.get_clients {
-                    bufnr = bufnr,
-                    method = require('vim.lsp.protocol').Methods.textDocument_rangeFormatting,
-                }
-
-                if #clients == 0 then
-                    vim.notify '[LSP] Format request failed, no matching language servers.'
-                end
-
-                for _, client in pairs(clients) do
-                    require('lsp-format-modifications').format_modifications(
-                        client,
-                        bufnr
-                    )
-                end
-            end, {})
-        end,
-    },
-    {
-        'mrcjkb/rustaceanvim',
-        ft = 'rust',
-        opts = function()
-            vim.g.rustaceanvim = {
-                server = {
-                    cmd = function()
-                        local mason_registry = require 'mason-registry'
-                        local ra_binary = mason_registry.is_installed 'rust-analyzer'
-                                and mason_registry
-                                    .get_package('rust-analyzer')
-                                    :get_install_path() .. '/rust-analyzer'
-                            or 'rust-analyzer'
-                        return { ra_binary }
-                    end,
-                },
-            }
-        end,
-    },
-    {
-        'folke/trouble.nvim',
-        cmd = 'Trouble',
-        keys = {
-            {
-                '<leader>xx',
-                function()
-                    require('trouble').toggle()
-                end,
-            },
-            {
-                '<leader>xw',
-                function()
-                    require('trouble').toggle { mode = 'diagnostics' }
-                end,
-            },
-            {
-                '<leader>xb',
-                function()
-                    require('trouble').toggle {
-                        mode = 'diagnostics',
-                        filter = { buf = 0 },
-                    }
-                end,
-            },
-            {
-                '<leader>xq',
-                function()
-                    require('trouble').toggle { mode = 'quickfix' }
-                end,
-            },
-        },
-        opts = {
-            fold_open = '', -- ▾
-            fold_closed = '', -- ▸
-            indent_lines = false,
-            padding = false,
-            signs = {
-                error = '',
-                warning = '',
-                hint = '',
-                information = '',
-                other = '', -- 
-            },
-            action_keys = { jump = { '<cr>' }, toggle_fold = { '<tab>' } },
-        },
-        config = function(_, opts)
-            require('trouble').setup(opts)
-            vim.api.nvim_set_hl(0, 'TroubleText', { link = 'CursorLineNr' })
-
-            vim.api.nvim_create_autocmd('QuitPre', {
-                callback = function()
-                    local invalid_wins = {}
-                    local wins = vim.api.nvim_list_wins()
-                    for _, w in ipairs(wins) do
-                        local bufname = vim.api.nvim_buf_get_name(
-                            vim.api.nvim_win_get_buf(w)
-                        )
-                        if
-                            bufname:match 'Trouble' ~= nil
-                            or vim.api.nvim_win_get_config(w).relative ~= '' -- floating window
-                        then
-                            table.insert(invalid_wins, w)
-                        end
-                    end
-                    if #invalid_wins == #wins - 1 then
-                        -- Should quit, so we close all invalid windows.
-                        for _, w in ipairs(invalid_wins) do
-                            vim.api.nvim_win_close(w, true)
-                        end
-                    end
-                end,
-                desc = 'Close Trouble if last window',
-            })
-        end,
-    }
 }

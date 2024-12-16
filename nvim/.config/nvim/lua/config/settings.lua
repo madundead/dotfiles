@@ -27,6 +27,13 @@ opt.timeoutlen    = 1000            -- Delay for mappings
 opt.ttimeoutlen   = 0               -- Delay between modes
 opt.termguicolors = true            -- 24-bit RGB color
 
+opt.autoindent = true
+
+opt.updatetime = 100
+opt.timeout = true
+opt.timeoutlen = 1000
+opt.ttimeoutlen = 10
+
 opt.listchars = {
   nbsp = '⦸', -- CIRCLED REVERSE SOLIDUS (U+29B8, UTF-8: E2 A6 B8)
   extends = '»', -- RIGHT-POINTING DOUBLE ANGLE QUOTATION MARK (U+00BB, UTF-8: C2 BB)
@@ -88,19 +95,7 @@ opt.wildignore = {
   '.lock', '.DS_Store', 'tags.lock'
 }
 
--- CtrlSF
--- g.ctrlsf_ackprg         = 'rg'
--- g.ctrlsf_regex_pattern  = 1
--- g.ctrlsf_case_sensitive = 'smart'
--- g.ctrlsf_default_root   = 'project'
--- g.ctrlsf_context        = '-B 1 -A 1'
--- g.ctrlsf_position       = 'bottom'
--- g.ctrlsf_winsize        = '40%'
--- g.ctrlsf_mapping        = {
---   next = 'n',
---   prev = 'N',
--- }
-
+-- find the correct ruby interpreter
 g.ruby_host_prog = 'asdf exec neovim-ruby-host'
 
 -- highlight yanked text briefly
@@ -133,8 +128,3 @@ vim.api.nvim_create_autocmd({ 'InsertEnter', 'WinLeave' }, {
 
 -- Experimental
 opt.iskeyword:prepend { '-' } -- treat dash separated words as a word textobject
-
-opt.updatetime = 100
-opt.timeout = true
-opt.timeoutlen = 1000
-opt.ttimeoutlen = 10
