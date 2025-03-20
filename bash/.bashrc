@@ -1,12 +1,12 @@
-[ -f /opt/homebrew/opt/asdf/libexec/asdf.sh ] \
-                              && . /opt/homebrew/opt/asdf/libexec/asdf.sh
-[ -f /etc/bash_completion ]   && . /etc/bash_completion
-[ -f ~/.fzf.bash ]            && . ~/.fzf.bash
-[ -f ~/.cargo/env ]           && . ~/.cargo/env
+[ -f /opt/homebrew/opt/asdf/libexec/asdf.sh ] &&
+  . /opt/homebrew/opt/asdf/libexec/asdf.sh
+[ -f /etc/bash_completion ] && . /etc/bash_completion
+[ -f ~/.fzf.bash ] && . ~/.fzf.bash
+[ -f ~/.cargo/env ] && . ~/.cargo/env
 [ -f ~/Syncthing/secrets.sh ] && . ~/Syncthing/secrets.sh
 
 if [ -x /usr/libexec/path_helper ]; then
-  eval `/usr/libexec/path_helper -s`
+  eval $(/usr/libexec/path_helper -s)
 fi
 
 # Save 10,000 lines of history in memory
@@ -55,10 +55,10 @@ export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS
 export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 
 alias ~='cd ~'
-alias l='exa'
-alias ls='exa'
-alias ll='exa -l'
-alias tree='exa --tree'
+alias l='eza'
+alias ls='eza'
+alias ll='eza -l'
+alias tree='eza --tree'
 alias vim='nvim'
 alias vi='nvim'
 alias v='nvim'
@@ -72,12 +72,14 @@ alias md='mkdir -p'
 alias gco='git checkout'
 alias gcom='git checkout master'
 alias gcob='git checkout -b'
+# TODO: git checkout --track origin/$1
+# alias gcot='git checkout'
 alias gd='git diff'
 alias gdc='git diff --cached'
 alias gdn='git diff --no-index'
 alias gc='git commit'
 alias gca='git commit --amend'
-alias gcw='git commit -m "wip"'
+alias gcw='git commit --no-verify -m "wip"'
 alias gs='git status -sb'
 alias ga='git add'
 alias grm='git rm'
@@ -91,8 +93,8 @@ alias gl='git lg'
 alias gr='git reset'
 alias gr1='git reset HEAD~1'
 # alias gh='git lg -1'
-function gcm () {
-    git commit -m "$*"
+function gcm() {
+  git commit --no-verify -m "$*"
 }
 
 alias fs='foreman start'
@@ -138,16 +140,86 @@ alias oclean="fd . '/Users/madundead/Syncthing/Obsidian/Personal' | rg sync-conf
 
 alias proxy='kubectl port-forward -n staging svc/tinyproxy-svc 8888:8888'
 
-fzf_kill() {
-    local pids=$(
-      ps -f -u $USER | sed 1d | fzf --multi | tr -s [:blank:] | cut -d' ' -f3
-      )
-    if [[ -n $pids ]]; then
-        echo "$pids" | xargs kill -9 "$@"
-    fi
+# Experimental
+alias ports='lsof -iTCP -sTCP:LISTEN -n -P'
+
+o() {
+  files="$(fzf --print0 --preview "bat --theme ansi --color always {}")"
+  if [ -z "$files" ]; then
+    return
+  fi
+  echo -n "$files" | xargs -0 -o "$EDITOR"
 }
 
-alias fkill='fzf_kill'
+man() {
+  env \
+    LESS_TERMCAP_mb=$(printf "\\e[1;31m") \
+    LESS_TERMCAP_md=$(printf "\\e[1;31m") \
+    LESS_TERMCAP_me=$(printf "\\e[0m") \
+    LESS_TERMCAP_se=$(printf "\\e[0m") \
+    LESS_TERMCAP_so=$(printf "\\e[1;44;33m") \
+    LESS_TERMCAP_ue=$(printf "\\e[0m") \
+    LESS_TERMCAP_us=$(printf "\\e[0;32m") \
+    man "$@"
+}
+
+function ex {
+  if [ $# -eq 0 ]; then
+    # display usage if no parameters given
+    echo "Usage: ex <path/file_name>.<zip|rar|bz2|gz|tar|tbz2|tgz|Z|7z|xz|ex|tar.bz2|tar.gz|tar.xz|.zlib|.cso|.zst>"
+    echo "       ex <path/file_name_1.ext> [path/file_name_2.ext] [path/file_name_3.ext]"
+  fi
+  for n in "$@"; do
+    if [ ! -f "$n" ]; then
+      echo "'$n' - file doesn't exist"
+      return 1
+    fi
+
+    case "${n%,}" in
+    *.cbt | *.tar.bz2 | *.tar.gz | *.tar.xz | *.tbz2 | *.tgz | *.txz | *.tar)
+      tar zxvf "$n"
+      ;;
+    *.lzma) unlzma ./"$n" ;;
+    *.bz2) bunzip2 ./"$n" ;;
+    *.cbr | *.rar) unrar x -ad ./"$n" ;;
+    *.gz) gunzip ./"$n" ;;
+    *.cbz | *.epub | *.zip) unzip ./"$n" ;;
+    *.z) uncompress ./"$n" ;;
+    *.7z | *.apk | *.arj | *.cab | *.cb7 | *.chm | *.deb | *.iso | *.lzh | *.msi | *.pkg | *.rpm | *.udf | *.wim | *.xar | *.vhd)
+      7z x ./"$n"
+      ;;
+    *.xz) unxz ./"$n" ;;
+    *.exe) cabextract ./"$n" ;;
+    *.cpio) cpio -id <./"$n" ;;
+    *.cba | *.ace) unace x ./"$n" ;;
+    *.zpaq) zpaq x ./"$n" ;;
+    *.arc) arc e ./"$n" ;;
+    *.cso) ciso 0 ./"$n" ./"$n.iso" &&
+      extract "$n.iso" && \rm -f "$n" ;;
+    *.zlib) zlib-flate -uncompress <./"$n" >./"$n.tmp" &&
+      mv ./"$n.tmp" ./"${n%.*zlib}" && rm -f "$n" ;;
+    *.dmg)
+      hdiutil mount ./"$n" -mountpoint "./$n.mounted"
+      ;;
+    *.tar.zst) tar -I zstd -xvf ./"$n" ;;
+    *.zst) zstd -d ./"$n" ;;
+    *)
+      echo "ex: '$n' - unknown archive method"
+      return 1
+      ;;
+    esac
+  done
+}
+
+fkill() {
+  local pids=$(
+    ps -f -u $USER | sed 1d | fzf --multi | tr -s [:blank:] | cut -d' ' -f3
+  )
+  if [[ -n $pids ]]; then
+    echo "$pids" | xargs kill -9 "$@"
+  fi
+}
+alias fk='fkill'
 
 # Homebrew stuff
 export MANPATH=/usr/local/share/man:$MANPATH
@@ -162,6 +234,11 @@ export PATH="/opt/homebrew/opt/arm-gcc-bin@8/bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
 export PATH="/usr/local/opt/avr-gcc@8/bin:$PATH"
 export PATH="/usr/local/opt/arm-gcc-bin@8/bin:$PATH"
+export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH=$BUN_INSTALL/bin:$PATH
 export LDFLAGS="-L/opt/homebrew/opt/openssl@3/lib"
 export CPPFLAGS="-I/opt/homebrew/opt/openssl@3/include"
 
