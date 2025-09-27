@@ -1,6 +1,6 @@
 [user]
   email = madundead@gmail.com
-  name = Konstantin Bukley
+  name = Kostiantyn Bukliei
 
 [includeIf "gitdir:~/Development/work/"]
   path = ~/Development/work/.gitconfig
@@ -114,11 +114,11 @@
   remote = green
 
 [color "diff"]
-	meta = yellow
-	frag = magenta bold
-	old = red bold
-	commit = yellow bold
-	whitespace = red reverse
+  meta = yellow
+  frag = magenta bold
+  old = red bold
+  commit = yellow bold
+  whitespace = red reverse
 
 [color "status"]
   added = yellow
@@ -173,12 +173,12 @@
   markEmptyLines = false
 
 [merge]
-    tool = nvim
+  tool = nvim
 
 [mergetool]
-    keepBackup = false
+  keepBackup = false
 
 [mergetool "nvim"]
-    cmd = nvim -d $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
+  cmd = nvim -d $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
 [pull]
-	default = current
+  default = current
