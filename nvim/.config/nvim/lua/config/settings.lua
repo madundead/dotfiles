@@ -21,7 +21,7 @@ opt.visualbell    = false           -- No visual bell
 opt.backup        = false           -- No backups
 opt.writebackup   = false           -- No backups
 opt.swapfile      = false           -- No backups
-opt.mouse         = 'a'             -- Support mouse (for proper mouse highlight)
+opt.mouse         = ''              -- Disable mouse
 opt.list          = true            -- List mode
 opt.timeoutlen    = 1000            -- Delay for mappings
 opt.ttimeoutlen   = 0               -- Delay between modes
@@ -35,10 +35,10 @@ opt.timeoutlen = 1000
 opt.ttimeoutlen = 10
 
 opt.listchars = {
-  nbsp = '⦸', -- CIRCLED REVERSE SOLIDUS (U+29B8, UTF-8: E2 A6 B8)
-  extends = '»', -- RIGHT-POINTING DOUBLE ANGLE QUOTATION MARK (U+00BB, UTF-8: C2 BB)
+  nbsp = '⦸',     -- CIRCLED REVERSE SOLIDUS (U+29B8, UTF-8: E2 A6 B8)
+  extends = '»',  -- RIGHT-POINTING DOUBLE ANGLE QUOTATION MARK (U+00BB, UTF-8: C2 BB)
   precedes = '«', -- LEFT-POINTING DOUBLE ANGLE QUOTATION MARK (U+00AB, UTF-8: C2 AB)
-  trail = '•', -- BULLET (U+2022, UTF-8: E2 80 A2)
+  trail = '•',    -- BULLET (U+2022, UTF-8: E2 80 A2)
   space = ' ',
   tab = '→ '
 }
@@ -128,3 +128,5 @@ vim.api.nvim_create_autocmd({ 'InsertEnter', 'WinLeave' }, {
 
 -- Experimental
 opt.iskeyword:prepend { '-' } -- treat dash separated words as a word textobject
+
+vim.cmd('syntax on')

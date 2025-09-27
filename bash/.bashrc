@@ -19,7 +19,7 @@ HISTCONTROL=ignoreboth
 HISTIGNORE='ls:ll:ls -alh:pwd:clear:history'
 HISTIGNORE=$HISTIGNORE':gcom:gcob:gd:gdc:gc:gca:gcw:gs:ga:grm:gup:gp:gpf:gpt:gb:gg:gl:gr:gr1:gh'
 HISTIGNORE=$HISTIGNORE':v:vi:nvim'
-HISTIGNORE=$HISTIGNORE':k:kp:ks:kl:kgp:d:dc:dcu:dcd:dcr:dcl:dcs'
+HISTIGNORE=$HISTIGNORE':k:s:p:y:kp:ks:kl:kgp:d:dc:dcu:dcd:dcr:dcl:dcs'
 # Immediately store command to the history
 PROMPT_COMMAND='history -a'
 
@@ -36,6 +36,9 @@ export KUBE_TMUX_NS_ENABLE=false
 export BASH_SILENCE_DEPRECATION_WARNING=1
 export HOMEBREW_NO_ENV_HINTS=true
 export RUBY_CONFIGURE_OPTS="--with-openssl-dir=/opt/homebrew/opt/openssl@1.1"
+# Fix for the following error in some Ruby version
+# objc[12590]: +[__NSCFConstantString initialize] may have been in progress in another thread when fork() was called.
+export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:.:/usr/local/lib
 # export LIBRARY_PATH="$LIBRARY_PATH:$(brew --prefix)/lib"
 export EDITOR=nvim
@@ -49,10 +52,6 @@ export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS
   --height 100% --layout=reverse --border --cycle --info=inline
   --bind=ctrl-d:preview-page-down
   --bind=ctrl-u:preview-page-up"
-
-# Fix for the following error in some Ruby version
-# objc[12590]: +[__NSCFConstantString initialize] may have been in progress in another thread when fork() was called.
-export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 
 alias ~='cd ~'
 alias l='eza'
@@ -69,10 +68,17 @@ alias ..='cd ..'
 alias ...='cd ../..'
 alias md='mkdir -p'
 
+alias pacman='sudo pacman'
+alias p='sudo pacman'
+alias s='sudo systemctl'
+alias y='yay --noconfirm --answerdiff=None --answeredit=None'
+alias yay='yay --noconfirm --answerdiff=None --answeredit=None'
+
+
 alias gco='git checkout'
 alias gcom='git checkout master'
 alias gcob='git checkout -b'
-# TODO: git checkout --track origin/$1
+# TODO: git checkout --track origin/$1^W man git-switch --guess
 # alias gcot='git checkout'
 alias gd='git diff'
 alias gdc='git diff --cached'
@@ -88,7 +94,7 @@ alias gp='git push'
 alias gpf='git push -f'
 alias gpt='git push origin --tags'
 alias gb='git branch'
-alias gg='git go'
+alias gg='git go' # checkout or create
 alias gl='git lg'
 alias gr='git reset'
 alias gr1='git reset HEAD~1'
@@ -113,6 +119,11 @@ alias dcd='docker-compose stop'
 alias dcr='docker-compose restart'
 alias dcl='docker-compose logs -tf --tail="50"'
 alias dcs='docker-compose ps'
+
+alias tf='tofu'
+alias tfp='tofu plan'
+alias tfa='tofu apply'
+alias tff='tofu fmt'
 
 alias k='kubectl'
 alias kp='kubectx matic-production'
@@ -142,6 +153,8 @@ alias proxy='kubectl port-forward -n staging svc/tinyproxy-svc 8888:8888'
 
 # Experimental
 alias ports='lsof -iTCP -sTCP:LISTEN -n -P'
+
+alias ssn='sudo shutdown now'
 
 o() {
   files="$(fzf --print0 --preview "bat --theme ansi --color always {}")"

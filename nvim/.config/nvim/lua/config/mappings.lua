@@ -110,6 +110,7 @@ nmap('<leader>W', ':TrimWhitespace<CR>')
 nmap('<leader>q', ':copen<CR>')
 
 -- pick one (comma makes more sense?)
+-- neovim devs have chosen for me https://neovim.io/doc/user/news-0.11.html
 nmap(']q', ':cnext<CR>')
 nmap('[q', ':cprev<CR>')
 nmap(',w', ':cnext<CR>')

@@ -128,20 +128,20 @@ return {
                 opts = {
                     ensure_installed = {
                         'lua_ls',
-                        'dockerls',
-                        'docker_compose_language_service',
-                        'yamlls',
-                        'jsonls',
-                        'html',
-                        'cssls',
-                        'gopls',
+                        -- 'dockerls',
+                        -- 'docker_compose_language_service',
+                        -- 'yamlls',
+                        -- 'jsonls',
+                        -- 'html',
+                        -- 'cssls',
+                        -- 'gopls',
                         'clangd',
                         'texlab',
-                        'ts_ls',
-                        'vtsls',
+                        -- 'ts_ls',
+                        -- 'vtsls',
                         'terraformls',
                         'helm_ls',
-                        'bashls'
+                        -- 'bashls'
                     },
                     handlers = {
                         function(server_name)
