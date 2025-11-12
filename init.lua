@@ -138,9 +138,6 @@ vim.api.nvim_create_autocmd({ 'InsertEnter', 'WinLeave' }, {
   end,
 })
 
--- Experimental
--- vim.opt.iskeyword:prepend { '-' } -- treat dash separated words as a word textobject
-
 local function map(mode, lhs, rhs, opts)
   local options = { noremap = true }
   if opts then options = vim.tbl_extend('force', options, opts) end
