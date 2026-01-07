@@ -262,4 +262,4 @@ if [ -s ~/Development/dotfiles/git/.git-prompt.sh ]; then
 fi
 
 PS1='\W$(__git_ps1 ":%s") '
-eval "$(mise activate bash)"
+eval "$(mise activate --shims)"
