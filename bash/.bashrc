@@ -255,11 +255,12 @@ export PATH=$BUN_INSTALL/bin:$PATH
 export LDFLAGS="-L/opt/homebrew/opt/openssl@3/lib"
 export CPPFLAGS="-I/opt/homebrew/opt/openssl@3/include"
 
-eval "$(zoxide init bash)"
-
 if [ -s ~/Development/dotfiles/git/.git-prompt.sh ]; then
   source ~/Development/dotfiles/git/.git-prompt.sh
 fi
 
-PS1='\W$(__git_ps1 ":%s") '
+eval "$(fzf --bash)"
 eval "$(mise activate --shims)"
+eval "$(zoxide init bash)"
+
+PS1='\W$(__git_ps1 ":%s") '
