@@ -3,10 +3,13 @@
 ## macOS
 https://gist.github.com/sarthakpranesh/c4ba43a2f8e75518acedb9480087a3ee
 
+
 ```bash
 # cli tools + rosetta
 xcode-select --install
 sudo softwareupdate --install-rosetta
+
+xattr -dr com.apple.quarantine "/Applications/Alacritty.app"
 
 # brew
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"

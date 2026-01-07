@@ -257,8 +257,9 @@ export CPPFLAGS="-I/opt/homebrew/opt/openssl@3/include"
 
 eval "$(zoxide init bash)"
 
-if [ -s ~/.git-prompt.sh ]; then
-  source ~/.git-prompt.sh
+if [ -s ~/Development/dotfiles/git/.git-prompt.sh ]; then
+  source ~/Development/dotfiles/git/.git-prompt.sh
 fi
 
 PS1='\W$(__git_ps1 ":%s") '
+eval "$(mise activate bash)"

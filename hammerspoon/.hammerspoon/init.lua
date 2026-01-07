@@ -7,7 +7,7 @@ hyperModeAppMappings = {
   { 'f', 'Finder' },        -- "F" for "Finder"
   { 'm', 'Spark' },         -- "M" for "Mail"
   { 'y', 'Spotify' },       -- "Y" for "SpotifY"
-  { 'b', 'Brave Browser' }, -- "B" for "Brave" or "Browser"
+  { 'b', 'Firefox' },       -- "B" for "Browser"
   { 'o', 'Obsidian' },      -- "O" for "Obsidian"
   { 'k', 'KeePassXC' }      -- "K" for "Keepass"
 }

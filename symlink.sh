@@ -1,6 +1,17 @@
 #!/bin/sh
 
-for dir in $(ls -d */); do stow -Rv ${dir}; done
+stow -Rv alacritty
+stow -Rv tmux
+stow -Rv bash
+stow -Rv nvim
+stow -Rv git
 
-# Link planck config to QMK (prime)
-ln -s /Users/madundead/Development/dotfiles/planck/keymap.c  /Users/madundead/Development/qmk/keyboards/planck/keymaps/madundead/keymap.c
+case "$(uname)" in
+  "Darwin")
+    stow -Rv karabiner
+    stow -Rv hammerspoon
+    ;;
+  "Linux")
+    echo "This is Linux"
+    ;;
+esac
