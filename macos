@@ -96,13 +96,13 @@ defaults write NSGlobalDomain KeyRepeat -int 1.2
 defaults write NSGlobalDomain InitialKeyRepeat -int 12
 
 # Set language and text formats
-defaults write NSGlobalDomain AppleLanguages -array "en" "ru" "ua"
+defaults write NSGlobalDomain AppleLanguages -array "en" "ua"
 defaults write NSGlobalDomain AppleLocale -string "en_GB@currency=EUR"
 defaults write NSGlobalDomain AppleMeasurementUnits -string "Centimeters"
 defaults write NSGlobalDomain AppleMetricUnits -bool true
 
 # Set the timezone; see `sudo systemsetup -listtimezones` for other values
-sudo systemsetup -settimezone "Europe/Kiev" > /dev/null
+sudo systemsetup -settimezone "Europe/Kyiv" > /dev/null
 
 ###############################################################################
 # Screen                                                                      #
