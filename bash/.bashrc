@@ -35,11 +35,11 @@ export KUBE_TMUX_NS_ENABLE=false
 
 export BASH_SILENCE_DEPRECATION_WARNING=1
 export HOMEBREW_NO_ENV_HINTS=true
-export RUBY_CONFIGURE_OPTS="--with-openssl-dir=/opt/homebrew/opt/openssl@1.1"
+# export RUBY_CONFIGURE_OPTS="--with-openssl-dir=/opt/homebrew/opt/openssl@1.1"
 # Fix for the following error in some Ruby version
 # objc[12590]: +[__NSCFConstantString initialize] may have been in progress in another thread when fork() was called.
 export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:.:/usr/local/lib
+# export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:.:/usr/local/lib
 # export LIBRARY_PATH="$LIBRARY_PATH:$(brew --prefix)/lib"
 export EDITOR=nvim
 export LANG=en_US.UTF-8
@@ -237,30 +237,31 @@ alias fk='fkill'
 # Homebrew stuff
 export MANPATH=/usr/local/share/man:$MANPATH
 export PATH=/opt/homebrew/bin:/opt/homebrew/opt:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin:$PATH
-export PATH="$HOME/.cargo/bin:$PATH"
-export PATH="/usr/local/opt/icu4c/bin:$PATH"
-export PATH="/usr/local/opt/icu4c/sbin:$PATH"
-export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
+# export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="/opt/homebrew/sbin:$PATH"
-export PATH="/opt/homebrew/opt/avr-gcc@8/bin:$PATH"
-export PATH="/opt/homebrew/opt/arm-gcc-bin@8/bin:$PATH"
-export PATH="/usr/local/sbin:$PATH"
-export PATH="/usr/local/opt/avr-gcc@8/bin:$PATH"
-export PATH="/usr/local/opt/arm-gcc-bin@8/bin:$PATH"
-export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
+# export PATH="/usr/local/opt/icu4c/bin:$PATH"
+# export PATH="/usr/local/opt/icu4c/sbin:$PATH"
+# export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
+# export PATH="/opt/homebrew/sbin:$PATH"
+# export PATH="/opt/homebrew/opt/avr-gcc@8/bin:$PATH"
+# export PATH="/opt/homebrew/opt/arm-gcc-bin@8/bin:$PATH"
+# export PATH="/usr/local/sbin:$PATH"
+# export PATH="/usr/local/opt/avr-gcc@8/bin:$PATH"
+# export PATH="/usr/local/opt/arm-gcc-bin@8/bin:$PATH"
+# export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
 
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH=$BUN_INSTALL/bin:$PATH
-export LDFLAGS="-L/opt/homebrew/opt/openssl@3/lib"
-export CPPFLAGS="-I/opt/homebrew/opt/openssl@3/include"
+# export LDFLAGS="-L/opt/homebrew/opt/openssl@3/lib"
+# export CPPFLAGS="-I/opt/homebrew/opt/openssl@3/include"
 
 if [ -s ~/Development/dotfiles/git/.git-prompt.sh ]; then
   source ~/Development/dotfiles/git/.git-prompt.sh
 fi
 
 eval "$(fzf --bash)"
-eval "$(mise activate --shims)"
+eval "$(mise activate bash)"
 eval "$(zoxide init bash)"
 
 PS1='\W$(__git_ps1 ":%s") '
