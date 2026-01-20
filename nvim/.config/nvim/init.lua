@@ -252,6 +252,14 @@ vim.keymap.set('x', 'P', [['Pgv"'.v:register.'y`>']], { expr = true, noremap = f
 vim.keymap.set('n', '<C-d>', '<C-d>zz', { desc = 'Scroll downwards' })
 vim.keymap.set('n', '<C-u>', '<C-u>zz', { desc = 'Scroll upwards' })
 
+vim.keymap.set({ "n", "x" }, "<leader>ca", function() require("opencode").ask("@this: ", { submit = true }) end)
+vim.keymap.set({ "n", "x" }, "<leader>cs", function() require("opencode").select() end)
+vim.keymap.set({ "n", "t" }, "<leader>cc", function() require("opencode").toggle() end)
+
+-- FIXME: doesn't work, maybe because of tmux?
+vim.keymap.set("n", "<S-C-u>", function() require("opencode").command("session.half.page.up") end)
+vim.keymap.set("n", "<S-C-d>", function() require("opencode").command("session.half.page.down") end)
+
 
 -- Make U opposite to u.
 -- vim.keymap.set('n', 'U', '<C-r>', { desc = 'Redo' })
