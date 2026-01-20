@@ -16,6 +16,14 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 # General UI/UX                                                               #
 ###############################################################################
 
+
+# Disable input source switch popup (https://www.reddit.com/r/MacOS/comments/16tgq25/sonoma_any_way_to_disable_input_source_switch/)
+# TODO: double check this https://stackoverflow.com/a/77296786
+sudo defaults write /Library/Preferences/FeatureFlags/Domain/UIKit.plist redesigned_text_cursor -dict-add Enabled -bool NO
+
+# https://www.reddit.com/r/MacOS/comments/1no872w/psa_macos_26_bug_leads_to_performance_issues_in/
+defaults write -g NSAutoFillHeuristicControllerEnabled -bool false
+
 # Disable transparency in the menu bar and elsewhere on macOS
 defaults write com.apple.universalaccess reduceTransparency -bool true
 
