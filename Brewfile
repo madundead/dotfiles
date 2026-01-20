@@ -1,7 +1,7 @@
 # rubocop:disable all
 
 # Uninstall everything but this file:
-# brew bundle cleanup --force 
+# brew bundle cleanup --force
 
 brew 'awscli'
 brew 'bash'
@@ -16,32 +16,40 @@ brew 'fd'
 brew 'fzf'
 brew 'git'
 brew 'glow'
+brew 'gnupg'
 brew 'htop'
 brew 'jq'
 brew 'kubectl'
 brew 'kubectx'
+brew 'libyaml' # ruby dep
+brew 'libpq' # ruby dep
 brew 'mise'
 brew 'ncdu'
 # Use mise untill 0.12 release
-# brew 'neovim' 
+# brew 'neovim'
 brew 'nmap'
+brew 'opencode'
 brew 'openssh'
 brew 'openssl'
+brew 'postgresql'
 brew 'ripgrep'
+brew 'shared-mime-info' # sassc-rails dep
 brew 'stow'
 brew 'streamlink'
 brew 'tig'
 brew 'tldr'
 brew 'tmux'
+brew 'tree-sitter-cli'
 brew 'urlview'
 brew 'wget'
 brew 'zoxide'
 
 cask 'alacritty'
 cask 'alfred'
-cask 'firefox'
 cask 'discord'
 cask 'drawio'
+cask 'firefox'
+cask 'font-fira-code'
 cask 'hammerspoon'
 cask 'kap'
 cask 'karabiner-elements'
@@ -56,4 +64,3 @@ cask 'telegram'
 cask 'the-unarchiver'
 cask 'transmission'
 cask 'vlc'
-cask 'font-fira-code'
