@@ -5,6 +5,7 @@ stow -Rv tmux
 stow -Rv bash
 stow -Rv nvim
 stow -Rv git
+stow -Rv opencode
 
 case "$(uname)" in
   "Darwin")
