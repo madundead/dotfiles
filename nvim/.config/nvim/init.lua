@@ -1,5 +1,6 @@
 -- https://github.com/SylvanFranklin/.config/blob/main/nvim/init.lua
 -- new keymap defaults: https://neovim.io/doc/user/news-0.11.html
+-- <c-w>d - diagnostics
 
 
 -- 1. Plugins
@@ -7,18 +8,31 @@
 -- mise plugins add neovim
 -- mise install neovim@nightly
 -- https://github.com/jdx/mise/discussions/6787#discussioncomment-14803999
+
+-- helper to reference GitHub repositories quickly
+local gh = function(x) return 'https://github.com/' .. x end
+
 vim.pack.add({
-  'https://github.com/shaunsingh/nord.nvim',
-  'https://github.com/stevearc/oil.nvim',
-  'https://github.com/christoomey/vim-tmux-navigator',
-  'https://github.com/tpope/vim-surround',
-  'https://github.com/tpope/vim-fugitive',
-  'https://github.com/kevinhwang91/nvim-bqf',
-  'https://github.com/nvim-lua/plenary.nvim',
-  'https://github.com/nvim-telescope/telescope.nvim',
+  gh('shaunsingh/nord.nvim'),
+  gh('stevearc/oil.nvim'),
+  gh('christoomey/vim-tmux-navigator'),
+  gh('tpope/vim-surround'),
+  gh('tpope/vim-fugitive'),
+  gh('kevinhwang91/nvim-bqf'),
+  gh('nvim-lua/plenary.nvim'),
+  gh('nvim-telescope/telescope.nvim'),
+  gh('NickvanDyke/opencode.nvim')
 })
 
-require('telescope').setup()
+require('telescope').setup({
+  defaults = {
+    file_ignore_patterns = {
+      "^%.git/", -- Use "^%.git/" to match the .git directory at the root
+      "node_modules/.*",
+    },
+  }
+})
+
 require('oil').setup({
   keymaps = {
     ['<C-h>'] = false,
@@ -58,6 +72,7 @@ vim.opt.updatetime    = 100
 vim.opt.timeout       = true
 vim.opt.timeoutlen    = 1000
 vim.opt.ttimeoutlen   = 10
+vim.opt.autoread      = true -- for opencode
 vim.opt.completeopt   = {
   'menu',
   'menuone',
@@ -108,12 +123,13 @@ if vim.fn.executable('rg') > 0 then
 end
 
 -- find the correct ruby interpreter
-vim.g.ruby_host_prog = 'asdf exec neovim-ruby-host'
+-- vim.g.ruby_host_prog = 'mise exec neovim-ruby-host'
+-- vim.g.python3_host_prog = 'mise exec -- python3'
 
 -- highlight yanked text briefly
 vim.api.nvim_create_autocmd('TextYankPost', {
   callback = function()
-    vim.highlight.on_yank {
+    vim.hl.on_yank {
       higroup = 'Search',
       timeout = 250,
       on_visual = true,
@@ -218,7 +234,8 @@ end)
 nmap('<C-f>', ':grep ')
 
 -- reformat
-nmap('<leader>=', ':lua vim.lsp.buf.format()<CR>:w<CR>', { silent = true })
+vim.keymap.set('n', '<leader>=', vim.lsp.buf.format, { silent = true })
+vim.keymap.set('n', 'gd', vim.lsp.buf.definition)
 
 nmap('<leader>W', ':TrimWhitespace<CR>')
 
@@ -235,6 +252,7 @@ vim.keymap.set('x', 'P', [['Pgv"'.v:register.'y`>']], { expr = true, noremap = f
 vim.keymap.set('n', '<C-d>', '<C-d>zz', { desc = 'Scroll downwards' })
 vim.keymap.set('n', '<C-u>', '<C-u>zz', { desc = 'Scroll upwards' })
 
+
 -- Make U opposite to u.
 -- vim.keymap.set('n', 'U', '<C-r>', { desc = 'Redo' })
 
@@ -244,13 +262,20 @@ vim.lsp.config('*', {
 })
 
 vim.lsp.config['lua_ls'] = {
-  cmd = { 'lua-language-server' },
+  cmd = { 'mise', 'x', '--', 'lua-language-server' },
   filetypes = { 'lua' },
-  root_markers = { { '.luarc.json', '.luarc.jsonc' } },
-  settings = { Lua = { runtime = { version = 'LuaJIT' } } }
+  root_markers = { '.luarc.json', '.luarc.jsonc' },
+  settings = { Lua = { diagnostics = { globals = { "vim" } }, runtime = { version = 'LuaJIT' } } }
 }
-
 vim.lsp.enable('lua_ls')
+
+-- ~/.local/state/nvim/lsp.log
+vim.lsp.config['ruby-lsp'] = {
+  cmd = { 'ruby-lsp' }, -- gem install ruby-lsp
+  filetypes = { 'ruby' },
+  root_markers = { 'Gemfile' },
+}
+vim.lsp.enable('ruby-lsp')
 
 local function trim_trailing_whitespace()
   local pos = vim.api.nvim_win_get_cursor(0)
