@@ -13,6 +13,6 @@ case "$(uname)" in
     stow -Rv hammerspoon
     ;;
   "Linux")
-    echo "This is Linux"
+    stow -Rv hyprland
     ;;
 esac
