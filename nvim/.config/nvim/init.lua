@@ -12,6 +12,7 @@
 -- helper to reference GitHub repositories quickly
 local gh = function(x) return 'https://github.com/' .. x end
 
+-- vim.pack.del({'plug-name'})
 vim.pack.add({
   gh('shaunsingh/nord.nvim'),
   gh('stevearc/oil.nvim'),
@@ -21,7 +22,8 @@ vim.pack.add({
   gh('kevinhwang91/nvim-bqf'),
   gh('nvim-lua/plenary.nvim'),
   gh('nvim-telescope/telescope.nvim'),
-  gh('NickvanDyke/opencode.nvim')
+  gh('NickvanDyke/opencode.nvim'),
+  gh('nvim-treesitter/nvim-treesitter'),
 })
 
 require('telescope').setup({
@@ -38,6 +40,13 @@ require('oil').setup({
     ['<C-h>'] = false,
     ['<C-l>'] = false
   }
+})
+
+require('nvim-treesitter').setup({
+  ensure_installed = { "lua" },
+  highlight = {
+    enable = true,
+  },
 })
 
 
@@ -260,7 +269,6 @@ vim.keymap.set({ "n", "t" }, "<leader>cc", function() require("opencode").toggle
 vim.keymap.set("n", "<S-C-u>", function() require("opencode").command("session.half.page.up") end)
 vim.keymap.set("n", "<S-C-d>", function() require("opencode").command("session.half.page.down") end)
 
-
 -- Make U opposite to u.
 -- vim.keymap.set('n', 'U', '<C-r>', { desc = 'Redo' })
 
@@ -273,6 +281,11 @@ vim.lsp.config['lua_ls'] = {
   cmd = { 'mise', 'x', '--', 'lua-language-server' },
   filetypes = { 'lua' },
   root_markers = { '.luarc.json', '.luarc.jsonc' },
+ -- semantic highlighting for lua, is slow af for some reason
+ -- https://vi.stackexchange.com/a/43915
+  on_init = function(client, _)
+    client.server_capabilities.semanticTokensProvider = nil  -- turn off semantic tokens
+  end,
   settings = { Lua = { diagnostics = { globals = { "vim" } }, runtime = { version = 'LuaJIT' } } }
 }
 vim.lsp.enable('lua_ls')

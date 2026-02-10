@@ -5,15 +5,19 @@
       "src": "https://github.com/shaunsingh/nord.nvim"
     },
     "nvim-bqf": {
-      "rev": "ba2b365969d7c2c6301d48e13aeee59568765529",
+      "rev": "f65fba733268ffcf9c5b8ac381287eca7c223422",
       "src": "https://github.com/kevinhwang91/nvim-bqf"
     },
+    "nvim-treesitter": {
+      "rev": "45a07f869b0cffba342276f2c77ba7c116d35db8",
+      "src": "https://github.com/nvim-treesitter/nvim-treesitter"
+    },
     "oil.nvim": {
-      "rev": "81b8a91735ad5cd24a6b3137f14a89f19176364f",
+      "rev": "f55b25e493a7df76371cfadd0ded5004cb9cd48a",
       "src": "https://github.com/stevearc/oil.nvim"
     },
     "opencode.nvim": {
-      "rev": "364c7336562329f6c901629710070ea6ae256e3b",
+      "rev": "0571a5638b54543128bc761a8a4aeb0309f309e4",
       "src": "https://github.com/NickvanDyke/opencode.nvim"
     },
     "plenary.nvim": {
@@ -21,7 +25,7 @@
       "src": "https://github.com/nvim-lua/plenary.nvim"
     },
     "telescope.nvim": {
-      "rev": "3333a52ff548ba0a68af6d8da1e54f9cd96e9179",
+      "rev": "ad7d9580338354ccc136e5b8f0aa4f880434dcdc",
       "src": "https://github.com/nvim-telescope/telescope.nvim"
     },
     "vim-fugitive": {
@@ -33,7 +37,7 @@
       "src": "https://github.com/tpope/vim-surround"
     },
     "vim-tmux-navigator": {
-      "rev": "c45243dc1f32ac6bcf6068e5300f3b2b237e576a",
+      "rev": "e41c431a0c7b7388ae7ba341f01a0d217eb3a432",
       "src": "https://github.com/christoomey/vim-tmux-navigator"
     }
   }
