@@ -19,6 +19,7 @@ vim.pack.add({
   gh('christoomey/vim-tmux-navigator'),
   gh('tpope/vim-surround'),
   gh('tpope/vim-fugitive'),
+  gh('tpope/vim-rhubarb'),
   gh('kevinhwang91/nvim-bqf'),
   gh('nvim-lua/plenary.nvim'),
   gh('nvim-telescope/telescope.nvim'),
@@ -128,7 +129,7 @@ vim.opt.wildignore    = { -- ignore when autocompleting
 }
 
 if vim.fn.executable('rg') > 0 then
-  vim.opt.grepprg = [[rg --glob "!.git" --no-heading --vimgrep --follow $*]]
+  vim.opt.grepprg = [[rg --glob "!.git" --no-heading --hidden --smart-case --vimgrep --follow $*]]
 end
 
 -- find the correct ruby interpreter
@@ -163,15 +164,6 @@ vim.api.nvim_create_autocmd({ 'InsertEnter', 'WinLeave' }, {
   end,
 })
 
-local function map(mode, lhs, rhs, opts)
-  local options = { noremap = true }
-  if opts then options = vim.tbl_extend('force', options, opts) end
-  vim.keymap.set(mode, lhs, rhs, options)
-end
-
-local function nmap(lhs, rhs, opts)
-  map('n', lhs, rhs, opts)
-end
 
 --- Mappings
 -- Essentials
@@ -206,49 +198,47 @@ vim.keymap.set('n', 'H', '^')
 vim.keymap.set('n', 'L', '$')
 vim.keymap.set('n', 'J', 'mzJ`z')
 vim.keymap.set('n', 'gQ', '<Nop>')
-vim.keymap.set('n', 'vv', ':vs<CR>')
+vim.keymap.set('n', 'vv', ':vs<CR>', { silent = true })
 
 -- Tabs
-nmap('<leader>t', ':tabnew<CR>', { silent = true })
-nmap('<Tab>', ':tabnext<CR>', { silent = true })
-nmap('<S-Tab>', ':tabprevious<CR>', { silent = true })
+vim.keymap.set('n', '<leader>t', ':tabnew<CR>', { silent = true })
+vim.keymap.set('n', '<Tab>', ':tabnext<CR>', { silent = true })
+vim.keymap.set('n', '<S-Tab>', ':tabprevious<CR>', { silent = true })
 
 -- Visual mode
-map('v', '.', ':normal .<CR>')
-map('v', 'J', ':m \'>+1<CR>gv=gv')
-map('v', 'K', ':m \'<-2<CR>gv=gv')
-map('v', '<', '<gv')
-map('v', '>', '>gv')
+vim.keymap.set('v', '.', ':normal .<CR>')
+vim.keymap.set('v', 'J', ':m \'>+1<CR>gv=gv')
+vim.keymap.set('v', 'K', ':m \'<-2<CR>gv=gv')
+vim.keymap.set('v', '<', '<gv')
+vim.keymap.set('v', '>', '>gv')
 
--- vim-easy-align
-map("n", "ga", "<Plug>(EasyAlign)")
-map("x", "ga", "<Plug>(EasyAlign)")
-
+-- oil.nvim
 vim.keymap.set("n", "-", ":Oil<CR>")
 
 -- fugitive.vim
-nmap('<leader>ga', ':Gwrite<CR>')
-nmap('<leader>gs', ':Git<CR>')
-nmap('<leader>gb', ':Git blame<CR>')
+vim.keymap.set('n', '<leader>ga', ':Gwrite<CR>')
+vim.keymap.set('n', '<leader>gs', ':Git<CR>')
+vim.keymap.set('n', '<leader>gb', ':Git blame<CR>')
 
 -- test
-nmap('<leader>r', function()
+vim.keymap.set('n', '<leader>r', function()
   os.execute("tmux send-keys -t '{down-of}' './bin/rspec '" .. vim.fn.expand("%") .. " Enter")
 end)
-nmap('<leader>R', function()
+vim.keymap.set('n', '<leader>R', function()
   os.execute("tmux send-keys -t '{down-of}' './bin/rspec .' Enter")
 end)
 
 -- grep
-nmap('<C-f>', ':grep ')
+-- -g "*.lua"
+vim.keymap.set('n', '<C-f>', ':silent grep ""<left>')
 
 -- reformat
 vim.keymap.set('n', '<leader>=', vim.lsp.buf.format, { silent = true })
 vim.keymap.set('n', 'gd', vim.lsp.buf.definition)
 
-nmap('<leader>W', ':TrimWhitespace<CR>')
+vim.keymap.set('n', '<leader>W', ':TrimWhitespace<CR>')
 
-nmap('<leader>q', ':copen<CR>')
+vim.keymap.set('n', '<leader>q', ':copen<CR>')
 
 -- command mode
 vim.keymap.set('c', '<C-a>', '<Home>')
@@ -265,12 +255,8 @@ vim.keymap.set({ "n", "x" }, "<leader>ca", function() require("opencode").ask("@
 vim.keymap.set({ "n", "x" }, "<leader>cs", function() require("opencode").select() end)
 vim.keymap.set({ "n", "t" }, "<leader>cc", function() require("opencode").toggle() end)
 
--- FIXME: doesn't work, maybe because of tmux?
-vim.keymap.set("n", "<S-C-u>", function() require("opencode").command("session.half.page.up") end)
-vim.keymap.set("n", "<S-C-d>", function() require("opencode").command("session.half.page.down") end)
-
 -- Make U opposite to u.
--- vim.keymap.set('n', 'U', '<C-r>', { desc = 'Redo' })
+vim.keymap.set('n', 'U', '<C-r>', { desc = 'Redo' })
 
 -- default
 vim.lsp.config('*', {
