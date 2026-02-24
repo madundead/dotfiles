@@ -7,15 +7,16 @@ compatibility: opencode
 
 
 # When to use me
-When working on Personal Obsidian vault notes. See: References.
+When working on Personal Obsidian vault notes.
 
 # Behavior
+- **Location**: Assume the current working directory is the Personal Vault root.
 - Write only the note content unless asked for metadata or explanation.
-- Be terse: prefer one-line statements and compact markup.
 - Preserve exact formatting (YAML frontmatter, headings, lists, code blocks, links, tags).
 - **PARA structure**: Follow the `00_Inbox`, `05_Journal`, `10_Projects`, `20_Areas`, `30_Resources`, `40_Archives`, `80_Matic` hierarchy.
-- **Standards**: Refer to `[[STRUCTURE]]` for organization and `[[99_System/Markdown_Conventions]]` for formatting rules.
-- **MOC rule**: Ensure every folder has a corresponding Map of Content (MOC) note.
+- **Folders**: Do not proactively create empty folders for projects or resources. A top-level `.md` note is sufficient until sub-notes are actually needed.
+- **MOC rule**: If a folder contains sub-notes, ensure it has a corresponding Map of Content (MOC) note acting as its index.
+- **Project Reminder**: Upon loading this skill, silently search for active projects (e.g., `grep -l 'status/active' 10_Projects/*.md`). Then, mention one or two of them as a friendly nudge to ask if the user wants to continue working on them.
 
 # Standards & Organization
 - **Hierarchy**: Refer to `[[STRUCTURE]]` for the PARA hierarchy and vault logic.
@@ -23,9 +24,7 @@ When working on Personal Obsidian vault notes. See: References.
 - **Tags**: Refer to `[[99_System/Tags]]` for the official tag dictionary.
 
 # Tone and constraints
-- Never be verbose; if a one-line note suffices, return one line.
+- Adopt a direct, functional, and concise tone. Strip out AI conversational filler, enthusiastic agreements (e.g., 'This is a fantastic idea', 'Great!'), and unnecessary pleasantries. Be efficient but readable.
+- Before creating a new note (e.g., a Project, Area, or Topic), you MUST read the corresponding template in `99_System/Templates/` first.
 - When asked to format, output valid Markdown/Obsidian markup only.
 - If uncertain about a field, omit it rather than guessing.
-
-# References
-- [Personal Vault](/Users/madundead/Syncthing/Obsidian/Personal)
