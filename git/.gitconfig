@@ -18,9 +18,6 @@
   # View the current working tree status using the short format
   st = status -sb
 
-  # Show the diff between the latest commit and the current state
-  d = !"git diff-index --quiet HEAD -- || clear; git --no-pager diff --patch-with-stat"
-
   # Show the diff of staging area
   dc = !"git diff --cached"
 
@@ -31,7 +28,7 @@
   ca = !git add -A && git commit -av
 
   # Switch to a branch, creating it if necessary
-  go = "!f() { git checkout -b \"$1\" 2> /dev/null || git checkout \"$1\"; }; f"
+  go = "!f() { git switch \"$1\" 2> /dev/null || git switch -c \"$1\"; }; f"
 
   # Show verbose output about tags, branches or remotes
   tags = tag -l
@@ -44,33 +41,8 @@
   # Amend the currently staged files to the latest commit
   amend = commit --amend --reuse-message=HEAD
 
-  # Credit an author on the latest commit
-  credit = "!f() { git commit --amend --author \"$1 <$2>\" -C HEAD; }; f"
-
   # Interactive rebase with the given number of latest commits
   reb = "!r() { git rebase -i HEAD~$1; }; r"
-
-  # Remove the old tag with this name and tag the latest commit with it.
-  retag = "!r() { git tag -d $1 && git push origin :refs/tags/$1 && git tag $1; }; r"
-
-  # Find branches containing commit
-  fb = "!f() { git branch -a --contains $1; }; f"
-
-  # Find tags containing commit
-  ft = "!f() { git describe --always --contains $1; }; f"
-
-  # Find commits by source code
-  fc = "!f() { git log --pretty=format:'%C(yellow)%h  %Cblue%ad  %Creset%s%Cgreen  [%cn] %Cred%d' --decorate --date=short -S$1; }; f"
-
-  # Find commits by commit message
-  fm = "!f() { git log --pretty=format:'%C(yellow)%h  %Cblue%ad  %Creset%s%Cgreen  [%cn] %Cred%d' --decorate --date=short --grep=$1; }; f"
-
-  # Remove branches that have already been merged with master
-  # a.k.a. ‘delete merged’
-  dm = "!git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d"
-
-  # List contributors with number of commits
-  contributors = shortlog --summary --numbered
 
   up = pull --rebase --autostash
 

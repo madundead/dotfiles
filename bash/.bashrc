@@ -76,7 +76,8 @@ alias yay='yay --noconfirm --answerdiff=None --answeredit=None'
 
 
 alias gco='git checkout'
-alias gcom='git checkout master'
+# alias gcom='git checkout master'
+alias gcom='git switch $(git branch -l main master --format "%(refname:short)" | head -n 1)'
 alias gcob='git checkout -b'
 # TODO: git checkout --track origin/$1^W man git-switch --guess
 # alias gcot='git checkout'
@@ -143,9 +144,9 @@ alias rs='bin/rails s -p3001'
 alias ibrew='arch -x86_64 /usr/local/bin/brew'
 alias mbrew='arch -arm64e /opt/homebrew/bin/brew'
 
-alias pgu='asdf exec pg_ctl -D ./data/pg -l ./log/pg.log start'
-alias pgd='asdf exec pg_ctl -D ./data/pg stop'
-alias pgs='asdf exec pg_ctl -D ./data/pg status'
+alias pgu='pg_ctl -D ./data/pg -l ./log/pg.log start'
+alias pgd='pg_ctl -D ./data/pg stop'
+alias pgs='pg_ctl -D ./data/pg status'
 
 alias oclean="fd . '/Users/madundead/Syncthing/Obsidian/Personal' | rg sync-conflict | tr '\n' '\0' | xargs -0 rm"
 
@@ -265,3 +266,6 @@ eval "$(mise activate bash)"
 eval "$(zoxide init bash)"
 
 PS1='\W$(__git_ps1 ":%s") '
+
+# Nicotine
+export PATH="$HOME/.local/bin:$PATH"
