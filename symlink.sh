@@ -6,6 +6,7 @@ stow -Rv bash
 stow -Rv nvim
 stow -Rv git
 stow -Rv opencode
+stow -Rv claude
 
 case "$(uname)" in
   "Darwin")

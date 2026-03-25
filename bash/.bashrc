@@ -138,6 +138,9 @@ function kgp() {
   fi
 }
 
+alias oc='opencode'
+alias c='claude'
+
 alias rc='bin/rails c'
 alias rs='bin/rails s -p3001'
 
