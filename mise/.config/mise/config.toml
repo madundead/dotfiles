@@ -1,0 +1,18 @@
+[tools]
+neovim = "nightly"
+lua-language-server = "latest"
+python = "latest"
+ruby = "latest"
+
+[settings]
+status = {
+  missing_tools = "never"
+}
+
+trusted_config_paths = [
+    '~/Development',
+]
+
+verbose = false
+http_timeout = "30s"
+jobs = 8
