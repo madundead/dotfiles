@@ -2,6 +2,8 @@
 
 # Uninstall everything but this file:
 # brew bundle cleanup --force
+#
+tap 'raine/workmux'
 
 brew 'awscli'
 brew 'bash'
@@ -30,14 +32,15 @@ brew 'ncdu'
 # Use mise untill 0.12 release
 # brew 'neovim'
 brew 'nmap'
-brew 'claude'
 brew 'opencode'
 brew 'openssh'
 brew 'openssl'
+brew 'pi-coding-agent'
 brew 'postgresql'
 brew 'postgresql@14'
 brew 'ripgrep'
 brew 'shared-mime-info' # sassc-rails dep
+brew 'stern'
 brew 'stow'
 brew 'streamlink'
 brew 'tig'
@@ -47,6 +50,7 @@ brew 'tree-sitter-cli'
 brew 'urlview'
 brew 'watch'
 brew 'wget'
+brew 'workmux'
 brew 'zoxide'
 
 cask 'alacritty'
@@ -73,3 +77,4 @@ cask 'the-unarchiver'
 cask 'transmission'
 cask 'vlc'
 cask 'winbox'
+cask 'claude-code'
