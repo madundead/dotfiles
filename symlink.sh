@@ -9,6 +9,7 @@ stow -Rv opencode
 stow -Rv claude
 stow -Rv mise
 stow -Rv workmux
+stow -Rv pi
 
 case "$(uname)" in
   "Darwin")
