@@ -114,12 +114,12 @@ alias rdr='bin/rails db:rollback'
 alias rds='bin/rails db:seed'
 
 alias d='docker'
-alias dc='docker-compose'
-alias dcu='docker-compose up -d'
-alias dcd='docker-compose stop'
-alias dcr='docker-compose restart'
-alias dcl='docker-compose logs -tf --tail="50"'
-alias dcs='docker-compose ps'
+alias dc='docker compose'
+alias dcu='docker compose up -d'
+alias dcd='docker compose stop'
+alias dcr='docker compose restart'
+alias dcl='docker compose logs -tf --tail="50"'
+alias dcs='docker compose ps'
 
 alias tf='tofu'
 alias tfp='tofu plan'
@@ -265,9 +265,9 @@ if [ -s ~/Development/dotfiles/git/.git-prompt.sh ]; then
   source ~/Development/dotfiles/git/.git-prompt.sh
 fi
 
-eval "$(fzf --bash)"
-eval "$(mise activate bash)"
-eval "$(zoxide init bash)"
+command -v fzf >/dev/null && eval "$(fzf --bash)"
+command -v mise >/dev/null && eval "$(mise activate bash)"
+command -v zoxide >/dev/null && eval "$(zoxide init bash)"
 
 PS1='[\[\033[01;36m\]${HOSTNAME:0:1}\[\033[00m\]] \W$(__git_ps1 ":%s") '
 
