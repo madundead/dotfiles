@@ -3,7 +3,15 @@
 [ -f /etc/bash_completion ] && . /etc/bash_completion
 [ -f ~/.fzf.bash ] && . ~/.fzf.bash
 [ -f ~/.cargo/env ] && . ~/.cargo/env
-[ -f ~/Syncthing/secrets.sh ] && . ~/Syncthing/secrets.sh
+# Detect Syncthing directory
+for dir in ~/Syncthing ~/syncthing; do
+  if [ -d "$dir" ]; then
+    ST_DIR="$dir"
+    break
+  fi
+done
+
+[ -n "$ST_DIR" ] && [ -f "$ST_DIR/secrets.sh" ] && . "$ST_DIR/secrets.sh"
 
 if [ -x /usr/libexec/path_helper ]; then
   eval $(/usr/libexec/path_helper -s)
@@ -152,7 +160,7 @@ alias pgu='pg_ctl -D ./data/pg -l ./log/pg.log start'
 alias pgd='pg_ctl -D ./data/pg stop'
 alias pgs='pg_ctl -D ./data/pg status'
 
-alias oclean="fd . '/Users/madundead/Syncthing/Obsidian/Personal' | rg sync-conflict | tr '\n' '\0' | xargs -0 rm"
+alias oclean="fd . \"$ST_DIR/Obsidian/Personal\" | rg sync-conflict | tr '\n' '\0' | xargs -0 rm"
 
 alias proxy='kubectl port-forward -n staging svc/tinyproxy-svc 8888:8888'
 
