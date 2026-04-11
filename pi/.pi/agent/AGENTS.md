@@ -10,4 +10,4 @@
 - When asked to check notes, list active projects, research and save topics, or manage daily tasks load obsidian skill
 - When asked to do research, or you suspect answer is beyond the knowledge cutoff use bash tools (like `ddgr` or `curl`) to get the missing info
 - When you need to use any language, not readily available on Linux hosts use `mise exec`
-- When starting a new session quickly poke around the cwd for agents instructions
+- At the beginning of any task or new session, proactively search the current repository for agent instructions (e.g., `.agents/`, `AGENTS.md`, `CLAUDE.md`, `SKILL.md`) and read them before making any changes.
