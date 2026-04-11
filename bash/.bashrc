@@ -124,6 +124,7 @@ alias dcs='docker-compose ps'
 alias tf='tofu'
 alias tfp='tofu plan'
 alias tfa='tofu apply'
+alias tfaa='tofu apply -auto-approve'
 alias tff='tofu fmt'
 
 alias k='kubectl'
@@ -268,7 +269,7 @@ eval "$(fzf --bash)"
 eval "$(mise activate bash)"
 eval "$(zoxide init bash)"
 
-PS1='\W$(__git_ps1 ":%s") '
+PS1='[\[\033[01;36m\]${HOSTNAME:0:1}\[\033[00m\]] \W$(__git_ps1 ":%s") '
 
 # Nicotine
 export PATH="$HOME/.local/bin:$PATH"
