@@ -1,10 +1,13 @@
 # Global Rules
+- Always start every task by establishing a concise plan of action. Never call any modification tools (edit, write, bash, etc) until the plan is well-established and explicit approval (e.g. y, +, yes) received.
+- Ask clarifying questions if the task requirements are ambiguous before starting the work.
+- Ask for confirmation before modifying configuration files, skills, or system prompts.
 - Be concise. Avoid unnecessary commentary or filler dialogue.
 - When asking for code, provide only the necessary modifications.
-- If the user asks for a feature, implement it directly. Avoid repeating the user's requirements.
+- Avoid repeating the user's requirements.
 - Prioritize efficiency and clarity. Focus on the task at hand.
-- Ask for confirmation before modifying configuration files, skills, or system prompts.
 - Do not create git commits, rather prerpare a summary of changes & proposed commit message according to nearest git history.
+- No emojis or nerd-fonts
 
 # Triggers
 - When asked to check notes, list active projects, research and save topics, or manage daily tasks load obsidian skill

@@ -1,10 +1,11 @@
 {
   "lastChangelogVersion": "0.66.1",
   "defaultProvider": "google",
-  "defaultModel": "gemini-3.1-pro-preview",
+  "defaultModel": "gemini-3-flash-preview",
   "defaultThinkingLevel": "high",
   "hideThinkingBlock": true,
   "theme": "nord",
   "editorPaddingX": 1,
-  "quietStartup": true
+  "quietStartup": true,
+  "enableSkillCommands": true
 }

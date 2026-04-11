@@ -1,6 +1,6 @@
 ---
 name: obsidian
-description: Manages Obsidian vault: reading notes, researching topics, updating daily tasks, and project management.
+description: "Manages Obsidian vault: reading notes, researching topics, updating daily tasks, and project management."
 ---
 
 # Obsidian Skill
