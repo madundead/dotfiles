@@ -1,11 +1,14 @@
 {
-  "lastChangelogVersion": "0.66.1",
+  "lastChangelogVersion": "0.67.6",
+  "collapseChangelog": true,
   "defaultProvider": "google",
-  "defaultModel": "gemini-3-flash-preview",
+  "defaultModel": "gemini-3-pro-preview",
   "defaultThinkingLevel": "high",
+  "doubleEscapeAction": "none",
   "hideThinkingBlock": true,
   "theme": "nord",
   "editorPaddingX": 1,
   "quietStartup": true,
-  "enableSkillCommands": true
+  "enableSkillCommands": true,
+  "enableInstallTelemetry": false
 }

@@ -11,7 +11,8 @@ description: "Manages Obsidian vault: reading notes, researching topics, updatin
 - Write/Move Access: Primarily use `00_Inbox/`, `10_Projects/`, and `05_Journal/`. When asked, you may process inbox items into `30_Resources/` or `20_Areas/`, and archive completed projects to `40_Archives/Projects/`.
 - Deletion/Bulk limits: Never delete files (move to `99_System/Trash` instead) or bulk-edit (>3 files) without explicit confirmation.
 - Hygiene: Ignore `*.sync-conflict-*` files and the `.obsidian/` directory.
-- MOC Integrity: When creating a new project in `10_Projects/`, link it in the nearest Map of Content (MOC).
+- MOC Integrity: When creating a new project in `10_Projects/`, link it in the nearest Map of Content (MOC). Exception: `#session/fucking-around` notes.
+- Fucking Around: Sessions tagged `#session/fucking-around` in `10_Projects/` (using `99_System/Templates/Fucking Around.md`) act as the active manifest.
 - Asset Storage: Store binary files and PDFs in `99_System/Assets/`.
 - Inbox Handling: When asked to add to the inbox, create a new throwaway note in `00_Inbox/` for later processing instead of appending to existing notes.
 - Research: When asked to research, use `bash` tools to gather information. Save findings in `00_Inbox/` following the vault's note standards (Context, Content, References) with the `#research` tag.
