@@ -3,8 +3,6 @@
 # Uninstall everything but this file:
 # brew bundle cleanup --force
 #
-tap 'raine/workmux'
-
 brew 'awscli'
 brew 'bash'
 brew 'bat'
@@ -50,7 +48,6 @@ brew 'tree-sitter-cli'
 brew 'urlview'
 brew 'watch'
 brew 'wget'
-brew 'workmux'
 brew 'zoxide'
 
 cask 'alacritty'
