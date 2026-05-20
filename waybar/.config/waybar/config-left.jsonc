@@ -1,0 +1,73 @@
+{
+  "output": "DP-1",
+  "height": 42,
+  "layer": "top",
+  "position": "bottom",
+  "autohide": true,
+  "autohide-blocked": true,
+  "exclusive": true,
+  "passthrough": false,
+  "gtk-layer-shell": true,
+
+  /* === Modules Order === */
+  "modules-left": [
+    "wlr/taskbar"
+  ],
+  "modules-center": [
+    "hyprland/workspaces"
+  ],
+  "modules-right": [
+    "clock"
+  ],
+
+  "clock": {
+    "timezone": "Europe/Kyiv",
+    "format": "{:%I:%M  %d/%m}",
+    "tooltip-format": "{calendar}",
+    "calendar": {
+      "mode": "month"
+    }
+  },
+  /* === Modules Center === */
+  "hyprland/workspaces": {
+    "format": "{icon}",
+    "format-icons": {
+      "default": "",
+      "active": ""
+    },
+    "persistent-workspaces": {
+      "*": [1,2,3,4,5]
+    },
+    "disable-scroll": true,
+    "all-outputs": true,
+    "show-special": true
+  },
+  "wlr/taskbar": {
+    "format": "{icon}",
+    "all-outputs": true,
+    "active-first": true,
+    "tooltip-format": "{name}",
+    "on-click": "activate",
+    "on-click-middle": "close",
+    "ignore-list": [
+      "rofi"
+    ]
+  },
+  "pulseaudio": {
+    "format": "{volume}% {icon}",
+    "format-muted": " {format_source}",
+    "format-icons": {
+      "default": [
+        "",
+        ""
+      ]
+    }
+  },
+  "hyprland/language": {
+    "format": "{} ",
+    "on-click": "hyprctl switchxkblayout usb-hid-keyboard-1 next",
+    "format-ua": "UKR",
+    "format-ukr": "UKR",
+    "format-en": "ENG"
+  }
+}

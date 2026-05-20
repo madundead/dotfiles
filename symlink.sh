@@ -19,6 +19,7 @@ case "$(uname)" in
     ;;
   "Linux")
     stow -Rv hyprland
+    stow -Rv waybar
     echo "Installing system-level LG TV power-on service..."
     sudo rm -f /etc/systemd/system/lgtv-on.service
     sudo rm -f /etc/systemd/system/multi-user.target.wants/lgtv-on.service

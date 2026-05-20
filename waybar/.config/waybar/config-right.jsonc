@@ -1,0 +1,62 @@
+{
+  "output": "DP-2",
+  "height": 42,
+  "layer": "top",
+  "position": "bottom",
+  "autohide": true,
+  "autohide-blocked": true,
+  "exclusive": true,
+  "passthrough": false,
+  "gtk-layer-shell": true,
+
+  /* === Modules Order === */
+  "modules-left": [
+    "battery",
+    "custom/keychron"
+  ],
+  "modules-center": [
+    "custom/model"
+  ],
+  "modules-right": [
+    "pulseaudio",
+    "hyprland/language"
+  ],
+
+  "pulseaudio": {
+    "format": "{volume}",
+    "format-muted": ""
+  },
+
+  "hyprland/language": {
+    "format": "{} ",
+    "on-click": "hyprctl switchxkblayout usb-hid-keyboard-1 next",
+    "format-ua": "UKR",
+    "format-ukr": "UKR",
+    "format-en": "ENG"
+  },
+
+  "battery": {
+    "bat": "hidpp_battery_0",
+    "interval": 60,
+    "states": {
+      "warning": 30,
+      "critical": 15
+    },
+    "format": "{capacity} 󰍽"
+  },
+
+  "custom/keychron": {
+    "exec": "upower -i /org/freedesktop/UPower/devices/keyboard_dev_C6_CD_40_02_1B_3D | grep percentage | awk '{print $2}' | tr -d '%'",
+    "interval": 60,
+    "format": "{} 󰌌",
+    "tooltip": false
+  },
+
+  "custom/model": {
+    "exec": "python3 ~/.scripts/pi_model_status.py",
+    "interval": 30,
+    "format": "{}",
+    "return-type": "json",
+    "tooltip": true
+  }
+}
