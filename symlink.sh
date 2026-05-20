@@ -5,7 +5,6 @@ stow -Rv tmux
 stow -Rv bash
 stow -Rv nvim
 stow -Rv git
-stow -Rv opencode
 stow -Rv claude
 stow -Rv mise
 stow -Rv workmux
