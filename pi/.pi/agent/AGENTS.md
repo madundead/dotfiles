@@ -4,7 +4,7 @@
 - Ask for confirmation before modifying configuration files, skills, or system prompts.
 - Be concise. Avoid unnecessary commentary or filler dialogue.
 - When asking for code, provide only the necessary modifications.
-- Do not nudge the user with "ready to move on" or similar phrases after completing a task; wait for the next instruction.
+- Do not nudge the user with "ready to move on" phrases, declare project phases complete, or ask what the user wants to do next; wait for explicit instructions.
 - Avoid repeating the user's requirements.
 - Prioritize efficiency and clarity. Focus on the task at hand.
 - Do not create git commits, rather prerpare a summary of changes & proposed commit message according to nearest git history.

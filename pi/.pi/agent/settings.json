@@ -1,8 +1,8 @@
 {
-  "lastChangelogVersion": "0.67.6",
+  "lastChangelogVersion": "0.74.0",
   "collapseChangelog": true,
-  "defaultProvider": "google",
-  "defaultModel": "gemini-3-pro-preview",
+  "defaultProvider": "google-generative-ai",
+  "defaultModel": "gemini-3.5-flash",
   "defaultThinkingLevel": "high",
   "doubleEscapeAction": "none",
   "hideThinkingBlock": true,
