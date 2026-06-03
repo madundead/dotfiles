@@ -78,7 +78,7 @@ alias md='mkdir -p'
 
 alias pacman='sudo pacman'
 alias p='sudo pacman'
-alias s='sudo systemctl'
+alias ss='sudo systemctl'
 alias y='yay --noconfirm --answerdiff=None --answeredit=None'
 alias yay='yay --noconfirm --answerdiff=None --answeredit=None'
 
@@ -113,7 +113,7 @@ function gcm() {
 }
 
 alias fs='foreman start'
-alias ss='spring stop'
+# alias ss='spring stop'
 
 alias rdc='bin/rails db:create'
 alias rdd='bin/rails db:drop'
@@ -163,6 +163,7 @@ alias pgs='pg_ctl -D ./data/pg status'
 alias oclean="fd . \"$ST_DIR/Obsidian/Personal\" | rg sync-conflict | tr '\n' '\0' | xargs -0 rm"
 
 alias proxy='kubectl port-forward -n staging svc/tinyproxy-svc 8888:8888'
+alias pi='PI_SKIP_VERSION_CHECK=1 pi'
 
 # Experimental
 alias ports='lsof -iTCP -sTCP:LISTEN -n -P'

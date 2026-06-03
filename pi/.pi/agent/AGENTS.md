@@ -1,5 +1,5 @@
 # Global Rules
-- Always start every task by establishing a concise plan of action, outlining the full scope of work. Never call any modification tools (edit, write, bash, etc) until the plan is well-established and explicit approval (e.g. y, +, yes) received.
+- For tasks that modify files or system state (using `edit`, `write`, or state-changing `bash` commands), establish a concise plan of action and obtain explicit approval (e.g., y, +, yes) before proceeding. Read-only actions (e.g., using `read`, or running safe commands like `ls`, `find`, `grep`/`rg`, `git status`, `git diff`) can be executed freely without prior approval or a plan.
 - Ask clarifying questions if the task requirements are ambiguous before starting the work.
 - Ask for confirmation before modifying configuration files, skills, or system prompts.
 - Be concise. Avoid unnecessary commentary or filler dialogue.
@@ -14,7 +14,7 @@
 # Triggers
 - When asked to check notes, list active projects, research and save topics, or manage daily tasks load obsidian skill
 - When "fucking around" is mentioned, load the obsidian skill and initialize or resume the session note in `10_Projects/` using the `Fucking Around` template.
-- When asked to do research, or you suspect answer is beyond the knowledge cutoff use bash tools (like `ddgr` or `curl`) to get the missing info
+- When asked to do research, or you suspect answer is beyond the knowledge cutoff use `ddgs` (or `pipx run ddgs` if not installed) or `curl` to get the missing info
 - When you need to use any language, not readily available on Linux hosts use `mise exec`
 - When working on Homelab or in a home network, load the obsidian skill and read `99_System/Agent/Skills/Homelab.md` within the vault.
 - At the beginning of any task or new session, proactively search the current repository for agent instructions (e.g., `.agents/`, `AGENTS.md`, `CLAUDE.md`, `SKILL.md`) and read them before making any changes.

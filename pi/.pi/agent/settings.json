@@ -1,5 +1,5 @@
 {
-  "lastChangelogVersion": "0.74.0",
+  "lastChangelogVersion": "0.78.0",
   "collapseChangelog": true,
   "defaultProvider": "google-generative-ai",
   "defaultModel": "gemini-3.5-flash",
@@ -10,5 +10,13 @@
   "editorPaddingX": 1,
   "quietStartup": true,
   "enableSkillCommands": true,
-  "enableInstallTelemetry": false
+  "enableInstallTelemetry": false,
+  "npmCommand": [
+    "mise",
+    "exec",
+    "node@22",
+    "--",
+    "npm"
+  ],
+  "packages": []
 }
