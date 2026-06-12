@@ -1,8 +1,8 @@
 {
-  "lastChangelogVersion": "0.78.0",
+  "lastChangelogVersion": "0.79.0",
   "collapseChangelog": true,
-  "defaultProvider": "google-generative-ai",
-  "defaultModel": "gemini-3.5-flash",
+  "defaultProvider": "openrouter",
+  "defaultModel": "deepseek/deepseek-v4-flash",
   "defaultThinkingLevel": "high",
   "doubleEscapeAction": "none",
   "hideThinkingBlock": true,
