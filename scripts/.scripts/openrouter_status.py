@@ -96,18 +96,22 @@ def get_current_model():
     return model or "unknown"
 
 
+def midnight_today():
+    """Return timestamp of today's midnight (local time)."""
+    now = datetime.now()
+    today_midnight = now.replace(hour=0, minute=0, second=0, microsecond=0)
+    return today_midnight.timestamp()
+
+
 def count_pi_usage():
-    """Count today's requests and tokens from Pi session files."""
-    now = time.time()
-    twenty_four_hours_ago = now - 24 * 3600
+    """Count today's requests and tokens from Pi session files (since midnight local time)."""
+    today_start = midnight_today()
     rpd = 0
     tpd = 0
 
     pattern = os.path.expanduser("~/.pi/agent/sessions/**/*.jsonl")
     for fpath in glob.glob(pattern, recursive=True):
         try:
-            if os.path.getmtime(fpath) < twenty_four_hours_ago:
-                continue
             with open(fpath) as f:
                 for line in f:
                     if not line.strip():
@@ -124,7 +128,7 @@ def count_pi_usage():
                                 else:
                                     continue
                                 tokens = msg.get("usage", {}).get("totalTokens", 0)
-                                if ts >= twenty_four_hours_ago:
+                                if ts >= today_start:
                                     rpd += 1
                                     tpd += tokens
                     except Exception:
