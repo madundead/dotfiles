@@ -53,7 +53,7 @@
   },
 
   "custom/model": {
-    "exec": "python3 ~/.scripts/pi_model_status.py",
+    "exec": "python3 ~/.scripts/openrouter_status.py",
     "interval": 30,
     "format": "{}",
     "return-type": "json",
