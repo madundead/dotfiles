@@ -129,16 +129,30 @@ alias dcr='docker compose restart'
 alias dcl='docker compose logs -tf --tail="50"'
 alias dcs='docker compose ps'
 
-alias tf='tofu'
-alias tfp='tofu plan'
-alias tfa='tofu apply'
-alias tfaa='tofu apply -auto-approve'
-alias tff='tofu fmt'
+tf() {
+  local cmd
+  if command -v tofu &>/dev/null; then
+    cmd='tofu'
+  else
+    cmd='terraform'
+  fi
+  case "$*" in
+    "")
+      command "$cmd"
+      ;;
+    *)
+      command "$cmd" "$@"
+      ;;
+  esac
+}
+alias tfp='tf plan'
+alias tfa='tf apply'
+alias tfaa='tf apply -auto-approve'
+alias tff='tf fmt'
 
 alias k='kubectl'
-alias kp='kubectx matic-production'
-alias ks='kubectx matic-staging'
-alias kl='kubectx local-colima'
+alias kp='kubectx live-blue'
+alias ks='kubectx stg-blue'
 function kgp() {
   if [ -z "$1" ]; then
     kubectl get pods
