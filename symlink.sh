@@ -7,7 +7,6 @@ stow -Rv nvim
 stow -Rv git
 stow -Rv claude
 stow -Rv mise
-stow -Rv workmux
 stow -Rv pi
 stow -Rv scripts
 
