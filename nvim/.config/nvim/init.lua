@@ -20,6 +20,8 @@ vim.pack.add({
   gh('tpope/vim-surround'),
   gh('tpope/vim-fugitive'),
   gh('tpope/vim-rhubarb'),
+  gh('tpope/vim-rails'),
+  gh('junegunn/vim-easy-align'),
   gh('kevinhwang91/nvim-bqf'),
   gh('nvim-lua/plenary.nvim'),
   gh('nvim-telescope/telescope.nvim'),
@@ -214,6 +216,15 @@ vim.keymap.set('v', '>', '>gv')
 
 -- oil.nvim
 vim.keymap.set("n", "-", ":Oil<CR>")
+
+-- vim-easy-align
+vim.keymap.set('x', 'ga', '<Plug>(EasyAlign)')
+vim.keymap.set('n', 'ga', '<Plug>(EasyAlign)')
+
+-- vim-easy-align: align around =, :, ., #, &, and ,
+vim.keymap.set('n', '<leader>a=', function()
+  vim.cmd('EasyAlign =')
+end)
 
 -- fugitive.vim
 vim.keymap.set('n', '<leader>ga', ':Gwrite<CR>')
