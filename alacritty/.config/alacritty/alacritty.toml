@@ -115,7 +115,7 @@ semantic_escape_chars = ",│`|:\"' ()[]{}<>"
 
 [terminal.shell]
 args = ["-l", "-c", "tmux attach || tmux"]
-program = "/opt/homebrew/bin/bash"
+program = "bash"
 
 [window]
 decorations = "none"
