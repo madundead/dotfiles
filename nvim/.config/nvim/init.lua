@@ -1,18 +1,8 @@
--- https://github.com/SylvanFranklin/.config/blob/main/nvim/init.lua
 -- new keymap defaults: https://neovim.io/doc/user/news-0.11.html
--- <c-w>d - diagnostics
-
 
 -- 1. Plugins
--- requires nvim 0.12+
--- mise plugins add neovim
--- mise install neovim@nightly
--- https://github.com/jdx/mise/discussions/6787#discussioncomment-14803999
-
--- helper to reference GitHub repositories quickly
-local gh = function(x) return 'https://github.com/' .. x end
-
 -- vim.pack.del({'plug-name'})
+local gh = function(x) return 'https://github.com/' .. x end
 vim.pack.add({
   gh('shaunsingh/nord.nvim'),
   gh('stevearc/oil.nvim'),
@@ -22,18 +12,17 @@ vim.pack.add({
   gh('tpope/vim-rhubarb'),
   gh('tpope/vim-rails'),
   gh('junegunn/vim-easy-align'),
-  gh('kevinhwang91/nvim-bqf'),
+  -- gh('kevinhwang91/nvim-bqf'),
   gh('nvim-lua/plenary.nvim'),
   gh('nvim-telescope/telescope.nvim'),
-  gh('NickvanDyke/opencode.nvim'),
-  gh('nvim-treesitter/nvim-treesitter'),
+  -- gh('nvim-treesitter/nvim-treesitter'),
 })
 
 require('telescope').setup({
   defaults = {
     file_ignore_patterns = {
       "^%.git/", -- Use "^%.git/" to match the .git directory at the root
-      "node_modules/.*",
+      "node_modules/",
     },
   }
 })
@@ -45,12 +34,12 @@ require('oil').setup({
   }
 })
 
-require('nvim-treesitter').setup({
-  ensure_installed = { "lua" },
-  highlight = {
-    enable = true,
-  },
-})
+-- require('nvim-treesitter').setup({
+--   ensure_installed = { "lua", "ruby", "json", "markdown", "yaml", "typescript", "go", "bash" },
+--   highlight = {
+--     enable = true,
+--   },
+-- })
 
 
 -- 2. Options
@@ -64,7 +53,6 @@ vim.opt.synmaxcol     = 500           -- do not try to highlight lines longer th
 vim.opt.lazyredraw    = true          -- do not redraw while running macros
 vim.opt.showmatch     = true          -- show matching braces
 vim.opt.matchtime     = 2             -- show matching braces for 0.2 sec
-vim.opt.showmode      = true          -- shows when you are in insert mode
 vim.opt.title         = true          -- show title in console status bar
 vim.opt.laststatus    = 3             -- single status line
 vim.opt.wrap          = false         -- dont wrap lines
@@ -76,15 +64,12 @@ vim.opt.writebackup   = false         -- no backups
 vim.opt.swapfile      = false         -- no backups
 vim.opt.mouse         = ''            -- disable mouse
 vim.opt.list          = true          -- list mode
-vim.opt.timeoutlen    = 1000          -- delay for mappings
-vim.opt.ttimeoutlen   = 0             -- delay between modes
 vim.opt.termguicolors = true          -- 24-bit RGB color
 vim.opt.autoindent    = true
 vim.opt.updatetime    = 100
 vim.opt.timeout       = true
-vim.opt.timeoutlen    = 1000
-vim.opt.ttimeoutlen   = 10
-vim.opt.autoread      = true -- for opencode
+vim.opt.timeoutlen    = 1000          -- delay for mappings
+vim.opt.ttimeoutlen   = 10            -- delay between modes
 vim.opt.completeopt   = {
   'menu',
   'menuone',
@@ -190,8 +175,6 @@ vim.keymap.set('n', '<leader>fO', function()
 end)
 
 -- Convenience
-vim.keymap.set('n', 'yy', 'Y')
-vim.keymap.set('n', 'Y', 'y$')
 vim.keymap.set('n', 'N', 'Nzz')
 vim.keymap.set('n', 'n', 'nzz')
 vim.keymap.set('n', 'j', 'gj')
@@ -261,10 +244,6 @@ vim.keymap.set('x', 'P', [['Pgv"'.v:register.'y`>']], { expr = true, noremap = f
 
 vim.keymap.set('n', '<C-d>', '<C-d>zz', { desc = 'Scroll downwards' })
 vim.keymap.set('n', '<C-u>', '<C-u>zz', { desc = 'Scroll upwards' })
-
-vim.keymap.set({ "n", "x" }, "<leader>ca", function() require("opencode").ask("@this: ", { submit = true }) end)
-vim.keymap.set({ "n", "x" }, "<leader>cs", function() require("opencode").select() end)
-vim.keymap.set({ "n", "t" }, "<leader>cc", function() require("opencode").toggle() end)
 
 -- Make U opposite to u.
 vim.keymap.set('n', 'U', '<C-r>', { desc = 'Redo' })
