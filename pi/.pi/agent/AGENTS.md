@@ -14,7 +14,7 @@
 # Triggers
 - When asked to check notes, list active projects, research and save topics, or manage daily tasks load obsidian skill
 - When "fucking around" is mentioned, load the obsidian skill and initialize or resume the session note in `10_Projects/` using the `Fucking Around` template.
-- When asked to do research, or you suspect answer is beyond the knowledge cutoff use `ddgs` (or `pipx run ddgs` if not installed) or `curl` to get the missing info
+- When asked to do research, or you suspect answer is beyond the knowledge cutoff use `ddgs text -q` or `ddgs news -q` (depending on whether you need web or news results) to get the missing info
 - When you need to use any language, not readily available on Linux hosts use `mise exec`
 - When working on Homelab or in a home network, load the obsidian skill and read `99_System/Agent/Skills/Homelab.md` within the vault.
 - At the beginning of any task or new session, proactively search the current repository for agent instructions (e.g., `.agents/`, `AGENTS.md`, `CLAUDE.md`, `SKILL.md`) and read them before making any changes.
