@@ -8,12 +8,13 @@ monitorv2 {
   mode = 1920x1080@120
   position = auto-left
   transform = 1 # 270
+  cm = hdr
+  bitdepth = 10
 }
 monitorv2 {
   output = $center
   mode = 3840x2160@120
   position = 0x0
-  # cm = hdr
 }
 monitorv2 {
   output = $right
@@ -29,7 +30,7 @@ exec-once = hyprctl setcursor rose-pine-hyprcursor 42 # bigger cursor for big mo
 exec-once = systemctl --user start hyprpolkitagent
 exec-once = [workspace 2 silent] waybar -c ~/.config/waybar/config-left.jsonc
 exec-once = [workspace 2 silent] waybar -c ~/.config/waybar/config-right.jsonc
-exec-once = [workspace 2 silent] firefox
+exec-once = [workspace 2 silent] qutebrowser
 exec-once = [workspace 3 silent] steam -silent
 exec-once = [workspace 4 silent] discord
 exec-once = [workspace 4 silent] Telegram
@@ -51,7 +52,6 @@ env = XDG_SESSION_DESKTOP,Hyprland
 # QT
 env = QT_QPA_PLATFORM,wayland;xcb
 env = QT_QPA_PLATFORMTHEME,qt6ct
-env = QT_QPA_PLATFORMTHEME,qt5ct
 env = QT_WAYLAND_DISABLE_WINDOWDECORATION,1
 env = QT_AUTO_SCREEN_SCALE_FACTOR,1
 # GDK
@@ -66,11 +66,6 @@ env = GBM_BACKEND,nvidia-drm
 env = LIBVA_DRIVER_NAME,nvidia
 env = SDL_VIDEODRIVER,wayland
 env = __GLX_VENDOR_LIBRARY_NAME,nvidia
-env = __NV_PRIME_RENDER_OFFLOAD,1
-env = __VK_LAYER_NV_optimus,NVIDIA_only
-# FOR VM and POSSIBLY NVIDIA
-env = WLR_NO_HARDWARE_CURSORS,1 # On hyprland >v0.41, now configured on variable cursor section
-env = WLR_RENDERER_ALLOW_SOFTWARE,1
 # nvidia firefox (for hardware acceleration on FF)?
 # check this post https://github.com/elFarto/nvidia-vaapi-driver#configuration
 env = MOZ_DISABLE_RDD_SANDBOX,1
@@ -82,6 +77,8 @@ general {
     gaps_in = 2
     gaps_out = 16 # burnin-protection / pixel shifting on LG TV
     border_size = 0
+    col.active_border = rgb(81a1c1)
+    col.inactive_border = rgb(4c566a)
 }
 
 decoration {
@@ -130,12 +127,10 @@ bind = CONTROL, SPACE, exec, vicinae toggle
 
 bind = SUPER, F, fullscreen, 0
 bind = SUPER, T, togglefloating
-bind = SUPER, Z, exec, hyprctl dispatch pin
-
-bind = SUPER, Tab, movefocus, l
-bind = SUPER_SHIFT, Tab, movefocus, r
-# bind = SUPER, J, movefocus, l
-# bind = SUPER, K, movefocus, r
+bind = SUPER, H, movefocus, l
+bind = SUPER, J, movefocus, d
+bind = SUPER, K, movefocus, u
+bind = SUPER, L, movefocus, r
 bind = SUPER_SHIFT, J, resizeactive, -70 0 # Super + Shift + Left = resize active window left
 bind = SUPER_SHIFT, K, resizeactive, 70 0 # Super + Shift + Right = resize active window right
 
@@ -167,16 +162,20 @@ bind = SUPER SHIFT, S, exec, grim -g "$(slurp)" - | wl-copy && wl-paste > ~/Scre
 bind = SUPER, S, exec, grim - | wl-copy && wl-paste > ~/Screenshots/Screenshot-$(date +%F_%T).png
 
 # TODO: think about karabiner compat
-bind = CONTROL ALT SHIFT, b, exec, hyprctl dispatch focuswindow "class:firefox"
+bind = CONTROL ALT SHIFT, b, exec, hyprctl dispatch focuswindow "class:qutebrowser"
 
 bind = SUPER CONTROL, Q, exec, hyprctl dispatch dpms off && /home/madundead/.scripts/lgtv/off.sh
 bind = SUPER SHIFT, Q, exec, /home/madundead/.scripts/lgtv/on.sh & sleep 1 && hyprctl dispatch dpms on
+
+# Ctrl+Scroll = Ctrl+Click for PoE
+bind = CONTROL, mouse_down, exec, wlrctl pointer click
+bind = CONTROL, mouse_up, exec, wlrctl pointer click
 
 # Ignore maximize requests from apps. You'll probably like this.
 windowrule = suppress_event maximize, match:class (.*)
 # what goes where
 windowrule = workspace 1, match:class Alacritty
-windowrule = workspace 2 silent, match:class firefox
+windowrule = workspace 2 silent, match:class qutebrowser
 windowrule = workspace 4 silent, match:class org.telegram.desktop
 windowrule = workspace 4 silent, match:class discord
 windowrule = workspace special:magic silent, match:class org.keepassxc.KeePassXC
@@ -196,5 +195,5 @@ windowrule = workspace 5 fullscreen on, match:initial_class pathofexile.exe
 workspace = 1, monitor:$center, default:true
 workspace = 2, monitor:$center
 workspace = 3, monitor:$center
-workspace = 4, monitor:$left, bordersize:2, gapsin:2, gapsout:0
-workspace = 5, monitor:$right, bordersize:2, gapsin:2, gapsout:0
+workspace = 4, monitor:$left, bordersize:2, gapsin:2, gapsout:4
+workspace = 5, monitor:$right, bordersize:2, gapsin:2, gapsout:4
