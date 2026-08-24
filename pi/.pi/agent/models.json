@@ -12,7 +12,7 @@
           "maxTokens": 32768,
           "compat": {
             "openRouterRouting": {
-              "ignore": ["gmicloud"],
+              "ignore": ["gmicloud", "digitalocean"],
               "preferred_min_throughput": {
                 "p50": 80
               },
