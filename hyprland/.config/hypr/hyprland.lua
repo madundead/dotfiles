@@ -23,6 +23,7 @@ hl.monitor({
     output    = center,
     mode      = "3840x2160@120",
     position  = "0x0",
+    -- scale  = 1.2,
 })
 
 hl.monitor({
@@ -73,12 +74,11 @@ hl.on("hyprland.start", function()
     hl.exec_cmd("systemctl --user start hyprpolkitagent")
     hl.exec_cmd("waybar -c ~/.config/waybar/config-left.jsonc")
     hl.exec_cmd("waybar -c ~/.config/waybar/config-right.jsonc")
-    hl.exec_cmd("librewolf")
+    hl.exec_cmd("librewolf --profile ~/Syncthing/librewolf-profiles/madundead")
     hl.exec_cmd("steam -silent")
     hl.exec_cmd("discord")
     hl.exec_cmd("Telegram")
     hl.exec_cmd("obsidian")
-    hl.exec_cmd("keepassxc")
     -- https://www.reddit.com/r/hyprland/comments/1bvbyz8/hyprland_instance_signature_not_updating_on
     hl.exec_cmd("tmux setenv -g HYPRLAND_INSTANCE_SIGNATURE \"$HYPRLAND_INSTANCE_SIGNATURE\"")
     hl.exec_cmd("thunar --daemon")
@@ -139,12 +139,11 @@ hl.window_rule({
 })
 
 -- What goes where
-hl.window_rule({ name = "alacritty-ws1",     match = { class = "Alacritty" },               workspace = "1" })
-hl.window_rule({ name = "librewolf-ws2",    match = { class = "librewolf" },                workspace = "2", no_initial_focus = true })
+hl.window_rule({ name = "alacritty-ws1",     match = { class = "Alacritty" },                workspace = "1" })
+hl.window_rule({ name = "librewolf-ws2",     match = { class = "librewolf" },                workspace = "2", no_initial_focus = true })
 hl.window_rule({ name = "telegram-ws4",      match = { class = "org.telegram.desktop" },     workspace = "4", no_initial_focus = true })
 hl.window_rule({ name = "discord-ws4",       match = { class = "discord" },                  workspace = "4", no_initial_focus = true })
-hl.window_rule({ name = "keepass-ws-magic",  match = { class = "org.keepassxc.KeePassXC" },  workspace = "special:magic", no_initial_focus = true })
-hl.window_rule({ name = "obsidian-ws-magic", match = { class = "obsidian" },                 workspace = "special:magic", no_initial_focus = true })
+hl.window_rule({ name = "obsidian-ws5",     match = { class = "obsidian" },                 workspace = "5" })
 
 -- Pavucontrol floating
 hl.window_rule({ name = "pavucontrol", match = { class = "org.pulseaudio.pavucontrol" }, float = true, center = true, pin = true })
@@ -216,6 +215,7 @@ hl.bind("SUPER+SHIFT+S",  hl.dsp.exec_cmd(screenshot_sel))
 
 -- Focus specific app
 hl.bind("CONTROL+ALT+SHIFT+B", hl.dsp.focus({ window = "librewolf" }))
+hl.bind("XF86Tools", hl.dsp.focus({ window = "librewolf" }))
 
 -- Display / TV power
 hl.bind("SUPER+CONTROL+Q", function()
@@ -223,7 +223,8 @@ hl.bind("SUPER+CONTROL+Q", function()
     hl.exec_cmd("/home/madundead/.scripts/lgtv/off.sh")
 end)
 hl.bind("SUPER+SHIFT+Q", function()
-    hl.exec_cmd("/home/madundead/.scripts/lgtv/on.sh & sleep 1 && hyprctl dispatch dpms on")
+    hl.exec_cmd("/home/madundead/.scripts/lgtv/on.sh && sleep 1")
+    hl.dispatch(hl.dsp.dpms({ action = "on" }))
 end)
 
 -- Ctrl+Scroll = Ctrl+Click for Path of Exile
