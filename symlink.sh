@@ -8,6 +8,8 @@ stow -Rv git
 stow -Rv claude
 stow -Rv mise
 stow -Rv pi
+stow -Rv fastfetch
+stow -Rv mpv
 stow -Rv scripts
 
 case "$(uname)" in
