@@ -1,17 +1,20 @@
 # rubocop:disable all
 
+
+#
 # Uninstall everything but this file:
 # brew bundle cleanup --force
-#
 brew 'awscli'
 brew 'bash'
 brew 'bat'
+brew 'circleci'
 brew 'colima'
 brew 'curl'
 brew 'diff-so-fancy'
 brew 'docker'
 brew 'docker-compose'
 brew 'eza'
+brew 'fastfetch'
 brew 'fd'
 brew 'fzf'
 brew 'gh'
@@ -48,7 +51,6 @@ brew 'urlview'
 brew 'watch'
 brew 'wget'
 brew 'zoxide'
-
 cask 'alacritty'
 cask 'alfred'
 cask 'claude-code'
@@ -62,6 +64,7 @@ cask 'kap'
 cask 'karabiner-elements'
 cask 'keepassxc'
 cask 'keycastr'
+cask 'librewolf'
 cask 'obsidian'
 cask 'openttd'
 cask 'qutebrowser'
