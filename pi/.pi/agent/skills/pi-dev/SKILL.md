@@ -17,11 +17,12 @@ Pi has multiple public extension points: Agent Skills, context files, prompt tem
 
 | Goal | Build a… | Key files / locations | Detailed source of truth |
 |------|----------|-----------------------|--------------------------|
-| Teach an agent a workflow, domain, or how to use a tool/API/CLI | **Agent Skill** | `SKILL.md` plus optional `scripts/`, `references/`, `assets/` in `.agents/skills/`, `.pi/skills/`, or a package | Read `skill-creator/SKILL.md` and Pi docs `docs/skills.md` |
+| Teach an agent a workflow, domain, or how to use a tool/API/CLI | **Agent Skill** | `SKILL.md` plus optional `scripts/`, `references/`, `assets/` in `.agents/skills/`, `.pi/skills/`, or a package | Read Pi docs `docs/skills.md` |
 | Change Pi runtime behavior, add a typed tool, command, keybinding, event hook, UI, resource loader, provider, renderer, safety gate, or session behavior | **Extension** | TypeScript extension file in `.pi/extensions/`, `~/.pi/agent/extensions/`, or a Pi package | Read Pi docs `docs/extensions.md` fully plus relevant `examples/extensions/` code first |
 | Reuse a prompt pattern with variables | **Prompt template** | Markdown file in `.pi/prompts/`, `~/.pi/agent/prompts/`, or a package | Read `docs/prompt-templates.md` |
 | Set project-wide or user-wide instructions | **Context file** | `AGENTS.md`, `CLAUDE.md`, `SYSTEM.md`, or `APPEND_SYSTEM.md` as appropriate | Read the README Context Files / System Prompt sections |
 | Change Pi's appearance | **Theme** | JSON theme in `.pi/themes/`, `~/.pi/agent/themes/`, or a package | Read `docs/themes.md` |
+| Customize runtime settings or expose custom settings toggles | **Settings** or **Extension** | `.pi/settings.json`, `~/.pi/agent/settings.json`, or `SettingsList` via an extension | Read `docs/settings.md` and `docs/extensions.md` |
 | Add or route models/providers | **models.json** or a **provider extension** | `~/.pi/agent/models.json` for supported APIs; extension for OAuth, dynamic discovery, or custom streaming | Read `docs/models.md` and `docs/custom-provider.md` |
 | Share any of the above | **Pi package** | `package.json` with a `pi` key or conventional `extensions/`, `skills/`, `prompts/`, `themes/` directories | Read `docs/packages.md` |
 
@@ -58,7 +59,7 @@ Use this when the chosen artifact is a Pi TypeScript extension or provider exten
 Agents often miss existing Pi extension points by reading only the first matching section or doing a heading search. Do the full extension audit:
 
 1. **Read `docs/extensions.md` fully.** Extension capabilities are spread across hooks, tools, commands, keybindings, resource loaders, renderers, session/compaction events, settings, and linked docs.
-2. **Follow relevant linked docs** for the surface you are changing: `docs/tui.md`, `docs/themes.md`, `docs/models.md`, `docs/custom-provider.md`, `docs/packages.md`, `docs/keybindings.md`, `docs/session-format.md`, or `docs/compaction.md`.
+2. **Follow relevant linked docs** for the surface you are changing: `docs/tui.md`, `docs/themes.md`, `docs/models.md`, `docs/custom-provider.md`, `docs/packages.md`, `docs/keybindings.md`, `docs/session-format.md`, `docs/compaction.md`, `docs/settings.md`, or `docs/security.md`.
 3. **Read `examples/extensions/README.md` and at least one matching example** under `examples/extensions/`. Copy current structure rather than inventing from memory.
 4. **Map the request to a current extension capability**: events, tools, commands, shortcuts, flags, UI, custom rendering, resource discovery, model/provider registration, session/compaction hooks, tool operations, or packaging.
 5. **Inspect installed types/source if docs or examples are ambiguous** rather than guessing API names or signatures. Useful starting points include `dist/core/extensions/types.d.ts`, `dist/core/index.d.ts`, and the matching `src/` files when available.
@@ -70,7 +71,7 @@ Patch-level changes are extremely rare. They are appropriate only for core bugs,
 
 Before working on a patch:
 
-1. Read upstream contributor guidance in `earendil-works/pi`: `CONTRIBUTING.md` and `AGENTS.md`.
+1. Read upstream contributor guidance in the [pi monorepo](https://github.com/earendil-works/pi-mono): `CONTRIBUTING.md` and `AGENTS.md`. See also `docs/development.md` for local setup and testing.
 2. Write down the desired behavior, the public extension points considered, the docs/examples/types/source inspected, and why each public route fails.
 3. Prefer the smallest public extension API addition when the behavior should be user-extensible; otherwise propose the minimal core fix.
 4. Ensure you can explain the code path, edge cases, tests, and interaction with the rest of Pi. If you cannot explain it clearly, do not patch.
