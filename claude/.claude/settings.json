@@ -1,8 +1,0 @@
-{
-  "enabledPlugins": {
-    "ruby-lsp@claude-plugins-official": true
-  },
-  "feedbackSurveyRate": 0,
-  "prefersReducedMotion": true,
-  "spinnerTipsEnabled": false
-}
