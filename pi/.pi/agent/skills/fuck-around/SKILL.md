@@ -21,6 +21,19 @@ This skill activates when the user says "fucking around" or similar phrases indi
    - Change `status/active` to `status/done` in the frontmatter.
    - Move the note from `10_Projects/` to `40_Archives/Projects/`.
    - Add a final log entry with the session end time.
+   - Keep the existing log **as-is**. It is the recall record; do not compress or rewrite past entries.
+
+## Log format
+
+Keep the note scannable for a human while still useful for an agent resuming the session. The log is also the recall record, so it is **never compacted** on archive.
+
+- **Newest entry first**, directly under `## Log`. The most recent state is what a resuming reader needs.
+- One line per event, about 200 characters max: `- **YYYY-MM-DD HH:MM** <object>: <outcome> → [[Note]]`
+- Timestamps come from `date +"%Y-%m-%d %H:%M"`. Run it before writing an entry; never fill a timestamp in from memory.
+- Detail lives in notes, not in the log. If an entry needs more than two lines, write it to an `00_Inbox/` note — or append to the area note that already owns the topic — and link it instead of restating it.
+- At most two nested child lines per event, and only these labels:
+    - `**Decision**: <the choice, one line>` when a choice was made
+    - `**Rejected**: <option> — <why>` when something was considered and ruled out
 
 ## Template location
 
