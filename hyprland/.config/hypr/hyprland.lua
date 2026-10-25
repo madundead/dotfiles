@@ -70,6 +70,8 @@ hl.env("OBSIDIAN_USE_WAYLAND", "1")
 
 hl.on("hyprland.start", function()
     hl.exec_cmd("alacritty")
+    hl.exec_cmd("easyeffects --gapplication-service")
+    hl.exec_cmd("~/.local/bin/easyeffects-default-source.sh")
     hl.exec_cmd("hyprctl setcursor rose-pine-hyprcursor 42")         -- bigger cursor for big monitor
     hl.exec_cmd("systemctl --user start hyprpolkitagent")
     hl.exec_cmd("waybar -c ~/.config/waybar/config-left.jsonc")
@@ -152,7 +154,13 @@ hl.window_rule({ name = "pavucontrol", match = { class = "org.pulseaudio.pavucon
 hl.window_rule({ name = "pip", match = { title = "^Picture-in-Picture$" }, float = true, pin = true, size = "1280 800" })
 
 -- Path of Exile
-hl.window_rule({ name = "poe", match = { initial_class = "pathofexile.exe" }, workspace = "5", fullscreen = true })
+hl.window_rule({ name = "poe", match = { initial_class = "pathofexile.exe" }, workspace = "3", fullscreen = true })
+
+-- EvE Online
+hl.window_rule({ name = "eve", match = { title = "^EVE$" }, workspace = "3", fullscreen = true })
+
+-- World of Warcraft
+hl.window_rule({ name = "wow", match = { title = "^World of Warcraft$" }, workspace = "3", fullscreen = true, no_initial_focus = true })
 
 --------------------
 -- WORKSPACE RULES
