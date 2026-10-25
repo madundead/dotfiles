@@ -81,6 +81,8 @@ alias p='sudo pacman'
 alias ss='sudo systemctl'
 alias y='yay --noconfirm --answerdiff=None --answeredit=None'
 alias yay='yay --noconfirm --answerdiff=None --answeredit=None'
+alias librewolf='librewolf --profile /home/madundead/Syncthing/librewolf-profiles/madundead/'
+alias lutris='/usr/bin/python3.14 /usr/bin/lutris'
 
 
 alias gco='git checkout'
