@@ -30,5 +30,6 @@ This note contains:
 - **Never write to Modbus registers** without explicit user confirmation after presenting the planned change and value.
 - **Never connect directly to the inverter** -- only query through Home Assistant's stored state or through the user.
 - Always start diagnostics with the read-only state query in the Access & Diagnostics section.
+- **Don't assume unintended state changes.** If a later status check shows a different mode or value than expected, consider that the user may have changed it manually before trying to re-apply. When in doubt, ask.
 
 Full safety rules and access details are in the vault note.
