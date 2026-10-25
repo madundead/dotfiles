@@ -65,10 +65,36 @@ hl.env("EGL_PLATFORM", "wayland")
 hl.env("OBSIDIAN_USE_WAYLAND", "1")
 
 --------------------
+-- XWAYLAND PRIMARY MONITOR
+--------------------
+-- Wayland has no notion of a "primary" monitor, so XWayland leaves the RandR
+-- primary output unset. Wine/Proton builds its display-mode list from the
+-- primary output and falls back to output 0 (the first-packed monitor) when
+-- none is set, which misplaces and mis-sizes fullscreen games.
+-- XWayland recreates its outputs on layout changes, so re-assert the primary.
+local function set_xwayland_primary()
+    hl.exec_cmd("xrandr --output " .. center .. " --primary")
+end
+
+hl.on("monitor.layout_changed", set_xwayland_primary)
+
+-- XWayland starts a moment after Hyprland; retry briefly until it answers.
+local function setup_xwayland_primary()
+    local tries = 0
+    local timer
+    timer = hl.timer(function()
+        set_xwayland_primary()
+        tries = tries + 1
+        if tries >= 5 then timer:set_enabled(false) end
+    end, { timeout = 1000, type = "repeat" })
+end
+
+--------------------
 -- AUTOSTART
 --------------------
 
 hl.on("hyprland.start", function()
+    setup_xwayland_primary()
     hl.exec_cmd("alacritty")
     hl.exec_cmd("easyeffects --gapplication-service")
     hl.exec_cmd("~/.local/bin/easyeffects-default-source.sh")
