@@ -12,11 +12,12 @@ Always load the `obsidian` skill alongside this one.
 Read the full documentation from the Obsidian vault:
 
 ```
-99_System/Agent/Skills/Homelab.md
+20_Areas/My Setup/Homelab/Homelab Topology.md
 ```
 
 This note contains the complete topology, server inventory with IPs/roles, Docker Compose structure, CI/CD and deploy workflows, architecture standards, and operational workflows.
 
 ## Critical Rules
 
-- **Never read `secrets.sh`** (Syncthing file). Assume necessary secrets are exported from it.
+- **Never read secret material** (env files, credential stores). Assume required secrets are already exported into the environment.
+- **Keep the vault note current**: when making architectural or infrastructure changes, update `20_Areas/My Setup/Homelab/Homelab Topology.md` so the topology and inventory stay accurate.

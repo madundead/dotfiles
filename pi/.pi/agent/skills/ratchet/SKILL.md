@@ -1,6 +1,6 @@
 ---
 name: ratchet
-description: Maintenance and security audit for the Ratchet homelab server (ratchet.madunde.ad). Use for exposure and hardening review, CVE triage, Debian sid upgrades, Docker service management, NAS mount checks, and rollback planning.
+description: Maintenance and security audit for the Ratchet Docker services host. Use for exposure and hardening review, CVE triage, Debian sid upgrades, Docker service management, NAS mount checks, and rollback planning.
 ---
 
 # Ratchet
@@ -12,7 +12,7 @@ Always load the `obsidian` and `homelab` skills alongside this one.
 Read the full documentation from the Obsidian vault before acting:
 
 ```
-99_System/Agent/Skills/Ratchet.md          # host identity, exposure findings, gates
+20_Areas/My Setup/Homelab/Ratchet.md               # host identity, exposure findings, gates
 20_Areas/My Setup/Homelab/Ratchet Maintenance.md   # the procedure library
 ```
 
