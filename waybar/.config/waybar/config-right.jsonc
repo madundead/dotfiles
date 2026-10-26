@@ -11,8 +11,7 @@
 
   /* === Modules Order === */
   "modules-left": [
-    "battery",
-    "custom/keychron"
+    "battery"
   ],
   "modules-center": [
     "custom/model"
@@ -43,13 +42,6 @@
       "critical": 15
     },
     "format": "{capacity} 󰍽"
-  },
-
-  "custom/keychron": {
-    "exec": "upower -i /org/freedesktop/UPower/devices/keyboard_dev_C6_CD_40_02_1B_3D | grep percentage | awk '{print $2}' | tr -d '%'",
-    "interval": 60,
-    "format": "{} 󰌌",
-    "tooltip": false
   },
 
   "custom/model": {
