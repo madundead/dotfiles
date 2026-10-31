@@ -3,9 +3,3 @@
 karabiner/.config/karabiner/automatic_backups/
 karabiner/.config/karabiner/assets/
 Brewfile.lock.json
-
-# sqlite artifacts (e.g. the bscpylgtv cache written to cwd)
-*.sqlite
-*.sqlite-journal
-*.sqlite-wal
-*.sqlite-shm

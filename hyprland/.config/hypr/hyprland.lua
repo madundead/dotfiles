@@ -251,15 +251,8 @@ hl.bind("SUPER+SHIFT+S",  hl.dsp.exec_cmd(screenshot_sel))
 hl.bind("CONTROL+ALT+SHIFT+B", hl.dsp.focus({ window = "librewolf" }))
 hl.bind("XF86Tools", hl.dsp.focus({ window = "librewolf" }))
 
--- Display / TV power
-hl.bind("SUPER+CONTROL+Q", function()
-    hl.dispatch(hl.dsp.dpms({ action = "off" }))
-    hl.exec_cmd("/home/madundead/.scripts/lgtv/off.sh")
-end)
-hl.bind("SUPER+SHIFT+Q", function()
-    hl.exec_cmd("/home/madundead/.scripts/lgtv/on.sh && sleep 1")
-    hl.dispatch(hl.dsp.dpms({ action = "on" }))
-end)
+-- Toggle displays + TV panel
+hl.bind("F19", hl.dsp.exec_cmd("/home/madundead/.scripts/lgtv/ctl toggle"))
 
 -- Ctrl+Scroll = Ctrl+Click for Path of Exile
 -- hl.bind("CONTROL+mouse_down", hl.dsp.exec_cmd("wlrctl pointer click"), { non_consuming = true })

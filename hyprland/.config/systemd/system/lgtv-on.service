@@ -6,7 +6,7 @@ After=network.target
 Type=oneshot
 User=madundead
 Group=madundead
-ExecStart=/home/madundead/.scripts/lgtv/on.sh
+ExecStart=/home/madundead/.scripts/lgtv/ctl wol
 
 [Install]
 WantedBy=multi-user.target

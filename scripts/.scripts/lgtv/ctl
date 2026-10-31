@@ -1,0 +1,101 @@
+#!/usr/bin/env bash
+# LG TV control via the Glasshouse API (port 8080).
+#   ctl off | on | toggle | screenOff | screenOn | powerOff | wake | wol
+# `off`/`on`/`toggle` also dispatch Hyprland dpms (explicitly, never a
+# relative toggle: the TV dropping to standby flips output dpms state).
+set -u
+
+ip="192.168.0.249"
+mac="58:96:0A:61:1B:FC"
+api="http://${ip}:8080/api/control"
+stats="http://${ip}:8080/api/stats"
+tv_monitor="HDMI-A-1"
+
+post() {
+    curl -sS -m 10 -X POST "$api" \
+        -H 'Content-Type: application/json' \
+        -d "{\"action\":\"$1\"}" >/dev/null
+}
+
+dpms() {
+    hyprctl dispatch "hl.dsp.dpms({ action = \"$1\" })" >/dev/null 2>&1
+}
+
+power_state() {
+    curl -sS -m 3 "$stats" 2>/dev/null \
+        | python3 -c 'import sys,json;print(json.load(sys.stdin)["powerState"]["raw"])' 2>/dev/null
+}
+
+# True while any side (non-TV) monitor is lit.
+side_on() {
+    hyprctl monitors -j 2>/dev/null \
+        | python3 -c 'import sys,json;sys.exit(0 if any(m.get("dpmsStatus") for m in json.load(sys.stdin) if m["name"] != "'"$tv_monitor"'") else 1)'
+}
+
+# Wake-on-LAN: broadcast and unicast over ports 7 and 9 for ~15 s, to cover
+# slow interface initialisation at boot and after sleep.
+wol() {
+    local n
+    for n in $(seq 1 15); do
+        wakeonlan -i 192.168.0.255 -p 9 "$mac"
+        wakeonlan -i 192.168.0.255 -p 7 "$mac"
+        wakeonlan -i 255.255.255.255 -p 9 "$mac"
+        wakeonlan -i 255.255.255.255 -p 7 "$mac"
+        wakeonlan -i "$ip" -p 9 "$mac"
+        wakeonlan -i "$ip" -p 7 "$mac"
+        sleep 1
+    done
+}
+
+# Bring the panel back. Screen Off can silently fall to Active Standby, where
+# screenOn does nothing, so escalate to powerOn if it does not take.
+power_on() {
+    case "$(power_state)" in
+        '')                          wol >/dev/null 2>&1 ;;             # off / unreachable -> WOL
+        'Active')                    post screenOn ;;
+        'Screen Off'|'Screen Saver')
+            post screenOn
+            sleep 1
+            [ "$(power_state)" = "Active" ] || post powerOn
+            ;;
+        *)                           post powerOn ;;                    # Active Standby / switching
+    esac
+}
+
+lock() {
+    dpms off
+    post screenOff
+}
+
+unlock() {
+    dpms on
+    power_on
+    # The TV's HDMI output can reconnect only after the panel wakes;
+    # re-assert so it comes up on the first press.
+    dpms on
+}
+
+case "${1:-}" in
+    off)
+        lock
+        ;;
+    on)
+        unlock
+        ;;
+    toggle)
+        if side_on; then lock; else unlock; fi
+        ;;
+    screenOff|screenOn|powerOff)
+        post "$1"
+        ;;
+    wake)
+        power_on
+        ;;
+    wol)
+        wol
+        ;;
+    *)
+        echo "usage: ctl {off|on|toggle|screenOff|screenOn|powerOff|wake|wol}" >&2
+        exit 2
+        ;;
+esac
