@@ -2,14 +2,16 @@
 # LG TV control via the Glasshouse API (port 8080).
 #   ctl off | on | toggle | screenOff | screenOn | powerOff | wake | wol
 # `off`/`on`/`toggle` also dispatch Hyprland dpms (explicitly, never a
-# relative toggle: the TV dropping to standby flips output dpms state).
+# relative toggle: dpmsStatus goes stale when outputs drop their link).
 set -u
 
 ip="192.168.0.249"
 mac="58:96:0A:61:1B:FC"
 api="http://${ip}:8080/api/control"
 stats="http://${ip}:8080/api/stats"
-tv_monitor="HDMI-A-1"
+# Logical lock state: hardware dpms state (dpmsStatus) is unreliable once
+# a monitor shows "no signal" / drops its link.
+state="${XDG_RUNTIME_DIR:-/tmp}/lgtv-locked"
 
 post() {
     curl -sS -m 10 -X POST "$api" \
@@ -24,12 +26,6 @@ dpms() {
 power_state() {
     curl -sS -m 3 "$stats" 2>/dev/null \
         | python3 -c 'import sys,json;print(json.load(sys.stdin)["powerState"]["raw"])' 2>/dev/null
-}
-
-# True while any side (non-TV) monitor is lit.
-side_on() {
-    hyprctl monitors -j 2>/dev/null \
-        | python3 -c 'import sys,json;sys.exit(0 if any(m.get("dpmsStatus") for m in json.load(sys.stdin) if m["name"] != "'"$tv_monitor"'") else 1)'
 }
 
 # Wake-on-LAN: broadcast and unicast over ports 7 and 9 for ~15 s, to cover
@@ -65,14 +61,15 @@ power_on() {
 lock() {
     dpms off
     post screenOff
+    : > "$state"
 }
 
 unlock() {
     dpms on
     power_on
-    # The TV's HDMI output can reconnect only after the panel wakes;
-    # re-assert so it comes up on the first press.
+    # Outputs can reconnect a beat after waking; re-assert.
     dpms on
+    rm -f "$state"
 }
 
 case "${1:-}" in
@@ -83,7 +80,7 @@ case "${1:-}" in
         unlock
         ;;
     toggle)
-        if side_on; then lock; else unlock; fi
+        if [ -e "$state" ]; then unlock; else lock; fi
         ;;
     screenOff|screenOn|powerOff)
         post "$1"
